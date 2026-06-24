@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   RAYAN SPA — feuille de style globale
+   Tokens, textures (zellige + grain), arches mauresques.
+   ============================================================ */
+
+:root {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Jost", system-ui, sans-serif;
+  --font-brand: "Marcellus", Georgia, serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* compensa l'header sticky quando si salta a una sezione */
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    @apply bg-noir text-creme font-body antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+    font-weight: 500;
+  }
+
+  ::selection {
+    background: theme("colors.or");
+    color: theme("colors.noir");
+  }
+
+  /* Accessibilità: focus visibile e coerente */
+  :focus-visible {
+    outline: 2px solid theme("colors.or-clair");
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Rispetta la preferenza di movimento ridotto */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* --- Etichetta "occhiello" sopra i titoli --- */
+  .eyebrow {
+    @apply font-body uppercase tracking-eyebrow text-[0.72rem] text-or;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .eyebrow::before,
+  .eyebrow::after {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, theme("colors.or"));
+  }
+  .eyebrow.eyebrow--left::before { display: none; }
+
+  /* --- Bottoni --- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-body uppercase tracking-wide text-[0.78rem];
+    padding: 0.95rem 1.9rem;
+    border-radius: 999px;
+    transition: all 0.45s theme("transitionTimingFunction.riad");
+    will-change: transform;
+  }
+  .btn-gold {
+    @apply bg-or text-ivoire;
+    box-shadow: 0 14px 28px -14px rgba(181, 80, 46, 0.55);
+  }
+  .btn-gold:hover {
+    @apply bg-rouge;
+    transform: translateY(-2px);
+    box-shadow: 0 20px 38px -16px rgba(162, 49, 31, 0.55);
+  }
+  .btn-outline {
+    border: 1px solid rgba(58, 42, 31, 0.28);
+    @apply text-creme;
+  }
+  .btn-outline:hover {
+    border-color: theme("colors.or");
+    @apply text-or;
+    transform: translateY(-2px);
+  }
+
+  /* --- Arche mauresque : cadre des médias / éléments clés --- */
+  .arch {
+    border-top-left-radius: 9999px;
+    border-top-right-radius: 9999px;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+    overflow: hidden;
+  }
+  .arch-sm {
+    border-top-left-radius: 9999px;
+    border-top-right-radius: 9999px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    overflow: hidden;
+  }
+
+  /* --- Filo d'oro decorativo --- */
+  .hairline {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(181, 80, 46, 0.55),
+      transparent
+    );
+  }
+}
+
+@layer utilities {
+  /* Texture zellige (pattern geometrico marocchino) molto discreta */
+  .zellige-texture {
+    background-image: url("/patterns/zellige.svg");
+    background-size: 280px 280px;
+    background-repeat: repeat;
+  }
+
+  /* Velo chiaro per leggibilità sopra i media (fondo crema) */
+  .veil {
+    background: linear-gradient(
+      180deg,
+      rgba(251, 244, 234, 0.1) 0%,
+      rgba(251, 244, 234, 0.4) 55%,
+      rgba(251, 244, 234, 0.85) 100%
+    );
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Bordo terracotta tenue per le card */
+  .ring-riad {
+    box-shadow: inset 0 0 0 1px rgba(181, 80, 46, 0.2);
+  }
+}
+
+/* --- Grain : pellicola fotografica sottile sopra tutto --- */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}

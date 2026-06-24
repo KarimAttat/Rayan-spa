@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="280" viewBox="0 0 280 280">
+  <!-- Motivo zellige: stella a 8 punte (khatam) marocchina. Tratto oro discreto. -->
+  <g fill="none" stroke="#B5502E" stroke-width="1.1" stroke-opacity="0.5">
+    <!-- stella centrale -->
+    <g transform="translate(140 140)">
+      <polygon points="0,-46 13,-13 46,0 13,13 0,46 -13,13 -46,0 -13,-13" />
+      <rect x="-32.5" y="-32.5" width="65" height="65" transform="rotate(45)" />
+      <rect x="-32.5" y="-32.5" width="65" height="65" />
+    </g>
+    <!-- stelle agli angoli (creano il rapporto continuo del pattern) -->
+    <g transform="translate(0 0)">
+      <polygon points="0,-30 9,-9 30,0 9,9 0,30 -9,9 -30,0 -9,-9" />
+    </g>
+    <g transform="translate(280 0)">
+      <polygon points="0,-30 9,-9 30,0 9,9 0,30 -9,9 -30,0 -9,-9" />
+    </g>
+    <g transform="translate(0 280)">
+      <polygon points="0,-30 9,-9 30,0 9,9 0,30 -9,9 -30,0 -9,-9" />
+    </g>
+    <g transform="translate(280 280)">
+      <polygon points="0,-30 9,-9 30,0 9,9 0,30 -9,9 -30,0 -9,-9" />
+    </g>
+  </g>
+</svg>
