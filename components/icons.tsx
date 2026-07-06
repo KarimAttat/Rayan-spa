@@ -96,3 +96,16 @@ export const CheckIcon = (p: SVGProps<SVGSVGElement>) => (
     <path d="M20 6 9 17l-5-5" />
   </svg>
 );
+
+export const GlobeIcon = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base} {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18M12 3c2.5 2.5 3.5 5.8 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-5.8-3.5-9s1-6.5 3.5-9z" />
+  </svg>
+);
+
+export const ChevronIcon = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base} {...p}>
+    <path d="m6 9 6 6 6-6" />
+  </svg>
+);

@@ -6,21 +6,29 @@ import Reveal from "./ui/Reveal";
 import MediaFrame from "./ui/MediaFrame";
 import Lightbox from "./ui/Lightbox";
 import { gallery } from "@/data/gallery";
+import { useI18n } from "@/lib/i18n";
 import { PlayIcon } from "@/components/icons";
 
 export default function Gallery() {
+  const { t } = useI18n();
   const [index, setIndex] = useState<number | null>(null);
+
+  // Légendes localisées (les médias/spans restent dans data/gallery.ts).
+  const items = gallery.map((item, i) => ({
+    ...item,
+    alt: t.gallery.alts[i] ?? item.alt,
+  }));
 
   return (
     <Section id="galerie" className="bg-nuit">
       <SectionHeader
-        eyebrow="Galerie"
-        title="L’atmosphère Rayan"
-        intro="Flânez à travers nos espaces : la lumière tamisée, le zellige et la quiétude d’un véritable riad marocain."
+        eyebrow={t.gallery.eyebrow}
+        title={t.gallery.title}
+        intro={t.gallery.intro}
       />
 
       <div className="mt-16 grid auto-rows-[200px] grid-cols-2 gap-4 sm:auto-rows-[230px] md:grid-cols-3">
-        {gallery.map((item, i) => (
+        {items.map((item, i) => (
           <Reveal
             key={item.id}
             delay={(i % 3) * 0.07}
@@ -31,7 +39,7 @@ export default function Gallery() {
           >
             <button
               onClick={() => setIndex(i)}
-              aria-label={`Agrandir : ${item.alt}`}
+              aria-label={`${t.gallery.enlarge} : ${item.alt}`}
               className="group relative block h-full w-full overflow-hidden rounded-2xl ring-riad"
             >
               <MediaFrame
@@ -51,7 +59,7 @@ export default function Gallery() {
                   </span>
                 ) : (
                   <span className="font-display text-lg text-creme">
-                    Agrandir
+                    {t.gallery.enlarge}
                   </span>
                 )}
               </span>
@@ -61,7 +69,7 @@ export default function Gallery() {
       </div>
 
       <Lightbox
-        items={gallery}
+        items={items}
         index={index}
         onClose={() => setIndex(null)}
         onNavigate={setIndex}

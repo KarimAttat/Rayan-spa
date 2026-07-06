@@ -1,8 +1,10 @@
 /* ============================================================
    SOINS & MASSAGES — Rayan SPA
    ------------------------------------------------------------
-   👉 MODIFICA QUI i trattamenti: nome, durata, prezzo (MAD),
-      descrizione e nome del file immagine.
+   👉 MODIFICA QUI durata, prezzo (MAD), badge e file immagine.
+   🌍 NOME e DESCRIZIONE sono tradotti (FR/EN/IT/ES) in
+      data/translations.ts → serviceData[<id>]. I campi "name" /
+      "description" qui sotto restano come riferimento (francese).
    ⚠️ I prezzi sono PLACEHOLDER realistici per Marrakech.
       Sostituiscili con il tuo listino reale.
    ============================================================ */
@@ -37,7 +39,7 @@ export const services: Service[] = [
     price: 250,
     featured: true,
     image: {
-      src: "",
+      src: "/images/soin-hammam.jpg",
       file: "images/soin-hammam.jpg",
       alt: "Salle de hammam en zellige avec vapeur et seau de cuivre",
     },
@@ -50,9 +52,9 @@ export const services: Service[] = [
     duration: "45 min",
     price: 200,
     image: {
-      src: "",
+      src: "/images/soin-savon-noir.jpg",
       file: "images/soin-savon-noir.jpg",
-      alt: "Bol de savon noir traditionnel et gant kessa",
+      alt: "Bol de savon noir traditionnel and gant kessa",
     },
   },
   {
@@ -64,7 +66,7 @@ export const services: Service[] = [
     price: 350,
     featured: true,
     image: {
-      src: "",
+      src: "/images/soin-argan.jpg",
       file: "images/soin-argan.jpg",
       alt: "Mains versant de l’huile d’argan lors d’un massage",
     },
@@ -77,7 +79,7 @@ export const services: Service[] = [
     duration: "75 min",
     price: 420,
     image: {
-      src: "",
+      src: "/images/soin-berbere.jpg",
       file: "images/soin-berbere.jpg",
       alt: "Massage berbère du dos à l’huile chaude",
     },
@@ -90,7 +92,7 @@ export const services: Service[] = [
     duration: "75 min",
     price: 450,
     image: {
-      src: "",
+      src: "/images/soin-pierres.jpg",
       file: "images/soin-pierres.jpg",
       alt: "Pierres chaudes alignées sur le dos pendant le soin",
     },
@@ -103,7 +105,7 @@ export const services: Service[] = [
     duration: "50 min",
     price: 300,
     image: {
-      src: "",
+      src: "/images/soin-visage.jpg",
       file: "images/soin-visage.jpg",
       alt: "Soin du visage avec masque d’argile et pétales",
     },
@@ -116,7 +118,7 @@ export const services: Service[] = [
     duration: "60 min",
     price: 650,
     image: {
-      src: "",
+      src: "/images/soin-duo.jpg",
       file: "images/soin-duo.jpg",
       alt: "Deux tables de massage côte à côte aux lanternes",
     },
@@ -130,7 +132,7 @@ export const services: Service[] = [
     price: 850,
     featured: true,
     image: {
-      src: "",
+      src: "/images/soin-rituel.jpg",
       file: "images/soin-rituel.jpg",
       alt: "Plateau de rituel spa : argan, savon noir, pétales et thé",
     },

@@ -1,16 +1,14 @@
+"use client";
+
 import Section from "./ui/Section";
 import Reveal from "./ui/Reveal";
 import MediaFrame from "./ui/MediaFrame";
 import ZelligeDivider from "./ui/ZelligeDivider";
 import { siteConfig } from "@/data/site-config";
-
-const values = [
-  { k: "Authenticité", v: "Des rituels berbères transmis de génération en génération." },
-  { k: "Sérénité", v: "Un écrin de calme préservé du tumulte de la médina." },
-  { k: "Excellence", v: "Des produits naturels et des mains expertes, à chaque geste." },
-];
+import { useI18n } from "@/lib/i18n";
 
 export default function About() {
+  const { t } = useI18n();
   return (
     <Section id="a-propos" className="bg-nuit">
       <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
@@ -37,27 +35,17 @@ export default function About() {
         {/* Texte */}
         <div>
           <Reveal>
-            <span className="eyebrow eyebrow--left">À propos</span>
+            <span className="eyebrow eyebrow--left">{t.about.eyebrow}</span>
           </Reveal>
           <Reveal delay={0.08}>
             <h2 className="mt-5 text-4xl leading-tight text-creme sm:text-5xl text-balance">
-              Un refuge de bien-être au cœur de Marrakech
+              {t.about.title}
             </h2>
           </Reveal>
           <Reveal delay={0.16}>
             <div className="mt-6 space-y-5 text-lg font-light leading-relaxed text-sable">
-              <p>
-                Derrière les murs de terre rose de la médina, Rayan SPA vous
-                ouvre les portes d’un véritable rituel marocain. Ici, le temps
-                ralentit&nbsp;: la vapeur du hammam, le parfum de l’argan et le
-                clapotis de la fontaine vous enveloppent dès le premier pas.
-              </p>
-              <p>
-                Notre philosophie puise dans la sagesse ancestrale du bien-être
-                berbère, où le corps se purifie et l’esprit se libère. Chaque
-                soin est une invitation au voyage, pensé comme une parenthèse
-                hors du temps.
-              </p>
+              <p>{t.about.p1}</p>
+              <p>{t.about.p2}</p>
             </div>
           </Reveal>
 
@@ -65,7 +53,7 @@ export default function About() {
 
           <Reveal delay={0.24}>
             <dl className="grid gap-6 sm:grid-cols-3">
-              {values.map((item) => (
+              {t.about.values.map((item) => (
                 <div key={item.k}>
                   <dt className="font-display text-xl text-or">{item.k}</dt>
                   <dd className="mt-2 text-sm font-light leading-relaxed text-sable/80">

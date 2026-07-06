@@ -8,11 +8,8 @@
 export const siteConfig = {
   brand: {
     name: "Rayan SPA",
-    tagline: "Hammam & Massages — Marrakech",
-    // Frase del cuore del sito (hero)
-    heroTitle: "L’art ancestral du bien-être marocain",
-    heroSubtitle:
-      "Au cœur de Marrakech, un havre de calme où le rituel du hammam et le toucher des mains expertes réveillent le corps et apaisent l’esprit.",
+    // ℹ️ Slogan, titre et textes de l'hero sont traduits (FR/EN/IT/ES)
+    //    dans data/translations.ts → hero.*
   },
 
   /* --------- CONTATTI (DA COMPLETARE) --------- */
@@ -45,21 +42,15 @@ export const siteConfig = {
     tripadvisor: "", // opzionale
   },
 
-  /* --------- NAVIGAZIONE (ancore alle sezioni) --------- */
-  nav: [
-    { label: "À propos", href: "#a-propos" },
-    { label: "Soins", href: "#soins" },
-    { label: "Galerie", href: "#galerie" },
-    { label: "Avis", href: "#avis" },
-    { label: "Contact", href: "#contact" },
-  ],
+  // ℹ️ I libellé del menu sono tradotti in data/translations.ts → nav.*
+  //    (le ancore #a-propos, #soins, … sono definite in Header.tsx / Footer.tsx)
 
   /* --------- MEDIA HERO --------- */
   // Video di sfondo dell'hero. Metti il file in /public/videos/hero.mp4
   // Lascia "" per usare lo sfondo decorativo (consigliato finché non hai il video).
   heroVideo: "", // es. "/videos/hero.mp4"
   heroPoster: {
-    src: "", // es. "/images/hero.jpg"
+    src: "/images/hero.jpg", // es. "/images/hero.jpg"
     file: "images/hero.jpg",
     alt: "Salle de repos du hammam Rayan SPA éclairée de lanternes",
     w: 1920,
@@ -68,7 +59,7 @@ export const siteConfig = {
 
   /* --------- IMMAGINE "À PROPOS" --------- */
   aboutImage: {
-    src: "", // es. "/images/a-propos.jpg"
+    src: "/images/a-propos.jpg", // es. "/images/a-propos.jpg"
     file: "images/a-propos.jpg",
     alt: "Bassin de hammam en tadelakt et zellige, vapeur douce",
     w: 1000,

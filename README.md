@@ -4,8 +4,12 @@ Sito web vetrina per **Rayan SPA**, una spa con hammam e massaggi nel quartiere
 di **Dar El Bacha**, a Marrakech.
 
 Il sito presenta l'atmosfera del luogo e i trattamenti offerti, con un'estetica
-chiara e calda ispirata a Marrakech (terracotta e accenti rossi). I contenuti
-sono in **francese**, pensati per una clientela internazionale e turistica.
+chiara e calda ispirata a Marrakech (terracotta e accenti rossi).
+
+È **multilingue** — francese, inglese, italiano e spagnolo — con un selettore
+di lingua nell'header. La scelta viene ricordata (localStorage) e il messaggio
+WhatsApp di prenotazione viene generato nella lingua attiva. Tutti i testi
+visibili sono raccolti in `data/translations.ts`.
 
 Le richieste di prenotazione non passano da un server: il modulo compila un
 messaggio già pronto e apre **WhatsApp** per inviarlo alla spa.

@@ -22,3 +22,10 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# raw images
+*.HEIC
+*.heic
+
+# claude local settings
+.claude/settings.local.json

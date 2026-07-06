@@ -18,7 +18,7 @@ export const gallery: GalleryItem[] = [
   {
     id: "g1",
     type: "image",
-    src: "",
+    src: "/images/galerie-hammam.jpg",
     file: "images/galerie-hammam.jpg",
     alt: "Voûte du hammam en tadelakt sous la lumière des lanternes",
     span: "tall",
@@ -26,14 +26,14 @@ export const gallery: GalleryItem[] = [
   {
     id: "g2",
     type: "image",
-    src: "",
+    src: "/images/galerie-massage.jpg",
     file: "images/galerie-massage.jpg",
     alt: "Table de massage drapée de lin et pétales de rose",
   },
   {
     id: "g3",
     type: "image",
-    src: "",
+    src: "/images/galerie-cour.jpg",
     file: "images/galerie-cour.jpg",
     alt: "Patio du riad avec fontaine en zellige et palmiers",
     span: "wide",
@@ -41,7 +41,7 @@ export const gallery: GalleryItem[] = [
   {
     id: "g4",
     type: "image",
-    src: "",
+    src: "/images/galerie-the.jpg",
     file: "images/galerie-the.jpg",
     alt: "Service du thé à la menthe et pâtisseries marocaines",
   },
@@ -56,7 +56,7 @@ export const gallery: GalleryItem[] = [
   {
     id: "g6",
     type: "image",
-    src: "",
+    src: "/images/galerie-produits.jpg",
     file: "images/galerie-produits.jpg",
     alt: "Huiles d’argan, savon noir et fleurs séchées sur plateau de cuivre",
   },

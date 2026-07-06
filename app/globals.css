@@ -28,11 +28,31 @@
   h1, h2, h3, h4 {
     @apply font-display;
     font-weight: 500;
+    /* Cormorant respire mieux avec un crénage légèrement resserré en grand */
+    letter-spacing: -0.015em;
   }
 
   ::selection {
     background: theme("colors.or");
     color: theme("colors.noir");
+  }
+
+  /* --- Barre de défilement terracotta (desktop) --- */
+  @media (pointer: fine) {
+    ::-webkit-scrollbar {
+      width: 11px;
+    }
+    ::-webkit-scrollbar-track {
+      background: theme("colors.nuit");
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(181, 80, 46, 0.38);
+      border-radius: 999px;
+      border: 3px solid theme("colors.nuit");
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(181, 80, 46, 0.6);
+    }
   }
 
   /* Accessibilità: focus visibile e coerente */
@@ -72,15 +92,34 @@
 
   /* --- Bottoni --- */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 font-body uppercase tracking-wide text-[0.78rem];
+    @apply relative inline-flex items-center justify-center gap-2 font-body uppercase tracking-wide text-[0.78rem];
     padding: 0.95rem 1.9rem;
     border-radius: 999px;
+    overflow: hidden;
     transition: all 0.45s theme("transitionTimingFunction.riad");
     will-change: transform;
   }
   .btn-gold {
     @apply bg-or text-ivoire;
     box-shadow: 0 14px 28px -14px rgba(181, 80, 46, 0.55);
+  }
+  /* Reflet doré qui balaie le bouton au survol */
+  .btn-gold::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      110deg,
+      transparent 30%,
+      rgba(255, 252, 246, 0.45) 50%,
+      transparent 70%
+    );
+    transform: translateX(-130%);
+    transition: transform 0.8s theme("transitionTimingFunction.riad");
+    pointer-events: none;
+  }
+  .btn-gold:hover::after {
+    transform: translateX(130%);
   }
   .btn-gold:hover {
     @apply bg-rouge;

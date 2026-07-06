@@ -1,6 +1,9 @@
+"use client";
+
 import Section, { SectionHeader } from "./ui/Section";
 import Reveal from "./ui/Reveal";
 import { siteConfig } from "@/data/site-config";
+import { useI18n } from "@/lib/i18n";
 import {
   PinIcon,
   ClockIcon,
@@ -11,21 +14,22 @@ import {
 } from "@/components/icons";
 
 export default function Contact() {
+  const { t } = useI18n();
   const { contact, social } = siteConfig;
 
   return (
     <Section id="contact" className="bg-nuit">
       <SectionHeader
-        eyebrow="Contact"
-        title="Venez nous rendre visite"
-        intro="Au cœur de la médina de Marrakech, à quelques pas des souks."
+        eyebrow={t.contact.eyebrow}
+        title={t.contact.title}
+        intro={t.contact.intro}
       />
 
       <div className="mt-16 grid gap-10 lg:grid-cols-2 lg:gap-14">
         {/* Infos */}
         <Reveal>
           <div className="grid gap-6 sm:grid-cols-2">
-            <InfoCard icon={<PinIcon />} title="Adresse">
+            <InfoCard icon={<PinIcon />} title={t.contact.cards.address}>
               <a
                 href={contact.address.mapsLink}
                 target="_blank"
@@ -38,18 +42,18 @@ export default function Contact() {
               </a>
             </InfoCard>
 
-            <InfoCard icon={<ClockIcon />} title="Horaires">
+            <InfoCard icon={<ClockIcon />} title={t.contact.cards.hours}>
               <ul className="space-y-1">
-                {contact.hours.map((h) => (
+                {contact.hours.map((h, i) => (
                   <li key={h.day} className="flex justify-between gap-4">
-                    <span>{h.day}</span>
+                    <span>{t.contact.days[i] ?? h.day}</span>
                     <span className="text-creme/90">{h.time}</span>
                   </li>
                 ))}
               </ul>
             </InfoCard>
 
-            <InfoCard icon={<PhoneIcon />} title="Téléphone">
+            <InfoCard icon={<PhoneIcon />} title={t.contact.cards.phone}>
               <a
                 href={`tel:${contact.phoneDisplay.replace(/\s/g, "")}`}
                 className="transition hover:text-or"
@@ -58,7 +62,7 @@ export default function Contact() {
               </a>
             </InfoCard>
 
-            <InfoCard icon={<MailIcon />} title="Email">
+            <InfoCard icon={<MailIcon />} title={t.contact.cards.email}>
               <a
                 href={`mailto:${contact.email}`}
                 className="break-all transition hover:text-or"
@@ -72,7 +76,7 @@ export default function Contact() {
           {(social.instagram || social.facebook) && (
             <div className="mt-8 flex items-center gap-4">
               <span className="text-xs uppercase tracking-eyebrow text-sable/50">
-                Suivez-nous
+                {t.contact.follow}
               </span>
               <div className="flex gap-3">
                 {social.instagram && (
@@ -108,7 +112,7 @@ export default function Contact() {
               className="btn btn-gold absolute bottom-4 right-4 !py-3 shadow-riad"
             >
               <PinIcon width={16} height={16} />
-              Itinéraire
+              {t.contact.route}
             </a>
           </div>
         </Reveal>

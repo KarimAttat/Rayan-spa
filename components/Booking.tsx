@@ -6,6 +6,7 @@ import Reveal from "./ui/Reveal";
 import ZelligeDivider from "./ui/ZelligeDivider";
 import { services } from "@/data/services";
 import { siteConfig } from "@/data/site-config";
+import { useI18n } from "@/lib/i18n";
 import {
   buildWhatsAppLink,
   isPlaceholderNumber,
@@ -26,6 +27,7 @@ const empty: BookingPayload = {
 type Errors = Partial<Record<keyof BookingPayload, string>>;
 
 export default function Booking() {
+  const { t } = useI18n();
   const [form, setForm] = useState<BookingPayload>(empty);
   const [errors, setErrors] = useState<Errors>({});
   const [sentLink, setSentLink] = useState<string | null>(null);
@@ -45,11 +47,11 @@ export default function Booking() {
 
   function validate(): boolean {
     const next: Errors = {};
-    if (!form.name.trim()) next.name = "Veuillez indiquer votre nom.";
+    if (!form.name.trim()) next.name = t.booking.errors.name;
     if (!form.phone.trim() || form.phone.replace(/\D/g, "").length < 6)
-      next.phone = "Numéro de téléphone invalide.";
-    if (!form.service) next.service = "Choisissez un soin.";
-    if (!form.date) next.date = "Indiquez une date souhaitée.";
+      next.phone = t.booking.errors.phone;
+    if (!form.service) next.service = t.booking.errors.service;
+    if (!form.date) next.date = t.booking.errors.date;
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -57,7 +59,7 @@ export default function Booking() {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validate()) return;
-    const link = buildWhatsAppLink(form);
+    const link = buildWhatsAppLink(form, { whatsapp: t.whatsapp, intl: t.intl });
     setSentLink(link);
     // Apre WhatsApp in una nuova scheda (se non bloccato dal browser)
     window.open(link, "_blank", "noopener,noreferrer");
@@ -71,18 +73,16 @@ export default function Booking() {
         {/* Colonna evocativa */}
         <div className="lg:pt-6">
           <Reveal>
-            <span className="eyebrow eyebrow--left">Réservation</span>
+            <span className="eyebrow eyebrow--left">{t.booking.eyebrow}</span>
           </Reveal>
           <Reveal delay={0.08}>
             <h2 className="mt-5 text-4xl leading-tight text-creme sm:text-5xl text-balance">
-              Réservez votre parenthèse
+              {t.booking.title}
             </h2>
           </Reveal>
           <Reveal delay={0.16}>
             <p className="mt-6 text-lg font-light leading-relaxed text-sable">
-              Remplissez le formulaire&nbsp;: votre demande s’ouvre directement
-              dans WhatsApp, déjà rédigée. Nous vous confirmons votre rendez-vous
-              en quelques minutes.
+              {t.booking.intro}
             </p>
           </Reveal>
 
@@ -90,16 +90,12 @@ export default function Booking() {
 
           <Reveal delay={0.24}>
             <ul className="space-y-3 text-sm font-light text-sable/85">
-              {[
-                "Réponse rapide via WhatsApp",
-                "Sans engagement ni paiement en ligne",
-                "Conseils personnalisés pour votre soin",
-              ].map((t) => (
-                <li key={t} className="flex items-center gap-3">
+              {t.booking.perks.map((perk) => (
+                <li key={perk} className="flex items-center gap-3">
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-or/15 text-or">
                     <CheckIcon width={14} height={14} />
                   </span>
-                  {t}
+                  {perk}
                 </li>
               ))}
             </ul>
@@ -122,7 +118,7 @@ export default function Booking() {
               <form onSubmit={onSubmit} noValidate className="space-y-5">
                 <div className="grid gap-5 sm:grid-cols-2">
                   <Field
-                    label="Nom complet"
+                    label={t.booking.fields.name}
                     error={errors.name}
                     htmlFor="name"
                   >
@@ -132,12 +128,12 @@ export default function Booking() {
                       autoComplete="name"
                       value={form.name}
                       onChange={update("name")}
-                      placeholder="Votre nom"
+                      placeholder={t.booking.fields.namePh}
                       className="input"
                     />
                   </Field>
                   <Field
-                    label="Téléphone"
+                    label={t.booking.fields.phone}
                     error={errors.phone}
                     htmlFor="phone"
                   >
@@ -153,24 +149,31 @@ export default function Booking() {
                   </Field>
                 </div>
 
-                <Field label="Soin souhaité" error={errors.service} htmlFor="service">
+                <Field
+                  label={t.booking.fields.service}
+                  error={errors.service}
+                  htmlFor="service"
+                >
                   <select
                     id="service"
                     value={form.service}
                     onChange={update("service")}
                     className="input"
                   >
-                    <option value="">— Choisir un soin —</option>
-                    {services.map((s) => (
-                      <option key={s.id} value={`${s.name} (${s.duration})`}>
-                        {s.name} · {s.duration} · {s.price} MAD
-                      </option>
-                    ))}
+                    <option value="">{t.booking.fields.servicePh}</option>
+                    {services.map((s) => {
+                      const name = t.serviceData[s.id].name;
+                      return (
+                        <option key={s.id} value={`${name} (${s.duration})`}>
+                          {name} · {s.duration} · {s.price} MAD
+                        </option>
+                      );
+                    })}
                   </select>
                 </Field>
 
                 <div className="grid gap-5 sm:grid-cols-3">
-                  <Field label="Date" error={errors.date} htmlFor="date">
+                  <Field label={t.booking.fields.date} error={errors.date} htmlFor="date">
                     <input
                       id="date"
                       type="date"
@@ -179,7 +182,7 @@ export default function Booking() {
                       className="input"
                     />
                   </Field>
-                  <Field label="Heure" htmlFor="time">
+                  <Field label={t.booking.fields.time} htmlFor="time">
                     <input
                       id="time"
                       type="time"
@@ -188,7 +191,7 @@ export default function Booking() {
                       className="input"
                     />
                   </Field>
-                  <Field label="Personnes" htmlFor="people">
+                  <Field label={t.booking.fields.people} htmlFor="people">
                     <select
                       id="people"
                       value={form.people}
@@ -204,26 +207,27 @@ export default function Booking() {
                   </Field>
                 </div>
 
-                <Field label="Notes (facultatif)" htmlFor="notes">
+                <Field label={t.booking.fields.notes} htmlFor="notes">
                   <textarea
                     id="notes"
                     rows={3}
                     value={form.notes}
                     onChange={update("notes")}
-                    placeholder="Une préférence, une occasion spéciale ?"
+                    placeholder={t.booking.fields.notesPh}
                     className="input resize-none"
                   />
                 </Field>
 
                 <button type="submit" className="btn btn-gold w-full !py-4">
                   <WhatsAppIcon width={18} height={18} />
-                  Envoyer ma demande
+                  {t.booking.submit}
                 </button>
 
                 {placeholder && (
                   <p className="text-center text-xs leading-relaxed text-terracotta/90">
-                    ⚠️ Démo&nbsp;: le numéro WhatsApp n’est pas encore configuré
-                    (voir <code className="text-or/80">data/site-config.ts</code>).
+                    {t.booking.demo.pre}
+                    <code className="text-or/80">data/site-config.ts</code>
+                    {t.booking.demo.post}
                   </p>
                 )}
               </form>
@@ -293,21 +297,21 @@ function Confirmation({
   placeholder: boolean;
   onReset: () => void;
 }) {
+  const { t } = useI18n();
   return (
     <div className="flex flex-col items-center py-8 text-center">
       <span className="flex h-16 w-16 items-center justify-center rounded-full bg-or/15 text-or">
         <WhatsAppIcon width={30} height={30} />
       </span>
       <h3 className="mt-6 font-display text-3xl text-creme">
-        Votre demande est prête
+        {t.booking.confirm.title}
       </h3>
       <p className="mt-3 max-w-sm text-sm font-light leading-relaxed text-sable">
-        WhatsApp devrait s’ouvrir avec votre message pré-rempli. Si rien ne se
-        passe, cliquez sur le bouton ci-dessous.
+        {t.booking.confirm.body}
       </p>
       {placeholder && (
         <p className="mt-3 max-w-sm text-xs text-terracotta/90">
-          (Démo : numéro WhatsApp à configurer dans data/site-config.ts)
+          {t.booking.confirm.demoNote}
         </p>
       )}
       <a
@@ -317,13 +321,13 @@ function Confirmation({
         className="btn btn-gold mt-7"
       >
         <WhatsAppIcon width={18} height={18} />
-        Ouvrir WhatsApp
+        {t.booking.confirm.open}
       </a>
       <button
         onClick={onReset}
         className="mt-4 text-xs uppercase tracking-wide text-sable/60 underline-offset-4 hover:text-or hover:underline"
       >
-        Nouvelle demande
+        {t.booking.confirm.reset}
       </button>
     </div>
   );

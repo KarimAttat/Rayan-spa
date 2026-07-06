@@ -1,13 +1,16 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { siteConfig } from "@/data/site-config";
+import { useI18n } from "@/lib/i18n";
 import { ArrowIcon } from "@/components/icons";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function Hero() {
-  const { brand, heroVideo, heroPoster } = siteConfig;
+  const { t } = useI18n();
+  const { heroVideo, heroPoster } = siteConfig;
 
   const container = {
     hidden: {},
@@ -35,8 +38,16 @@ export default function Hero() {
             loop
             playsInline
           />
+        ) : heroPoster.src ? (
+          <Image
+            src={heroPoster.src}
+            alt={heroPoster.alt}
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
+          />
         ) : (
-          // Sfondo decorativo finché il video non è disponibile
           <div className="h-full w-full bg-gradient-to-b from-nuit via-noir to-noir">
             <div className="zellige-texture absolute inset-0 opacity-[0.18]" />
             <div
@@ -48,7 +59,7 @@ export default function Hero() {
             />
           </div>
         )}
-        <div className="veil absolute inset-0" />
+        <div className="absolute inset-0 bg-gradient-to-b from-noir/60 via-noir/40 to-noir/70" />
       </div>
 
       {/* Cornice ad arco decorativa */}
@@ -65,21 +76,21 @@ export default function Hero() {
         className="relative mx-auto max-w-3xl px-6 pt-28 pb-16 text-center"
       >
         <motion.span variants={item} className="eyebrow">
-          {brand.tagline}
+          {t.hero.tagline}
         </motion.span>
 
         <motion.h1
           variants={item}
           className="mt-7 font-display text-[2.9rem] leading-[1.04] text-creme sm:text-6xl md:text-7xl text-balance"
         >
-          {brand.heroTitle}
+          {t.hero.title}
         </motion.h1>
 
         <motion.p
           variants={item}
           className="mx-auto mt-7 max-w-xl text-lg font-light leading-relaxed text-sable"
         >
-          {brand.heroSubtitle}
+          {t.hero.subtitle}
         </motion.p>
 
         <motion.div
@@ -87,10 +98,10 @@ export default function Hero() {
           className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
           <a href="#reservation" className="btn btn-gold">
-            Réserver maintenant
+            {t.hero.ctaBook}
           </a>
           <a href="#soins" className="btn btn-outline">
-            Découvrir nos soins
+            {t.hero.ctaDiscover}
             <ArrowIcon width={16} height={16} />
           </a>
         </motion.div>
@@ -99,7 +110,7 @@ export default function Hero() {
       {/* ---------- Indicatore di scroll ---------- */}
       <motion.a
         href="#a-propos"
-        aria-label="Faire défiler"
+        aria-label={t.hero.scroll}
         className="absolute bottom-7 left-1/2 -translate-x-1/2 text-or/70"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
