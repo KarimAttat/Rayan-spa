@@ -51,12 +51,18 @@ export type Dict = {
     signature: string;
     book: string;
     priceNote: string;
+    categoryForfaits: string;
+    categoryMassages: string;
+    categoryHammams: string;
+    categoryBeaute: string;
+    includes: string;
   };
   gallery: {
     eyebrow: string;
     title: string;
     intro: string;
     enlarge: string;
+    comingSoon: string;
     alts: string[];
   };
   booking: {
@@ -97,7 +103,8 @@ export type Dict = {
     eyebrow: string;
     title: string;
     intro: string;
-    cards: { address: string; hours: string; phone: string; email: string };
+    cards: { address: string; hours: string; whatsapp: string; email: string };
+    whatsappCta: string;
     follow: string;
     route: string;
     days: string[];
@@ -117,7 +124,9 @@ export type Dict = {
     footer: string;
   };
   /** Nom + description par soin (clé = id dans data/services.ts). */
-  serviceData: Record<string, { name: string; description: string }>;
+  serviceData: Record<string, { name: string; description?: string; meta?: string }>;
+  /** Libellé de chaque étape incluse (clé = stepId dans data/services.ts). */
+  stepData: Record<string, string>;
 };
 
 /* --------------------------------------------------------------- */
@@ -156,6 +165,11 @@ const fr: Dict = {
     signature: "Signature",
     book: "Réserver →",
     priceNote: "Tarifs en {currency} · à titre indicatif",
+    categoryForfaits: "Nos forfaits signature",
+    categoryMassages: "Massages à la carte",
+    categoryHammams: "Hammams",
+    categoryBeaute: "Manucure & Pédicure",
+    includes: "Comprend",
   },
   gallery: {
     eyebrow: "Galerie",
@@ -163,13 +177,13 @@ const fr: Dict = {
     intro:
       "Flânez à travers nos espaces : la lumière tamisée, le zellige et la quiétude d’un véritable riad marocain.",
     enlarge: "Agrandir",
+    comingSoon: "Bientôt disponible",
     alts: [
       "Voûte du hammam en tadelakt sous la lumière des lanternes",
       "Table de massage drapée de lin et pétales de rose",
-      "Patio du riad avec fontaine en zellige et palmiers",
-      "Service du thé à la menthe et pâtisseries marocaines",
-      "Vidéo d’ambiance du spa",
-      "Huiles d’argan, savon noir et fleurs séchées sur plateau de cuivre",
+      "Rooftop patio pour savourer un thé et des pâtisseries après le soin",
+      "Application d’huile d’argan lors d’un massage",
+      "Massage des épaules et de la nuque, geste précis",
     ],
   },
   booking: {
@@ -229,7 +243,8 @@ const fr: Dict = {
     eyebrow: "Contact",
     title: "Venez nous rendre visite",
     intro: "Au cœur de la médina de Marrakech, à quelques pas des souks.",
-    cards: { address: "Adresse", hours: "Horaires", phone: "Téléphone", email: "Email" },
+    cards: { address: "Adresse", hours: "Horaires", whatsapp: "WhatsApp", email: "Email" },
+    whatsappCta: "Écrivez-nous sur WhatsApp",
     follow: "Suivez-nous",
     route: "Itinéraire",
     days: ["Lundi – Vendredi", "Samedi", "Dimanche"],
@@ -253,38 +268,87 @@ const fr: Dict = {
     footer: "Merci de me confirmer la disponibilité. 🌿",
   },
   serviceData: {
-    "hammam-traditionnel": {
-      name: "Hammam traditionnel",
-      description: "Le rituel séculaire de la vapeur, du savon noir et du gant kessa pour une peau purifiée et un esprit délassé.",
+    "pack-relaxant": {
+      name: "Pack Relaxant",
+      description: "Un massage relaxant d’une heure suivi d’un soin du visage complet, pour dénouer le corps et apaiser l’esprit.",
     },
-    "gommage-savon-noir": {
-      name: "Gommage au savon noir",
-      description: "Le savon noir à l’huile d’olive et le gant kessa exfolient en douceur pour révéler une peau neuve et satinée.",
+    "pack-classique": {
+      name: "Pack Classique",
+      description: "L’essentiel du rituel marocain : hammam, gommage et un massage anti-stress pour repartir léger.",
     },
-    "massage-huile-argan": {
-      name: "Massage à l’huile d’argan",
-      description: "Un massage enveloppant à l’or liquide du Maroc, nourrissant la peau et dénouant chaque tension.",
+    "pack-baume": {
+      name: "Pack Baume",
+      description: "Un hammam complet suivi d’un massage au baume concentré à l’huile d’argan — la signature Rayan pour une peau nourrie et un corps détendu.",
     },
-    "massage-berbere": {
-      name: "Massage berbère",
-      description: "Pressions profondes et gestes ancestraux des montagnes de l’Atlas pour libérer le corps en profondeur.",
+    "pack-amoureux": {
+      name: "Pack Amoureux",
+      description: "Une parenthèse à deux, côte à côte : hammam, gommage, massage au choix et pause thé aux pâtisseries marocaines.",
+      meta: "2 personnes",
     },
-    "massage-pierres-chaudes": {
-      name: "Massage aux pierres chaudes",
-      description: "La chaleur enveloppante des pierres volcaniques fond les tensions et réchauffe les muscles en profondeur.",
+    "pack-royal": {
+      name: "Pack Royal",
+      description: "L’expérience complète Rayan : quatre heures de soins, du hammam au massage au baume, jusqu’au soin du visage, manucure et pédicure.",
+      meta: "4h",
     },
-    "soin-visage": {
-      name: "Soin du visage",
-      description: "Un soin éclat aux argiles et fleurs du Maroc qui purifie, hydrate et illumine le teint.",
+    "massage-relaxant": {
+      name: "Massage Relaxant",
+      description: "Gestes doux et enveloppants pour relâcher les tensions du quotidien.",
     },
-    "massage-duo": {
-      name: "Massage en duo",
-      description: "Une parenthèse à deux, côte à côte, pour partager un moment de détente absolue dans une suite privée.",
+    "massage-tonifiant": {
+      name: "Massage Tonifiant",
+      description: "Pressions plus fermes pour réveiller le corps et stimuler la circulation.",
     },
-    "forfait-rituel": {
-      name: "Forfait Rituel Rayan",
-      description: "L’expérience complète : hammam, gommage au savon noir et massage à l’argan. Le voyage des sens absolu.",
+    "massage-ayurvedique": {
+      name: "Massage Ayurvédique",
+      description: "Un massage venu d’Inde, aux huiles chaudes, pour un équilibre profond entre corps et esprit.",
     },
+    "massage-dabachi": {
+      name: "Massage Dabachi",
+      description: "Le geste traditionnel marocain, entre pression et étirement, pour un relâchement en profondeur.",
+    },
+    "massage-dos": {
+      name: "Massage du dos",
+      description: "Un soin ciblé sur les épaules et le dos, pour dénouer les nœuds de tension.",
+    },
+    "massage-pieds": {
+      name: "Massage des pieds",
+      description: "Un moment de légèreté pour des pieds apaisés après une journée dans la médina.",
+    },
+    "hammam-oriental": { name: "Oriental Hammam" },
+    "hammam-dabachi": { name: "Hammam Dabachi" },
+    "hammam-royal": { name: "Hammam Royal" },
+    manucure: { name: "Manucure" },
+    pedicure: { name: "Pédicure" },
+    "pedicure-medicale": { name: "Pédicure médicale" },
+    "soin-visage": { name: "Soin du visage" },
+  },
+  stepData: {
+    hammam30: "Hammam 30 min",
+    hammam45: "Hammam 45 min",
+    hammam1h: "Hammam 1h",
+    gommage: "Gommage exfoliant",
+    gommageSavonNoir: "Gommage au savon noir",
+    gommageGhassoul: "Gommage au ghassoul",
+    gommageCafe: "Gommage au café anti-cellulite",
+    gommageChoix: "Gommage au choix (savon noir ou ghassoul)",
+    savonNoir: "Application de savon noir",
+    savonnage: "Savonnage",
+    shampooing: "Shampooing",
+    shampooingBio: "Shampooing bio",
+    masqueGhassoul: "Masque complet au ghassoul",
+    masqueCheveux: "Masque cheveux",
+    hydratation15: "15 min d’hydratation",
+    pauseThe: "Pause thé",
+    pauseThePatisserie: "Pause thé & pâtisserie marocaine",
+    soinVisage45: "Soin du visage 45 min",
+    soinVisage1h: "Soin du visage 1h",
+    massageBaumeArgan45: "Massage au baume d’argan 45 min",
+    massageBaume1h: "Massage au baume 1h",
+    massageRelaxant1h: "Massage relaxant 1h",
+    massageAntiStress30: "Massage anti-stress 30 min",
+    massageChoix30: "Massage au choix 30 min (relaxant, tonifiant ou dabachi)",
+    manucure: "Manucure",
+    pedicure: "Pédicure",
   },
 };
 
@@ -324,6 +388,11 @@ const en: Dict = {
     signature: "Signature",
     book: "Book →",
     priceNote: "Prices in {currency} · indicative",
+    categoryForfaits: "Our signature packages",
+    categoryMassages: "Massages à la carte",
+    categoryHammams: "Hammams",
+    categoryBeaute: "Manicure & Pedicure",
+    includes: "Includes",
   },
   gallery: {
     eyebrow: "Gallery",
@@ -331,13 +400,13 @@ const en: Dict = {
     intro:
       "Wander through our spaces: the soft light, the zellige and the quiet of an authentic Moroccan riad.",
     enlarge: "Enlarge",
+    comingSoon: "Coming soon",
     alts: [
       "Tadelakt hammam vault under lantern light",
       "Massage table draped in linen with rose petals",
-      "Riad patio with zellige fountain and palm trees",
-      "Mint tea service with Moroccan pastries",
-      "Spa ambiance video",
-      "Argan oils, black soap and dried flowers on a copper tray",
+      "Rooftop patio to enjoy tea and pastries after your treatment",
+      "Applying argan oil during a massage",
+      "Shoulder and neck massage, precise touch",
     ],
   },
   booking: {
@@ -396,7 +465,8 @@ const en: Dict = {
     eyebrow: "Contact",
     title: "Come and visit us",
     intro: "In the heart of the Marrakech medina, a few steps from the souks.",
-    cards: { address: "Address", hours: "Opening hours", phone: "Phone", email: "Email" },
+    cards: { address: "Address", hours: "Opening hours", whatsapp: "WhatsApp", email: "Email" },
+    whatsappCta: "Message us on WhatsApp",
     follow: "Follow us",
     route: "Directions",
     days: ["Monday – Friday", "Saturday", "Sunday"],
@@ -420,38 +490,87 @@ const en: Dict = {
     footer: "Please confirm availability. 🌿",
   },
   serviceData: {
-    "hammam-traditionnel": {
-      name: "Traditional hammam",
-      description: "The age-old ritual of steam, black soap and the kessa glove for purified skin and a relaxed mind.",
+    "pack-relaxant": {
+      name: "Relaxing Package",
+      description: "A one-hour relaxing massage followed by a complete facial treatment, to release the body and calm the mind.",
     },
-    "gommage-savon-noir": {
-      name: "Black soap scrub",
-      description: "Olive-oil black soap and the kessa glove gently exfoliate to reveal new, satin-soft skin.",
+    "pack-classique": {
+      name: "Classic Package",
+      description: "The essence of the Moroccan ritual: hammam, scrub and an anti-stress massage to leave feeling light.",
     },
-    "massage-huile-argan": {
-      name: "Argan oil massage",
-      description: "An enveloping massage with Morocco’s liquid gold, nourishing the skin and releasing every tension.",
+    "pack-baume": {
+      name: "Balm Package",
+      description: "A full hammam followed by a massage with concentrated argan balm — the Rayan signature for nourished skin and a relaxed body.",
     },
-    "massage-berbere": {
-      name: "Berber massage",
-      description: "Deep pressure and ancestral gestures from the Atlas mountains to release the body in depth.",
+    "pack-amoureux": {
+      name: "Lovers’ Package",
+      description: "A moment for two, side by side: hammam, scrub, massage of your choice and tea with Moroccan pastries.",
+      meta: "2 people",
     },
-    "massage-pierres-chaudes": {
-      name: "Hot stone massage",
-      description: "The enveloping warmth of volcanic stones melts tension and warms the muscles deep down.",
+    "pack-royal": {
+      name: "Royal Package",
+      description: "The complete Rayan experience: four hours of care, from hammam to balm massage, facial treatment, manicure and pedicure.",
+      meta: "4h",
     },
-    "soin-visage": {
-      name: "Facial treatment",
-      description: "A radiance treatment with Moroccan clays and flowers that purifies, hydrates and brightens the complexion.",
+    "massage-relaxant": {
+      name: "Relaxing Massage",
+      description: "Gentle, enveloping strokes to release everyday tension.",
     },
-    "massage-duo": {
-      name: "Couples’ massage",
-      description: "A moment for two, side by side, to share absolute relaxation in a private suite.",
+    "massage-tonifiant": {
+      name: "Toning Massage",
+      description: "Firmer pressure to awaken the body and stimulate circulation.",
     },
-    "forfait-rituel": {
-      name: "Rayan Ritual Package",
-      description: "The complete experience: hammam, black soap scrub and argan massage. The ultimate journey of the senses.",
+    "massage-ayurvedique": {
+      name: "Ayurvedic Massage",
+      description: "A massage from India, with warm oils, for a deep balance between body and mind.",
     },
+    "massage-dabachi": {
+      name: "Dabachi Massage",
+      description: "The traditional Moroccan gesture, between pressure and stretching, for a deep release.",
+    },
+    "massage-dos": {
+      name: "Back Massage",
+      description: "A treatment focused on the shoulders and back, to release knots of tension.",
+    },
+    "massage-pieds": {
+      name: "Foot Massage",
+      description: "A moment of lightness for feet soothed after a day in the medina.",
+    },
+    "hammam-oriental": { name: "Oriental Hammam" },
+    "hammam-dabachi": { name: "Hammam Dabachi" },
+    "hammam-royal": { name: "Royal Hammam" },
+    manucure: { name: "Manicure" },
+    pedicure: { name: "Pedicure" },
+    "pedicure-medicale": { name: "Medical Pedicure" },
+    "soin-visage": { name: "Facial Treatment" },
+  },
+  stepData: {
+    hammam30: "Hammam 30 min",
+    hammam45: "Hammam 45 min",
+    hammam1h: "Hammam 1h",
+    gommage: "Exfoliating scrub",
+    gommageSavonNoir: "Black soap scrub",
+    gommageGhassoul: "Ghassoul clay scrub",
+    gommageCafe: "Anti-cellulite coffee scrub",
+    gommageChoix: "Choice of scrub (black soap or ghassoul)",
+    savonNoir: "Black soap application",
+    savonnage: "Soaping",
+    shampooing: "Shampoo",
+    shampooingBio: "Organic shampoo",
+    masqueGhassoul: "Full ghassoul clay mask",
+    masqueCheveux: "Hair mask",
+    hydratation15: "15 min hydration",
+    pauseThe: "Tea break",
+    pauseThePatisserie: "Tea break with Moroccan pastries",
+    soinVisage45: "45 min facial treatment",
+    soinVisage1h: "1h facial treatment",
+    massageBaumeArgan45: "45 min argan balm massage",
+    massageBaume1h: "1h balm massage",
+    massageRelaxant1h: "1h relaxing massage",
+    massageAntiStress30: "30 min anti-stress massage",
+    massageChoix30: "30 min massage of your choice (relaxing, toning or dabachi)",
+    manucure: "Manicure",
+    pedicure: "Pedicure",
   },
 };
 
@@ -491,6 +610,11 @@ const it: Dict = {
     signature: "Signature",
     book: "Prenota →",
     priceNote: "Prezzi in {currency} · indicativi",
+    categoryForfaits: "I nostri forfait signature",
+    categoryMassages: "Massaggi à la carte",
+    categoryHammams: "Hammam",
+    categoryBeaute: "Manicure & Pedicure",
+    includes: "Include",
   },
   gallery: {
     eyebrow: "Galleria",
@@ -498,13 +622,13 @@ const it: Dict = {
     intro:
       "Passeggiate tra i nostri spazi: la luce soffusa, gli zellige e la quiete di un autentico riad marocchino.",
     enlarge: "Ingrandisci",
+    comingSoon: "Prossimamente",
     alts: [
       "Volta dell’hammam in tadelakt sotto la luce delle lanterne",
       "Lettino da massaggio drappeggiato di lino con petali di rosa",
-      "Patio del riad con fontana in zellige e palme",
-      "Servizio del tè alla menta con dolci marocchini",
-      "Video d’atmosfera della spa",
-      "Oli di argan, sapone nero e fiori secchi su vassoio di rame",
+      "Un rooftop patio dove gustare un tè e dolci tipici dopo il trattamento",
+      "Applicazione di olio di argan durante un massaggio",
+      "Massaggio a spalle e collo, gesto preciso",
     ],
   },
   booking: {
@@ -563,7 +687,8 @@ const it: Dict = {
     eyebrow: "Contatti",
     title: "Vieni a trovarci",
     intro: "Nel cuore della medina di Marrakech, a pochi passi dai souk.",
-    cards: { address: "Indirizzo", hours: "Orari", phone: "Telefono", email: "Email" },
+    cards: { address: "Indirizzo", hours: "Orari", whatsapp: "WhatsApp", email: "Email" },
+    whatsappCta: "Scrivici su WhatsApp",
     follow: "Seguici",
     route: "Indicazioni",
     days: ["Lunedì – Venerdì", "Sabato", "Domenica"],
@@ -587,38 +712,87 @@ const it: Dict = {
     footer: "Vi prego di confermarmi la disponibilità. 🌿",
   },
   serviceData: {
-    "hammam-traditionnel": {
-      name: "Hammam tradizionale",
-      description: "Il rito secolare del vapore, del sapone nero e del guanto kessa per una pelle purificata e una mente distesa.",
+    "pack-relaxant": {
+      name: "Pack Relax",
+      description: "Un massaggio relax di un’ora seguito da un trattamento viso completo, per sciogliere il corpo e placare la mente.",
     },
-    "gommage-savon-noir": {
-      name: "Scrub al sapone nero",
-      description: "Il sapone nero all’olio d’oliva e il guanto kessa esfoliano con delicatezza per rivelare una pelle nuova e setosa.",
+    "pack-classique": {
+      name: "Pack Classico",
+      description: "L’essenziale del rito marocchino: hammam, scrub e un massaggio anti-stress per ripartire leggeri.",
     },
-    "massage-huile-argan": {
-      name: "Massaggio all’olio di argan",
-      description: "Un massaggio avvolgente con l’oro liquido del Marocco, che nutre la pelle e scioglie ogni tensione.",
+    "pack-baume": {
+      name: "Pack Baume",
+      description: "Un hammam completo seguito da un massaggio al balsamo concentrato di olio di argan — la signature Rayan per una pelle nutrita e un corpo rilassato.",
     },
-    "massage-berbere": {
-      name: "Massaggio berbero",
-      description: "Pressioni profonde e gesti ancestrali delle montagne dell’Atlante per liberare il corpo in profondità.",
+    "pack-amoureux": {
+      name: "Pack Innamorati",
+      description: "Una parentesi in due, fianco a fianco: hammam, scrub, massaggio a scelta e pausa tè con dolci marocchini.",
+      meta: "2 persone",
     },
-    "massage-pierres-chaudes": {
-      name: "Massaggio con pietre calde",
-      description: "Il calore avvolgente delle pietre vulcaniche scioglie le tensioni e riscalda i muscoli in profondità.",
+    "pack-royal": {
+      name: "Pack Royal",
+      description: "L’esperienza completa Rayan: quattro ore di trattamenti, dall’hammam al massaggio al balsamo, fino al trattamento viso, manicure e pedicure.",
+      meta: "4h",
     },
-    "soin-visage": {
-      name: "Trattamento viso",
-      description: "Un trattamento illuminante con argille e fiori del Marocco che purifica, idrata e illumina l’incarnato.",
+    "massage-relaxant": {
+      name: "Massaggio Relax",
+      description: "Gesti dolci e avvolgenti per sciogliere le tensioni quotidiane.",
     },
-    "massage-duo": {
-      name: "Massaggio di coppia",
-      description: "Una parentesi in due, fianco a fianco, per condividere un momento di relax assoluto in una suite privata.",
+    "massage-tonifiant": {
+      name: "Massaggio Tonificante",
+      description: "Pressioni più energiche per risvegliare il corpo e stimolare la circolazione.",
     },
-    "forfait-rituel": {
-      name: "Pacchetto Rituale Rayan",
-      description: "L’esperienza completa: hammam, scrub al sapone nero e massaggio all’argan. Il viaggio dei sensi assoluto.",
+    "massage-ayurvedique": {
+      name: "Massaggio Ayurvedico",
+      description: "Un massaggio che viene dall’India, con oli caldi, per un equilibrio profondo tra corpo e mente.",
     },
+    "massage-dabachi": {
+      name: "Massaggio Dabachi",
+      description: "Il gesto tradizionale marocchino, tra pressione e stiramento, per un rilascio in profondità.",
+    },
+    "massage-dos": {
+      name: "Massaggio schiena",
+      description: "Un trattamento mirato su spalle e schiena, per sciogliere i nodi di tensione.",
+    },
+    "massage-pieds": {
+      name: "Massaggio piedi",
+      description: "Un momento di leggerezza per piedi distesi dopo una giornata nella medina.",
+    },
+    "hammam-oriental": { name: "Hammam Orientale" },
+    "hammam-dabachi": { name: "Hammam Dabachi" },
+    "hammam-royal": { name: "Hammam Royal" },
+    manucure: { name: "Manicure" },
+    pedicure: { name: "Pedicure" },
+    "pedicure-medicale": { name: "Pedicure medica" },
+    "soin-visage": { name: "Trattamento viso" },
+  },
+  stepData: {
+    hammam30: "Hammam 30 min",
+    hammam45: "Hammam 45 min",
+    hammam1h: "Hammam 1h",
+    gommage: "Scrub esfoliante",
+    gommageSavonNoir: "Scrub al sapone nero",
+    gommageGhassoul: "Scrub all’argilla ghassoul",
+    gommageCafe: "Scrub al caffè anticellulite",
+    gommageChoix: "Scrub a scelta (sapone nero o ghassoul)",
+    savonNoir: "Applicazione di sapone nero",
+    savonnage: "Insaponatura",
+    shampooing: "Shampoo",
+    shampooingBio: "Shampoo bio",
+    masqueGhassoul: "Maschera completa al ghassoul",
+    masqueCheveux: "Maschera per capelli",
+    hydratation15: "15 min di idratazione",
+    pauseThe: "Pausa tè",
+    pauseThePatisserie: "Pausa tè con dolci marocchini",
+    soinVisage45: "Trattamento viso 45 min",
+    soinVisage1h: "Trattamento viso 1h",
+    massageBaumeArgan45: "Massaggio al balsamo di argan 45 min",
+    massageBaume1h: "Massaggio al balsamo 1h",
+    massageRelaxant1h: "Massaggio relax 1h",
+    massageAntiStress30: "Massaggio anti-stress 30 min",
+    massageChoix30: "Massaggio a scelta 30 min (relax, tonificante o dabachi)",
+    manucure: "Manicure",
+    pedicure: "Pedicure",
   },
 };
 
@@ -658,6 +832,11 @@ const es: Dict = {
     signature: "Signature",
     book: "Reservar →",
     priceNote: "Precios en {currency} · orientativos",
+    categoryForfaits: "Nuestros packs signature",
+    categoryMassages: "Masajes a la carta",
+    categoryHammams: "Hammams",
+    categoryBeaute: "Manicura & Pedicura",
+    includes: "Incluye",
   },
   gallery: {
     eyebrow: "Galería",
@@ -665,13 +844,13 @@ const es: Dict = {
     intro:
       "Pasea por nuestros espacios: la luz tenue, el zellige y la quietud de un auténtico riad marroquí.",
     enlarge: "Ampliar",
+    comingSoon: "Próximamente",
     alts: [
       "Bóveda del hammam en tadelakt bajo la luz de los faroles",
       "Camilla de masaje cubierta de lino con pétalos de rosa",
-      "Patio del riad con fuente de zellige y palmeras",
-      "Servicio de té a la menta con dulces marroquíes",
-      "Vídeo de ambiente del spa",
-      "Aceites de argán, jabón negro y flores secas en bandeja de cobre",
+      "Un patio en la azotea para disfrutar un té y dulces tras el tratamiento",
+      "Aplicación de aceite de argán durante un masaje",
+      "Masaje de hombros y cuello, gesto preciso",
     ],
   },
   booking: {
@@ -730,7 +909,8 @@ const es: Dict = {
     eyebrow: "Contacto",
     title: "Ven a visitarnos",
     intro: "En el corazón de la medina de Marrakech, a pocos pasos de los zocos.",
-    cards: { address: "Dirección", hours: "Horario", phone: "Teléfono", email: "Email" },
+    cards: { address: "Dirección", hours: "Horario", whatsapp: "WhatsApp", email: "Email" },
+    whatsappCta: "Escríbenos por WhatsApp",
     follow: "Síguenos",
     route: "Cómo llegar",
     days: ["Lunes – Viernes", "Sábado", "Domingo"],
@@ -754,38 +934,87 @@ const es: Dict = {
     footer: "Por favor, confírmenme la disponibilidad. 🌿",
   },
   serviceData: {
-    "hammam-traditionnel": {
-      name: "Hammam tradicional",
-      description: "El ritual milenario del vapor, el jabón negro y el guante kessa para una piel purificada y una mente relajada.",
+    "pack-relaxant": {
+      name: "Pack Relajante",
+      description: "Un masaje relajante de una hora seguido de un tratamiento facial completo, para liberar el cuerpo y calmar la mente.",
     },
-    "gommage-savon-noir": {
-      name: "Exfoliación con jabón negro",
-      description: "El jabón negro de aceite de oliva y el guante kessa exfolian con suavidad para revelar una piel nueva y satinada.",
+    "pack-classique": {
+      name: "Pack Clásico",
+      description: "Lo esencial del ritual marroquí: hammam, exfoliación y un masaje antiestrés para salir ligero.",
     },
-    "massage-huile-argan": {
-      name: "Masaje con aceite de argán",
-      description: "Un masaje envolvente con el oro líquido de Marruecos, que nutre la piel y deshace cada tensión.",
+    "pack-baume": {
+      name: "Pack Bálsamo",
+      description: "Un hammam completo seguido de un masaje con bálsamo concentrado de aceite de argán — la firma de Rayan para una piel nutrida y un cuerpo relajado.",
     },
-    "massage-berbere": {
-      name: "Masaje bereber",
-      description: "Presiones profundas y gestos ancestrales de las montañas del Atlas para liberar el cuerpo en profundidad.",
+    "pack-amoureux": {
+      name: "Pack Enamorados",
+      description: "Un paréntesis para dos, lado a lado: hammam, exfoliación, masaje a elegir y pausa de té con dulces marroquíes.",
+      meta: "2 personas",
     },
-    "massage-pierres-chaudes": {
-      name: "Masaje con piedras calientes",
-      description: "El calor envolvente de las piedras volcánicas funde las tensiones y calienta los músculos en profundidad.",
+    "pack-royal": {
+      name: "Pack Royal",
+      description: "La experiencia completa Rayan: cuatro horas de tratamientos, del hammam al masaje con bálsamo, hasta el tratamiento facial, manicura y pedicura.",
+      meta: "4h",
     },
-    "soin-visage": {
-      name: "Tratamiento facial",
-      description: "Un tratamiento de luminosidad con arcillas y flores de Marruecos que purifica, hidrata e ilumina el cutis.",
+    "massage-relaxant": {
+      name: "Masaje Relajante",
+      description: "Gestos suaves y envolventes para liberar las tensiones del día a día.",
     },
-    "massage-duo": {
-      name: "Masaje en pareja",
-      description: "Un paréntesis para dos, lado a lado, para compartir un momento de relax absoluto en una suite privada.",
+    "massage-tonifiant": {
+      name: "Masaje Tonificante",
+      description: "Presiones más firmes para despertar el cuerpo y estimular la circulación.",
     },
-    "forfait-rituel": {
-      name: "Paquete Ritual Rayan",
-      description: "La experiencia completa: hammam, exfoliación con jabón negro y masaje de argán. El viaje absoluto de los sentidos.",
+    "massage-ayurvedique": {
+      name: "Masaje Ayurvédico",
+      description: "Un masaje llegado de la India, con aceites calientes, para un equilibrio profundo entre cuerpo y mente.",
     },
+    "massage-dabachi": {
+      name: "Masaje Dabachi",
+      description: "El gesto tradicional marroquí, entre presión y estiramiento, para una liberación profunda.",
+    },
+    "massage-dos": {
+      name: "Masaje de espalda",
+      description: "Un tratamiento centrado en los hombros y la espalda, para liberar los nudos de tensión.",
+    },
+    "massage-pieds": {
+      name: "Masaje de pies",
+      description: "Un momento de ligereza para unos pies aliviados tras un día en la medina.",
+    },
+    "hammam-oriental": { name: "Hammam Oriental" },
+    "hammam-dabachi": { name: "Hammam Dabachi" },
+    "hammam-royal": { name: "Hammam Royal" },
+    manucure: { name: "Manicura" },
+    pedicure: { name: "Pedicura" },
+    "pedicure-medicale": { name: "Pedicura médica" },
+    "soin-visage": { name: "Tratamiento facial" },
+  },
+  stepData: {
+    hammam30: "Hammam 30 min",
+    hammam45: "Hammam 45 min",
+    hammam1h: "Hammam 1h",
+    gommage: "Exfoliación",
+    gommageSavonNoir: "Exfoliación con jabón negro",
+    gommageGhassoul: "Exfoliación con arcilla ghassoul",
+    gommageCafe: "Exfoliación de café anticelulítica",
+    gommageChoix: "Exfoliación a elegir (jabón negro o ghassoul)",
+    savonNoir: "Aplicación de jabón negro",
+    savonnage: "Enjabonado",
+    shampooing: "Champú",
+    shampooingBio: "Champú ecológico",
+    masqueGhassoul: "Mascarilla completa de ghassoul",
+    masqueCheveux: "Mascarilla capilar",
+    hydratation15: "15 min de hidratación",
+    pauseThe: "Pausa de té",
+    pauseThePatisserie: "Pausa de té con dulces marroquíes",
+    soinVisage45: "Tratamiento facial de 45 min",
+    soinVisage1h: "Tratamiento facial de 1h",
+    massageBaumeArgan45: "Masaje con bálsamo de argán 45 min",
+    massageBaume1h: "Masaje con bálsamo 1h",
+    massageRelaxant1h: "Masaje relajante 1h",
+    massageAntiStress30: "Masaje antiestrés 30 min",
+    massageChoix30: "Masaje a elegir 30 min (relajante, tonificante o dabachi)",
+    manucure: "Manicura",
+    pedicure: "Pedicura",
   },
 };
 

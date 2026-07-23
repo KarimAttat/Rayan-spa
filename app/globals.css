@@ -186,9 +186,27 @@
     text-wrap: balance;
   }
 
+  /* Masque la scrollbar du filmstrip (galerie) sans perdre le scroll natif */
+  .hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Bordo terracotta tenue per le card */
   .ring-riad {
     box-shadow: inset 0 0 0 1px rgba(181, 80, 46, 0.2);
+  }
+
+  /* Filet en pointillés entre le nom et le prix — carte de soins */
+  .menu-leader {
+    flex: 1 1 auto;
+    min-width: 0.75rem;
+    height: 0;
+    align-self: center;
+    border-bottom: 1px dotted rgba(58, 42, 31, 0.28);
   }
 }
 

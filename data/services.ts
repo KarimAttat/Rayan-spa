@@ -1,143 +1,168 @@
 /* ============================================================
    SOINS & MASSAGES — Rayan SPA
    ------------------------------------------------------------
-   👉 MODIFICA QUI durata, prezzo (MAD), badge e file immagine.
-   🌍 NOME e DESCRIZIONE sono tradotti (FR/EN/IT/ES) in
-      data/translations.ts → serviceData[<id>]. I campi "name" /
-      "description" qui sotto restano come riferimento (francese).
-   ⚠️ I prezzi sono PLACEHOLDER realistici per Marrakech.
-      Sostituiscili con il tuo listino reale.
+   Listino reale (photos "listino1"/"listino2"), riorganizzato
+   in 4 categorie : Forfaits (packs), Massages, Hammams,
+   Manucure & Pédicure.
+   👉 NOME, DESCRIZIONE e passaggi inclusi sono tradotti
+      (FR/EN/IT/ES) in data/translations.ts → serviceData[<id>]
+      e stepData[<stepId>]. Qui restano solo i dati strutturali :
+      prezzi (MAD), durate, e l'elenco dei passaggi per id.
    ============================================================ */
 
-export type Service = {
+export const currency = "MAD";
+
+/** Massaggio con una o più coppie durata/prezzo (es. 30 min / 45 min / 1h). */
+export type Massage = {
   id: string;
-  name: string;
-  /** Breve descrizione evocativa (FR) */
-  description: string;
-  /** Durata, es. "60 min" */
-  duration: string;
-  /** Prezzo in MAD (numero) */
-  price: number;
-  /** Trattamento in evidenza (badge "Signature") */
-  featured?: boolean;
-  /** Slot immagine — metti il file in /public/images/ con questo nome */
-  image: {
-    src: string; // es. "/images/hammam.jpg" — lascia "" per il placeholder
-    file: string; // nome consigliato del file
-    alt: string;
-  };
+  variants: { duration: string; price: number }[];
 };
 
-/** ⚠️ Listino in MAD — PLACEHOLDER. Aggiorna con i tuoi prezzi reali. */
-export const services: Service[] = [
+export const massages: Massage[] = [
   {
-    id: "hammam-traditionnel",
-    name: "Hammam traditionnel",
-    description:
-      "Le rituel séculaire de la vapeur, du savon noir et du gant kessa pour une peau purifiée et un esprit délassé.",
-    duration: "60 min",
+    id: "massage-relaxant",
+    variants: [
+      { duration: "30 min", price: 200 },
+      { duration: "45 min", price: 300 },
+      { duration: "1h", price: 400 },
+    ],
+  },
+  {
+    id: "massage-tonifiant",
+    variants: [
+      { duration: "30 min", price: 300 },
+      { duration: "45 min", price: 450 },
+      { duration: "1h", price: 500 },
+    ],
+  },
+  {
+    id: "massage-ayurvedique",
+    variants: [
+      { duration: "30 min", price: 250 },
+      { duration: "1h", price: 500 },
+    ],
+  },
+  { id: "massage-dabachi", variants: [{ duration: "1h", price: 400 }] },
+  { id: "massage-dos", variants: [{ duration: "30 min", price: 250 }] },
+  { id: "massage-pieds", variants: [{ duration: "20 min", price: 200 }] },
+];
+
+/** Formula hammam à prix fixe, avec ses étapes (clé = stepData). */
+export type Hammam = {
+  id: string;
+  price: number;
+  stepIds: string[];
+};
+
+export const hammams: Hammam[] = [
+  {
+    id: "hammam-oriental",
     price: 250,
-    featured: true,
-    image: {
-      src: "/images/soin-hammam.jpg",
-      file: "images/soin-hammam.jpg",
-      alt: "Salle de hammam en zellige avec vapeur et seau de cuivre",
-    },
+    stepIds: ["gommageSavonNoir", "shampooing", "savonnage", "gommageCafe"],
   },
   {
-    id: "gommage-savon-noir",
-    name: "Gommage au savon noir",
-    description:
-      "Le savon noir à l’huile d’olive et le gant kessa exfolient en douceur pour révéler une peau neuve et satinée.",
-    duration: "45 min",
-    price: 200,
-    image: {
-      src: "/images/soin-savon-noir.jpg",
-      file: "images/soin-savon-noir.jpg",
-      alt: "Bol de savon noir traditionnel and gant kessa",
-    },
+    id: "hammam-dabachi",
+    price: 400,
+    stepIds: ["gommageSavonNoir", "shampooingBio", "savonnage", "hydratation15"],
   },
   {
-    id: "massage-huile-argan",
-    name: "Massage à l’huile d’argan",
-    description:
-      "Un massage enveloppant à l’or liquide du Maroc, nourrissant la peau et dénouant chaque tension.",
-    duration: "60 min",
-    price: 350,
-    featured: true,
-    image: {
-      src: "/images/soin-argan.jpg",
-      file: "images/soin-argan.jpg",
-      alt: "Mains versant de l’huile d’argan lors d’un massage",
-    },
-  },
-  {
-    id: "massage-berbere",
-    name: "Massage berbère",
-    description:
-      "Pressions profondes et gestes ancestraux des montagnes de l’Atlas pour libérer le corps en profondeur.",
-    duration: "75 min",
-    price: 420,
-    image: {
-      src: "/images/soin-berbere.jpg",
-      file: "images/soin-berbere.jpg",
-      alt: "Massage berbère du dos à l’huile chaude",
-    },
-  },
-  {
-    id: "massage-pierres-chaudes",
-    name: "Massage aux pierres chaudes",
-    description:
-      "La chaleur enveloppante des pierres volcaniques fond les tensions et réchauffe les muscles en profondeur.",
-    duration: "75 min",
-    price: 450,
-    image: {
-      src: "/images/soin-pierres.jpg",
-      file: "images/soin-pierres.jpg",
-      alt: "Pierres chaudes alignées sur le dos pendant le soin",
-    },
-  },
-  {
-    id: "soin-visage",
-    name: "Soin du visage",
-    description:
-      "Un soin éclat aux argiles et fleurs du Maroc qui purifie, hydrate et illumine le teint.",
-    duration: "50 min",
-    price: 300,
-    image: {
-      src: "/images/soin-visage.jpg",
-      file: "images/soin-visage.jpg",
-      alt: "Soin du visage avec masque d’argile et pétales",
-    },
-  },
-  {
-    id: "massage-duo",
-    name: "Massage en duo",
-    description:
-      "Une parenthèse à deux, côte à côte, pour partager un moment de détente absolue dans une suite privée.",
-    duration: "60 min",
-    price: 650,
-    image: {
-      src: "/images/soin-duo.jpg",
-      file: "images/soin-duo.jpg",
-      alt: "Deux tables de massage côte à côte aux lanternes",
-    },
-  },
-  {
-    id: "forfait-rituel",
-    name: "Forfait Rituel Rayan",
-    description:
-      "L’expérience complète : hammam, gommage au savon noir et massage à l’argan. Le voyage des sens absolu.",
-    duration: "150 min",
-    price: 850,
-    featured: true,
-    image: {
-      src: "/images/soin-rituel.jpg",
-      file: "images/soin-rituel.jpg",
-      alt: "Plateau de rituel spa : argan, savon noir, pétales et thé",
-    },
+    id: "hammam-royal",
+    price: 500,
+    stepIds: [
+      "gommageSavonNoir",
+      "shampooingBio",
+      "masqueGhassoul",
+      "gommageCafe",
+      "masqueCheveux",
+      "hydratation15",
+      "pauseThe",
+    ],
   },
 ];
 
-/** Valuta usata nei prezzi. */
-export const currency = "MAD";
+/** Forfait signature (soin composé) — mis en avant visuellement. */
+export type Forfait = {
+  id: string;
+  price: number;
+  stepIds: string[];
+  featured?: boolean;
+};
+
+export const forfaits: Forfait[] = [
+  {
+    id: "pack-relaxant",
+    price: 550,
+    stepIds: ["massageRelaxant1h", "soinVisage1h", "pauseThe"],
+  },
+  {
+    id: "pack-classique",
+    price: 500,
+    stepIds: [
+      "hammam30",
+      "gommage",
+      "shampooingBio",
+      "savonnage",
+      "pauseThe",
+      "massageAntiStress30",
+    ],
+  },
+  {
+    id: "pack-baume",
+    price: 750,
+    featured: true,
+    stepIds: [
+      "hammam45",
+      "gommage",
+      "savonNoir",
+      "shampooingBio",
+      "gommageGhassoul",
+      "gommageCafe",
+      "massageBaumeArgan45",
+      "pauseThe",
+    ],
+  },
+  {
+    id: "pack-amoureux",
+    price: 1100,
+    featured: true,
+    stepIds: [
+      "hammam30",
+      "savonNoir",
+      "gommageChoix",
+      "savonnage",
+      "shampooing",
+      "masqueCheveux",
+      "massageChoix30",
+      "pauseThePatisserie",
+    ],
+  },
+  {
+    id: "pack-royal",
+    price: 1500,
+    featured: true,
+    stepIds: [
+      "hammam1h",
+      "savonNoir",
+      "shampooing",
+      "masqueCheveux",
+      "gommageGhassoul",
+      "gommageCafe",
+      "savonnage",
+      "pauseThe",
+      "soinVisage45",
+      "massageBaume1h",
+      "manucure",
+      "pedicure",
+    ],
+  },
+];
+
+/** Soin unitaire à prix fixe (manucure, pédicure, visage). */
+export type BeauteItem = { id: string; price: number };
+
+export const beaute: BeauteItem[] = [
+  { id: "manucure", price: 180 },
+  { id: "pedicure", price: 200 },
+  { id: "pedicure-medicale", price: 250 },
+  { id: "soin-visage", price: 300 },
+];

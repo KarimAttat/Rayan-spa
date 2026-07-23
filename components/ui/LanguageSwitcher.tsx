@@ -12,8 +12,11 @@ import { GlobeIcon, ChevronIcon, CheckIcon } from "@/components/icons";
  */
 export default function LanguageSwitcher({
   variant = "bar",
+  tone = "dark",
 }: {
   variant?: "bar" | "stack";
+  /** "light" : pastille claire sur fond sombre (hero non défilé). */
+  tone?: "light" | "dark";
 }) {
   const { locale, setLocale, t } = useI18n();
   const [open, setOpen] = useState(false);
@@ -66,7 +69,10 @@ export default function LanguageSwitcher({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={t.header.language}
-        className="flex items-center gap-1.5 rounded-full border border-or/25 px-3 py-2 text-xs uppercase tracking-wide text-creme/85 transition hover:border-or hover:text-or"
+        className={[
+          "flex items-center gap-1.5 rounded-full border px-3 py-2 text-xs uppercase tracking-wide transition hover:border-or hover:text-or",
+          tone === "light" ? "border-ivoire/30 text-ivoire" : "border-or/25 text-creme/85",
+        ].join(" ")}
       >
         <GlobeIcon width={16} height={16} />
         <span className="font-medium">{localeMeta[locale].short}</span>

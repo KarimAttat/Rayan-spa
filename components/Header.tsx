@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
 import { MenuIcon, CloseIcon } from "@/components/icons";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
@@ -63,13 +64,36 @@ export default function Header() {
       ].join(" ")}
     >
       <nav className="mx-auto flex max-w-content items-center justify-between px-6 py-4 sm:px-8">
-        {/* Logo testuale */}
-        <a href="#top" className="group flex flex-col leading-none">
-          <span className="font-brand text-2xl tracking-wide text-creme">
-            Rayan<span className="text-rouge"> SPA</span>
-          </span>
-          <span className="mt-0.5 text-[0.6rem] uppercase tracking-eyebrow text-sable/60">
-            Marrakech
+        {/* Logo : emblème + wordmark */}
+        <a href="#top" className="group flex items-center gap-2.5">
+          <Image
+            src="/images/logo-icon.png"
+            alt=""
+            width={80}
+            height={80}
+            priority
+            className={[
+              "h-9 w-9 shrink-0 object-contain transition-[filter] duration-500 sm:h-10 sm:w-10",
+              scrolled ? "" : "drop-shadow-[0_2px_8px_rgba(32,15,12,0.55)]",
+            ].join(" ")}
+          />
+          <span className="flex flex-col leading-none">
+            <span
+              className={[
+                "font-brand text-2xl tracking-wide transition-colors",
+                scrolled ? "text-creme" : "text-ivoire [text-shadow:0_2px_10px_rgba(32,15,12,0.5)]",
+              ].join(" ")}
+            >
+              Rayan<span className="text-rouge"> SPA</span>
+            </span>
+            <span
+              className={[
+                "mt-0.5 text-[0.6rem] uppercase tracking-eyebrow transition-colors",
+                scrolled ? "text-sable/60" : "text-ivoire/65",
+              ].join(" ")}
+            >
+              Marrakech
+            </span>
           </span>
         </a>
 
@@ -84,7 +108,11 @@ export default function Header() {
                   aria-current={isActive ? "true" : undefined}
                   className={[
                     "group relative text-sm font-light tracking-wide transition",
-                    isActive ? "text-or" : "text-creme/85 hover:text-or",
+                    isActive
+                      ? "text-or"
+                      : scrolled
+                        ? "text-creme/85 hover:text-or"
+                        : "text-ivoire/90 [text-shadow:0_1px_8px_rgba(32,15,12,0.5)] hover:text-or",
                   ].join(" ")}
                 >
                   {t.nav[item.key]}
@@ -102,7 +130,7 @@ export default function Header() {
 
         <div className="flex items-center gap-3">
           <div className="hidden sm:block">
-            <LanguageSwitcher />
+            <LanguageSwitcher tone={scrolled ? "dark" : "light"} />
           </div>
           <a href="#reservation" className="btn btn-gold hidden sm:inline-flex">
             {t.header.book}
@@ -111,7 +139,10 @@ export default function Header() {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? t.header.closeMenu : t.header.openMenu}
             aria-expanded={open}
-            className="rounded-full border border-or/25 p-2 text-creme md:hidden"
+            className={[
+              "rounded-full border p-2 md:hidden transition-colors",
+              scrolled ? "border-or/25 text-creme" : "border-ivoire/30 text-ivoire",
+            ].join(" ")}
           >
             {open ? <CloseIcon /> : <MenuIcon />}
           </button>

@@ -10,8 +10,8 @@ export type GalleryItem = {
   src: string; // es. "/images/galerie-1.jpg" — "" = placeholder
   file: string; // nome consigliato
   alt: string;
-  /** Layout: alcuni elementi occupano più spazio nella griglia */
-  span?: "tall" | "wide";
+  /** Carte plus large dans le filmstrip (photos panoramiques, vidéo). */
+  size?: "lg";
 };
 
 export const gallery: GalleryItem[] = [
@@ -21,7 +21,6 @@ export const gallery: GalleryItem[] = [
     src: "/images/galerie-hammam.jpg",
     file: "images/galerie-hammam.jpg",
     alt: "Voûte du hammam en tadelakt sous la lumière des lanternes",
-    span: "tall",
   },
   {
     id: "g2",
@@ -33,31 +32,23 @@ export const gallery: GalleryItem[] = [
   {
     id: "g3",
     type: "image",
-    src: "/images/galerie-cour.jpg",
-    file: "images/galerie-cour.jpg",
-    alt: "Patio du riad avec fontaine en zellige et palmiers",
-    span: "wide",
-  },
-  {
-    id: "g4",
-    type: "image",
     src: "/images/galerie-the.jpg",
     file: "images/galerie-the.jpg",
-    alt: "Service du thé à la menthe et pâtisseries marocaines",
+    alt: "Rooftop patio pour savourer un thé et des pâtisseries après le soin",
+    size: "lg",
   },
   {
     id: "g5",
-    type: "video",
-    src: "",
-    file: "videos/galerie-ambiance.mp4",
-    alt: "Vidéo d’ambiance du spa",
-    span: "tall",
+    type: "image",
+    src: "/images/massage5.jpg",
+    file: "images/massage5.jpg",
+    alt: "Application d’huile d’argan lors d’un massage",
   },
   {
     id: "g6",
     type: "image",
-    src: "/images/galerie-produits.jpg",
-    file: "images/galerie-produits.jpg",
-    alt: "Huiles d’argan, savon noir et fleurs séchées sur plateau de cuivre",
+    src: "/images/massage4.jpg",
+    file: "images/massage4.jpg",
+    alt: "Massage des épaules et de la nuque, geste précis",
   },
 ];

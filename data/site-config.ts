@@ -16,17 +16,16 @@ export const siteConfig = {
   contact: {
     // ⚠️ Formato internazionale SENZA "+" né spazi, es. 212600000000
     // Finché resta il placeholder, il pulsante WhatsApp avvisa l'utente.
-    whatsapp: "212600000000", // [DA COMPLETARE]
-    phoneDisplay: "+212 6 00 00 00 00", // [DA COMPLETARE]
-    email: "contact@rayan-spa.ma", // [DA COMPLETARE]
+    whatsapp: "393931989918",
+    email: "rayanspamarrakech@gmail.com",
     address: {
-      line1: "Dar El Bacha",
-      line2: "Médina, Marrakech, Maroc",
+      line1: "Dar El Bacha, 45 Derb Toudgha",
+      line2: "Marrakech 40000, Maroc",
       // Link Google Maps verso la POSIZIONE ESATTA (apre l'app / la mappa).
       mapsLink: "https://maps.app.goo.gl/iZx3PTF6ZZyC15eU7",
-      // Embed iframe della mappa (per la query usata nell'<iframe> della sezione Contact).
+      // Embed iframe della mappa — coordinate esatte, per mostrare il pin preciso.
       mapsEmbed:
-        "https://www.google.com/maps?q=Dar%20El%20Bacha%20Marrakech&output=embed",
+        "https://www.google.com/maps?q=31.632970,-7.992715&z=17&output=embed",
     },
     hours: [
       { day: "Lundi – Vendredi", time: "10h00 – 21h00" }, // [DA COMPLETARE]
@@ -35,11 +34,10 @@ export const siteConfig = {
     ],
   },
 
-  /* --------- SOCIAL (DA COMPLETARE — lascia vuoto "" per nascondere) --------- */
+  /* --------- SOCIAL (lascia vuoto "" per nascondere) --------- */
   social: {
-    instagram: "https://instagram.com/", // [DA COMPLETARE]
-    facebook: "https://facebook.com/", // [DA COMPLETARE]
-    tripadvisor: "", // opzionale
+    instagram: "https://instagram.com/rayanspamarrakech",
+    tiktok: "https://tiktok.com/@rayanspamarrakech",
   },
 
   // ℹ️ I libellé del menu sono tradotti in data/translations.ts → nav.*
@@ -52,18 +50,27 @@ export const siteConfig = {
   heroPoster: {
     src: "/images/hero.jpg", // es. "/images/hero.jpg"
     file: "images/hero.jpg",
-    alt: "Salle de repos du hammam Rayan SPA éclairée de lanternes",
-    w: 1920,
-    h: 1080,
+    alt: "Soin aux pierres chaudes sur une table de massage, ambiance tamisée",
+    w: 2400,
+    h: 3200,
   },
 
   /* --------- IMMAGINE "À PROPOS" --------- */
   aboutImage: {
-    src: "/images/a-propos.jpg", // es. "/images/a-propos.jpg"
-    file: "images/a-propos.jpg",
-    alt: "Bassin de hammam en tadelakt et zellige, vapeur douce",
-    w: 1000,
-    h: 1300,
+    src: "/images/massage6.jpg",
+    file: "images/massage6.jpg",
+    alt: "Mains expertes massant le dos, gestes enveloppants et huile chaude",
+    w: 2848,
+    h: 4272,
+  },
+
+  /* --------- IMMAGINE "SOINS" (à côté du menu des massages) --------- */
+  servicesImage: {
+    src: "/images/massage3.jpg",
+    file: "images/massage3.jpg",
+    alt: "Massage du dos aux mains expertes, dans une ambiance tamisée",
+    w: 3270,
+    h: 4365,
   },
 } as const;
 

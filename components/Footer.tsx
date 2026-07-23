@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import ZelligeDivider from "./ui/ZelligeDivider";
 import { siteConfig } from "@/data/site-config";
 import { useI18n } from "@/lib/i18n";
@@ -22,6 +23,13 @@ export default function Footer() {
       <div className="mx-auto max-w-content px-6 py-16 sm:px-8">
         <div className="flex flex-col items-center text-center">
           <a href="#top" className="flex flex-col items-center leading-none">
+            <Image
+              src="/images/logo-icon.png"
+              alt=""
+              width={80}
+              height={80}
+              className="mb-3 h-14 w-14 object-contain"
+            />
             <span className="font-brand text-3xl tracking-wide text-creme">
               Rayan<span className="text-rouge"> SPA</span>
             </span>
@@ -47,7 +55,7 @@ export default function Footer() {
           <p className="mt-8 max-w-md text-sm font-light leading-relaxed text-sable/70">
             {contact.address.line1}, {contact.address.line2}
             <br />
-            {contact.phoneDisplay} · {contact.email}
+            {contact.email}
           </p>
         </div>
 

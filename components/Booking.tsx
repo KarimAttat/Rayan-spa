@@ -4,7 +4,7 @@ import { useState } from "react";
 import Section from "./ui/Section";
 import Reveal from "./ui/Reveal";
 import ZelligeDivider from "./ui/ZelligeDivider";
-import { services } from "@/data/services";
+import { forfaits, massages, hammams, beaute, currency } from "@/data/services";
 import { siteConfig } from "@/data/site-config";
 import { useI18n } from "@/lib/i18n";
 import {
@@ -161,14 +161,51 @@ export default function Booking() {
                     className="input"
                   >
                     <option value="">{t.booking.fields.servicePh}</option>
-                    {services.map((s) => {
-                      const name = t.serviceData[s.id].name;
-                      return (
-                        <option key={s.id} value={`${name} (${s.duration})`}>
-                          {name} · {s.duration} · {s.price} MAD
-                        </option>
-                      );
-                    })}
+                    <optgroup label={t.services.categoryForfaits}>
+                      {forfaits.map((f) => {
+                        const name = t.serviceData[f.id].name;
+                        return (
+                          <option key={f.id} value={name}>
+                            {name} · {f.price} {currency}
+                          </option>
+                        );
+                      })}
+                    </optgroup>
+                    <optgroup label={t.services.categoryMassages}>
+                      {massages.map((m) =>
+                        m.variants.map((v) => {
+                          const name = t.serviceData[m.id].name;
+                          return (
+                            <option
+                              key={`${m.id}-${v.duration}`}
+                              value={`${name} (${v.duration})`}
+                            >
+                              {name} · {v.duration} · {v.price} {currency}
+                            </option>
+                          );
+                        })
+                      )}
+                    </optgroup>
+                    <optgroup label={t.services.categoryHammams}>
+                      {hammams.map((h) => {
+                        const name = t.serviceData[h.id].name;
+                        return (
+                          <option key={h.id} value={name}>
+                            {name} · {h.price} {currency}
+                          </option>
+                        );
+                      })}
+                    </optgroup>
+                    <optgroup label={t.services.categoryBeaute}>
+                      {beaute.map((b) => {
+                        const name = t.serviceData[b.id].name;
+                        return (
+                          <option key={b.id} value={name}>
+                            {name} · {b.price} {currency}
+                          </option>
+                        );
+                      })}
+                    </optgroup>
                   </select>
                 </Field>
 

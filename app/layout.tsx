@@ -45,6 +45,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "fr_FR",
     siteName: siteConfig.brand.name,
+    images: [{ url: "/images/logo.png", width: 1254, height: 1254, alt: siteConfig.brand.name }],
   },
   robots: { index: true, follow: true },
 };

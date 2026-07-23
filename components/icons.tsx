@@ -59,6 +59,12 @@ export const FacebookIcon = (p: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+export const TikTokIcon = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base} {...p} fill="currentColor" stroke="none">
+    <path d="M16.6 2h-3.2v13.9c0 1.5-1.2 2.7-2.7 2.7a2.7 2.7 0 0 1-2.7-2.7 2.7 2.7 0 0 1 2.7-2.7c.3 0 .6.05.9.13v-3.3a6 6 0 0 0-.9-.07A6 6 0 0 0 4.7 15.9a6 6 0 0 0 6 6 6 6 0 0 0 6-6V8.4a7.6 7.6 0 0 0 4.3 1.3V6.5a4.4 4.4 0 0 1-4.4-4.4V2z" />
+  </svg>
+);
+
 export const StarIcon = (p: SVGProps<SVGSVGElement>) => (
   <svg {...base} {...p} fill="currentColor" stroke="none">
     <path d="m12 2 2.9 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14l-5-4.87 7.1-1.01z" />
