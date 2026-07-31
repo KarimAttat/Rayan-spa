@@ -44,7 +44,12 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 
   // Au montage : récupère la préférence (localStorage puis langue du navigateur).
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem(STORAGE_KEY);
+    } catch {
+      /* stockage indisponible (ex. webview Android avec storage bloqué) */
+    }
     if (isLocale(stored)) {
       setLocaleState(stored);
       return;
