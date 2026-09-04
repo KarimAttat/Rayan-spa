@@ -56,6 +56,7 @@ export type Dict = {
     categoryHammams: string;
     categoryBeaute: string;
     includes: string;
+    unavailable: string;
   };
   gallery: {
     eyebrow: string;
@@ -170,6 +171,7 @@ const fr: Dict = {
     categoryHammams: "Hammams",
     categoryBeaute: "Manucure & Pédicure",
     includes: "Comprend",
+    unavailable: "Temporairement indisponible",
   },
   gallery: {
     eyebrow: "Galerie",
@@ -393,6 +395,7 @@ const en: Dict = {
     categoryHammams: "Hammams",
     categoryBeaute: "Manicure & Pedicure",
     includes: "Includes",
+    unavailable: "Temporarily unavailable",
   },
   gallery: {
     eyebrow: "Gallery",
@@ -615,6 +618,7 @@ const it: Dict = {
     categoryHammams: "Hammam",
     categoryBeaute: "Manicure & Pedicure",
     includes: "Include",
+    unavailable: "Temporaneamente non disponibile",
   },
   gallery: {
     eyebrow: "Galleria",
@@ -837,6 +841,7 @@ const es: Dict = {
     categoryHammams: "Hammams",
     categoryBeaute: "Manicura & Pedicura",
     includes: "Incluye",
+    unavailable: "Temporalmente no disponible",
   },
   gallery: {
     eyebrow: "Galería",

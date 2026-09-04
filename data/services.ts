@@ -86,6 +86,7 @@ export type Forfait = {
   price: number;
   stepIds: string[];
   featured?: boolean;
+  hidden?: boolean;
 };
 
 export const forfaits: Forfait[] = [
@@ -93,6 +94,8 @@ export const forfaits: Forfait[] = [
     id: "pack-relaxant",
     price: 550,
     stepIds: ["massageRelaxant1h", "soinVisage1h", "pauseThe"],
+    // Masqué tant que le soin visage n'est pas disponible (pas de machine).
+    hidden: true,
   },
   {
     id: "pack-classique",
@@ -154,15 +157,21 @@ export const forfaits: Forfait[] = [
       "manucure",
       "pedicure",
     ],
+    // Masqué tant que le soin visage n'est pas disponible (pas de machine).
+    hidden: true,
   },
 ];
 
 /** Soin unitaire à prix fixe (manucure, pédicure, visage). */
-export type BeauteItem = { id: string; price: number };
+export type BeauteItem = { id: string; price: number; unavailable?: boolean };
 
 export const beaute: BeauteItem[] = [
   { id: "manucure", price: 180 },
   { id: "pedicure", price: 200 },
   { id: "pedicure-medicale", price: 250 },
-  { id: "soin-visage", price: 300 },
+  // Machine de soin visage momentanément absente du spa — voir indisponibilité ci-dessous.
+  { id: "soin-visage", price: 300, unavailable: true },
 ];
+
+/** Steps de forfait actuellement suspendus (ex. faute de machine dédiée). */
+export const unavailableStepIds = new Set(["soinVisage45", "soinVisage1h"]);

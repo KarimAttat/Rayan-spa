@@ -162,7 +162,7 @@ export default function Booking() {
                   >
                     <option value="">{t.booking.fields.servicePh}</option>
                     <optgroup label={t.services.categoryForfaits}>
-                      {forfaits.map((f) => {
+                      {forfaits.filter((f) => !f.hidden).map((f) => {
                         const name = t.serviceData[f.id].name;
                         return (
                           <option key={f.id} value={name}>
@@ -197,7 +197,9 @@ export default function Booking() {
                       })}
                     </optgroup>
                     <optgroup label={t.services.categoryBeaute}>
-                      {beaute.map((b) => {
+                      {beaute
+                        .filter((b) => !b.unavailable)
+                        .map((b) => {
                         const name = t.serviceData[b.id].name;
                         return (
                           <option key={b.id} value={name}>

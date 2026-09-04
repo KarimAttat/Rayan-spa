@@ -5,7 +5,14 @@ import Section, { SectionHeader } from "./ui/Section";
 import Reveal from "./ui/Reveal";
 import ZelligeDivider from "./ui/ZelligeDivider";
 import MediaFrame from "./ui/MediaFrame";
-import { forfaits, massages, hammams, beaute, currency } from "@/data/services";
+import {
+  forfaits,
+  massages,
+  hammams,
+  beaute,
+  currency,
+  unavailableStepIds,
+} from "@/data/services";
 import { siteConfig } from "@/data/site-config";
 import { useI18n } from "@/lib/i18n";
 
@@ -29,7 +36,7 @@ export default function Services() {
         </Reveal>
 
         <div className="mt-8 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-          {forfaits.map((f, i) => {
+          {forfaits.filter((f) => !f.hidden).map((f, i) => {
             const copy = t.serviceData[f.id];
             return (
               <Reveal as="article" key={f.id} delay={(i % 3) * 0.08}>
@@ -68,7 +75,25 @@ export default function Services() {
                       {t.services.includes}
                     </span>
                     <p className="text-[0.78rem] leading-relaxed text-sable/75">
-                      {f.stepIds.map((id) => t.stepData[id]).join(" · ")}
+                      {f.stepIds.map((id, idx) => (
+                        <span key={id}>
+                          {idx > 0 && " · "}
+                          <span
+                            className={
+                              unavailableStepIds.has(id)
+                                ? "text-sable/40 line-through decoration-sable/30"
+                                : undefined
+                            }
+                            title={
+                              unavailableStepIds.has(id)
+                                ? t.services.unavailable
+                                : undefined
+                            }
+                          >
+                            {t.stepData[id]}
+                          </span>
+                        </span>
+                      ))}
                     </p>
                   </div>
 
@@ -126,7 +151,12 @@ export default function Services() {
         <MenuColumn title={t.services.categoryBeaute}>
           {beaute.map((b, i) => (
             <Reveal key={b.id} delay={i * 0.06} y={14}>
-              <PriceRow name={t.serviceData[b.id].name} price={b.price} />
+              <PriceRow
+                name={t.serviceData[b.id].name}
+                price={b.price}
+                unavailable={b.unavailable}
+                unavailableLabel={t.services.unavailable}
+              />
             </Reveal>
           ))}
         </MenuColumn>
@@ -161,24 +191,46 @@ function PriceRow({
   name,
   price,
   caption,
+  unavailable,
+  unavailableLabel,
 }: {
   name: string;
   price: number;
   caption?: string;
+  unavailable?: boolean;
+  unavailableLabel?: string;
 }) {
   return (
-    <div className="group/row transition-transform duration-300 ease-riad hover:translate-x-1.5">
+    <div
+      className={
+        unavailable
+          ? "opacity-60"
+          : "group/row transition-transform duration-300 ease-riad hover:translate-x-1.5"
+      }
+    >
       <div className="flex items-baseline gap-3">
-        <span className="shrink-0 font-display text-[1.05rem] leading-snug text-creme transition-colors duration-300 group-hover/row:text-rouge">
+        <span
+          className={
+            unavailable
+              ? "shrink-0 font-display text-[1.05rem] leading-snug text-sable/60 line-through decoration-sable/40"
+              : "shrink-0 font-display text-[1.05rem] leading-snug text-creme transition-colors duration-300 group-hover/row:text-rouge"
+          }
+        >
           {name}
         </span>
         <span aria-hidden className="menu-leader" />
-        <span className="shrink-0 font-display text-[1.05rem] text-or transition-colors duration-300 group-hover/row:text-rouge">
-          {price}
-          <span className="ml-1 text-[0.6rem] font-body uppercase tracking-wide text-or/70">
-            {currency}
+        {unavailable ? (
+          <span className="shrink-0 text-[0.62rem] uppercase tracking-eyebrow text-sable/50">
+            {unavailableLabel}
           </span>
-        </span>
+        ) : (
+          <span className="shrink-0 font-display text-[1.05rem] text-or transition-colors duration-300 group-hover/row:text-rouge">
+            {price}
+            <span className="ml-1 text-[0.6rem] font-body uppercase tracking-wide text-or/70">
+              {currency}
+            </span>
+          </span>
+        )}
       </div>
       {caption && (
         <p className="mt-1 text-xs font-light leading-relaxed text-sable/65">
