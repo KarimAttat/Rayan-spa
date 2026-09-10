@@ -16,7 +16,7 @@ export const siteConfig = {
   contact: {
     // ⚠️ Formato internazionale SENZA "+" né spazi, es. 212600000000
     // Finché resta il placeholder, il pulsante WhatsApp avvisa l'utente.
-    whatsapp: "393931989918",
+    whatsapp: "212673019070",
     email: "rayanspamarrakech@gmail.com",
     address: {
       line1: "Dar El Bacha, 45 Derb Toudgha",
