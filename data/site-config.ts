@@ -6,6 +6,9 @@
    ============================================================ */
 
 export const siteConfig = {
+  // URL de production — sert de base aux metadata, au sitemap et aux données structurées.
+  url: "https://rayanspa.com",
+
   brand: {
     name: "Rayan SPA",
     // ℹ️ Slogan, titre et textes de l'hero sont traduits (FR/EN/IT/ES)

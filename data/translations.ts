@@ -22,6 +22,8 @@ export type Dict = {
   /** Locale BCP-47 pour Intl (dates) + attribut <html lang>. */
   intl: string;
   htmlLang: string;
+  /** Titre + description SEO (balise <title>, meta description, Open Graph). */
+  meta: { title: string; description: string };
   nav: { about: string; services: string; gallery: string; reviews: string; contact: string };
   header: {
     book: string;
@@ -136,6 +138,11 @@ export type Dict = {
 const fr: Dict = {
   intl: "fr-FR",
   htmlLang: "fr",
+  meta: {
+    title: "Rayan SPA · Hammam et massages à Marrakech",
+    description:
+      "Rayan SPA, à Dar El Bacha, au cœur de la médina de Marrakech. Hammam traditionnel, massages à l’huile d’argan et rituels berbères. Réservez sur WhatsApp.",
+  },
   nav: { about: "À propos", services: "Soins", gallery: "Galerie", reviews: "Avis", contact: "Contact" },
   header: { book: "Réserver", language: "Langue", openMenu: "Ouvrir le menu", closeMenu: "Fermer le menu" },
   hero: {
@@ -359,6 +366,11 @@ const fr: Dict = {
 const en: Dict = {
   intl: "en-GB",
   htmlLang: "en",
+  meta: {
+    title: "Rayan SPA · Hammam and Massages in Marrakech",
+    description:
+      "Rayan SPA, in Dar El Bacha, in the heart of the Marrakech medina. Traditional hammam, argan oil massages and Berber rituals. Book on WhatsApp.",
+  },
   nav: { about: "About", services: "Treatments", gallery: "Gallery", reviews: "Reviews", contact: "Contact" },
   header: { book: "Book", language: "Language", openMenu: "Open menu", closeMenu: "Close menu" },
   hero: {
@@ -582,6 +594,11 @@ const en: Dict = {
 const it: Dict = {
   intl: "it-IT",
   htmlLang: "it",
+  meta: {
+    title: "Rayan SPA · Hammam e Massaggi a Marrakech",
+    description:
+      "Rayan SPA, a Dar El Bacha, nel cuore della medina di Marrakech. Hammam tradizionale, massaggi all’olio di argan e rituali berberi. Prenota su WhatsApp.",
+  },
   nav: { about: "Chi siamo", services: "Trattamenti", gallery: "Galleria", reviews: "Recensioni", contact: "Contatti" },
   header: { book: "Prenota", language: "Lingua", openMenu: "Apri il menu", closeMenu: "Chiudi il menu" },
   hero: {
@@ -805,6 +822,11 @@ const it: Dict = {
 const es: Dict = {
   intl: "es-ES",
   htmlLang: "es",
+  meta: {
+    title: "Rayan SPA · Hammam y Masajes en Marrakech",
+    description:
+      "Rayan SPA, en Dar El Bacha, en el corazón de la medina de Marrakech. Hammam tradicional, masajes con aceite de argán y rituales bereberes. Reserva por WhatsApp.",
+  },
   nav: { about: "Nosotros", services: "Tratamientos", gallery: "Galería", reviews: "Opiniones", contact: "Contacto" },
   header: { book: "Reservar", language: "Idioma", openMenu: "Abrir el menú", closeMenu: "Cerrar el menú" },
   hero: {

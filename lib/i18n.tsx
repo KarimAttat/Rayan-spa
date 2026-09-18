@@ -3,32 +3,18 @@
 /* ============================================================
    i18n — contexte de langue (FR · EN · IT · ES)
    ------------------------------------------------------------
-   Léger, sans dépendance ni routing : la langue est gardée
-   en mémoire + localStorage, et applique <html lang> côté client.
-   Hook : const { locale, setLocale, t } = useI18n();
+   La langue vit dans l'URL (/fr, /en, /it, /es — voir middleware.ts
+   et app/[locale]/), ce qui rend les 4 versions indexables par les
+   moteurs de recherche. Le choix explicite de l'utilisateur est
+   mémorisé dans un cookie, relu par le middleware à la prochaine
+   visite. Hook : const { locale, setLocale, t } = useI18n();
    ============================================================ */
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import {
-  translations,
-  locales,
-  type Dict,
-  type Locale,
-} from "@/data/translations";
+import { createContext, useCallback, useContext, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import { translations, type Dict, type Locale } from "@/data/translations";
 
-const STORAGE_KEY = "rayan-locale";
-const DEFAULT_LOCALE: Locale = "fr";
-
-function isLocale(value: string | null): value is Locale {
-  return !!value && (locales as readonly string[]).includes(value);
-}
+const COOKIE_NAME = "NEXT_LOCALE";
 
 type I18nContextValue = {
   locale: Locale;
@@ -39,42 +25,30 @@ type I18nContextValue = {
 
 const I18nContext = createContext<I18nContextValue | null>(null);
 
-export function I18nProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(DEFAULT_LOCALE);
+export function I18nProvider({
+  initialLocale,
+  children,
+}: {
+  initialLocale: Locale;
+  children: React.ReactNode;
+}) {
+  const router = useRouter();
 
-  // Au montage : récupère la préférence (localStorage puis langue du navigateur).
-  useEffect(() => {
-    let stored: string | null = null;
-    try {
-      stored = localStorage.getItem(STORAGE_KEY);
-    } catch {
-      /* stockage indisponible (ex. webview Android avec storage bloqué) */
-    }
-    if (isLocale(stored)) {
-      setLocaleState(stored);
-      return;
-    }
-    const fromBrowser = navigator.language?.slice(0, 2).toLowerCase();
-    if (isLocale(fromBrowser)) setLocaleState(fromBrowser);
-  }, []);
-
-  // Reflète la langue active sur <html lang> (SEO + accessibilité).
-  useEffect(() => {
-    document.documentElement.lang = translations[locale].htmlLang;
-  }, [locale]);
-
-  const setLocale = useCallback((l: Locale) => {
-    setLocaleState(l);
-    try {
-      localStorage.setItem(STORAGE_KEY, l);
-    } catch {
-      /* stockage indisponible : on garde la langue en mémoire */
-    }
-  }, []);
+  const setLocale = useCallback(
+    (l: Locale) => {
+      try {
+        document.cookie = `${COOKIE_NAME}=${l}; path=/; max-age=31536000; samesite=lax`;
+      } catch {
+        /* cookies indisponibles : la navigation reste fonctionnelle */
+      }
+      router.push(`/${l}${window.location.hash}`);
+    },
+    [router]
+  );
 
   const value = useMemo<I18nContextValue>(
-    () => ({ locale, setLocale, t: translations[locale] }),
-    [locale, setLocale]
+    () => ({ locale: initialLocale, setLocale, t: translations[initialLocale] }),
+    [initialLocale, setLocale]
   );
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;

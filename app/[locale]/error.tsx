@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-export default function GlobalError({
+export default function LocaleError({
   error,
   reset,
 }: {
@@ -21,10 +21,7 @@ export default function GlobalError({
       <p className="max-w-sm text-sm font-light text-creme/70">
         Désolé, quelque chose s’est mal passé. Merci de réessayer.
       </p>
-      <button
-        onClick={reset}
-        className="btn btn-gold mt-2"
-      >
+      <button onClick={reset} className="btn btn-gold mt-2">
         Réessayer
       </button>
     </div>

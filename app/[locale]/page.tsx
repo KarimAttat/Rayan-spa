@@ -1,4 +1,5 @@
 import { I18nProvider } from "@/lib/i18n";
+import type { Locale } from "@/data/translations";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -10,9 +11,9 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 
-export default function Home() {
+export default function Home({ params }: { params: { locale: Locale } }) {
   return (
-    <I18nProvider>
+    <I18nProvider initialLocale={params.locale}>
       <Header />
       <main>
         <Hero />
