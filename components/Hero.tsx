@@ -83,7 +83,7 @@ export default function Hero() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="relative mx-auto max-w-2xl px-6 pb-28 text-center sm:pb-32"
+        className="relative mx-auto max-w-2xl px-6 pb-28 pt-24 text-center sm:pb-32"
       >
         <motion.span
           variants={item}

@@ -172,7 +172,7 @@ export default function Booking() {
                       })}
                     </optgroup>
                     <optgroup label={t.services.categoryMassages}>
-                      {massages.map((m) =>
+                      {massages.filter((m) => !m.hidden).map((m) =>
                         m.variants.map((v) => {
                           const name = t.serviceData[m.id].name;
                           return (
@@ -276,16 +276,21 @@ export default function Booking() {
       </div>
 
       {/* stile dei campi (scoped via classe .input) */}
-      <style>{`
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .input {
+          box-sizing: border-box;
           width: 100%;
+          height: 3rem;
           background: rgba(255,255,255,0.7);
           border: 1px solid rgba(58,42,31,0.18);
           border-radius: 0.85rem;
-          padding: 0.8rem 1rem;
+          padding: 0 1rem;
           color: #3A2A1F;
           font-weight: 300;
           font-size: 0.95rem;
+          line-height: normal;
           transition: border-color .3s ease, box-shadow .3s ease;
         }
         .input::placeholder { color: rgba(58,42,31,0.42); }
@@ -297,7 +302,26 @@ export default function Booking() {
         .input option { background:#FBF4EA; color:#3A2A1F; }
         /* icona dei campi data/ora sui campi chiari */
         .input::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: pointer; }
-      `}</style>
+        /* uniforma altezza e larghezza dei menu a tendina con i campi di testo */
+        select.input {
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          padding-right: 2.5rem;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23735A47' stroke-width='1.6'%3E%3Cpath d='m5 7.5 5 5 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 0.9rem center;
+          background-size: 1rem;
+        }
+        /* la zone de notes garde une hauteur libre (plusieurs lignes) */
+        textarea.input {
+          height: auto;
+          padding: 0.8rem 1rem;
+          line-height: 1.5;
+        }
+      `,
+        }}
+      />
     </Section>
   );
 }

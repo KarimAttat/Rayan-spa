@@ -16,6 +16,7 @@ export const currency = "MAD";
 export type Massage = {
   id: string;
   variants: { duration: string; price: number }[];
+  hidden?: boolean;
 };
 
 export const massages: Massage[] = [
@@ -41,6 +42,7 @@ export const massages: Massage[] = [
       { duration: "30 min", price: 250 },
       { duration: "1h", price: 500 },
     ],
+    hidden: true,
   },
   { id: "massage-dabachi", variants: [{ duration: "1h", price: 400 }] },
   { id: "massage-dos", variants: [{ duration: "30 min", price: 250 }] },
@@ -166,12 +168,18 @@ export const forfaits: Forfait[] = [
 export type BeauteItem = { id: string; price: number; unavailable?: boolean };
 
 export const beaute: BeauteItem[] = [
-  { id: "manucure", price: 180 },
-  { id: "pedicure", price: 200 },
-  { id: "pedicure-medicale", price: 250 },
+  // Momentanément suspendues.
+  { id: "manucure", price: 180, unavailable: true },
+  { id: "pedicure", price: 200, unavailable: true },
+  { id: "pedicure-medicale", price: 250, unavailable: true },
   // Machine de soin visage momentanément absente du spa — voir indisponibilité ci-dessous.
   { id: "soin-visage", price: 300, unavailable: true },
 ];
 
-/** Steps de forfait actuellement suspendus (ex. faute de machine dédiée). */
-export const unavailableStepIds = new Set(["soinVisage45", "soinVisage1h"]);
+/** Steps de forfait actuellement suspendus (ex. faute de machine dédiée ou de prestataire). */
+export const unavailableStepIds = new Set([
+  "soinVisage45",
+  "soinVisage1h",
+  "manucure",
+  "pedicure",
+]);

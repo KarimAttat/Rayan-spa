@@ -16,7 +16,7 @@ export const siteConfig = {
   contact: {
     // ⚠️ Formato internazionale SENZA "+" né spazi, es. 212600000000
     // Finché resta il placeholder, il pulsante WhatsApp avvisa l'utente.
-    whatsapp: "212673019070",
+    whatsapp: "212690887209",
     email: "rayanspamarrakech@gmail.com",
     address: {
       line1: "Dar El Bacha, 45 Derb Toudgha",
@@ -28,9 +28,8 @@ export const siteConfig = {
         "https://www.google.com/maps?q=31.632970,-7.992715&z=17&output=embed",
     },
     hours: [
-      { day: "Lundi – Vendredi", time: "10h00 – 21h00" }, // [DA COMPLETARE]
-      { day: "Samedi", time: "10h00 – 22h00" }, // [DA COMPLETARE]
-      { day: "Dimanche", time: "11h00 – 20h00" }, // [DA COMPLETARE]
+      { day: "Lundi – Samedi", time: "10h00 – 20h00" },
+      { day: "Dimanche", time: "Fermé" },
     ],
   },
 

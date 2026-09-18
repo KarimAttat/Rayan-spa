@@ -139,19 +139,19 @@ const fr: Dict = {
   nav: { about: "À propos", services: "Soins", gallery: "Galerie", reviews: "Avis", contact: "Contact" },
   header: { book: "Réserver", language: "Langue", openMenu: "Ouvrir le menu", closeMenu: "Fermer le menu" },
   hero: {
-    tagline: "Hammam & Massages — Marrakech",
-    title: "L’art ancestral du bien-être marocain",
+    tagline: "Hammam & Massages · Marrakech",
+    title: "La tradition marocaine du hammam et du massage",
     subtitle:
-      "Au cœur de Marrakech, un havre de calme où le rituel du hammam et le toucher des mains expertes réveillent le corps et apaisent l’esprit.",
+      "Au cœur de la médina de Marrakech, le rituel du hammam et le toucher de mains expertes détendent le corps et apaisent l’esprit.",
     ctaBook: "Réserver maintenant",
     ctaDiscover: "Découvrir nos soins",
     scroll: "Faire défiler",
   },
   about: {
     eyebrow: "À propos",
-    title: "Un refuge de bien-être au cœur de Marrakech",
+    title: "Un espace de calme au cœur de Marrakech",
     p1: "Derrière les murs de terre rose de la médina, Rayan SPA vous ouvre les portes d’un véritable rituel marocain. Ici, le temps ralentit : la vapeur du hammam, le parfum de l’argan et le clapotis de la fontaine vous enveloppent dès le premier pas.",
-    p2: "Notre philosophie puise dans la sagesse ancestrale du bien-être berbère, où le corps se purifie et l’esprit se libère. Chaque soin est une invitation au voyage, pensé comme une parenthèse hors du temps.",
+    p2: "Notre approche puise dans les gestes traditionnels berbères, transmis depuis des générations dans les hammams de la médina. Le corps se détend, l’esprit se pose. Chaque soin prend le temps qu’il faut, sans jamais être pressé.",
     values: [
       { k: "Authenticité", v: "Des rituels berbères transmis de génération en génération." },
       { k: "Sérénité", v: "Un écrin de calme préservé du tumulte de la médina." },
@@ -160,7 +160,7 @@ const fr: Dict = {
   },
   services: {
     eyebrow: "Soins & Massages",
-    title: "Nos rituels de bien-être",
+    title: "Nos rituels de soin",
     intro:
       "Une carte de soins inspirée des traditions marocaines, des huiles précieuses de l’Atlas au savon noir des hammams ancestraux.",
     signature: "Signature",
@@ -190,9 +190,9 @@ const fr: Dict = {
   },
   booking: {
     eyebrow: "Réservation",
-    title: "Réservez votre parenthèse",
+    title: "Réservez votre soin",
     intro:
-      "Remplissez le formulaire : votre demande s’ouvre directement dans WhatsApp, déjà rédigée. Nous vous confirmons votre rendez-vous en quelques minutes.",
+      "Remplissez le formulaire : le message est déjà prêt, il ne reste qu’à l’envoyer sur WhatsApp. Nous vous répondons en quelques minutes pour fixer l’heure.",
     perks: [
       "Réponse rapide via WhatsApp",
       "Sans engagement ni paiement en ligne",
@@ -203,7 +203,7 @@ const fr: Dict = {
       namePh: "Votre nom",
       phone: "Téléphone",
       service: "Soin souhaité",
-      servicePh: "— Choisir un soin —",
+      servicePh: "Choisir un soin",
       date: "Date",
       time: "Heure",
       people: "Personnes",
@@ -223,7 +223,7 @@ const fr: Dict = {
     },
     confirm: {
       title: "Votre demande est prête",
-      body: "WhatsApp devrait s’ouvrir avec votre message pré-rempli. Si rien ne se passe, cliquez sur le bouton ci-dessous.",
+      body: "WhatsApp devrait s’ouvrir avec votre message déjà écrit. Si rien ne se passe, cliquez sur le bouton plus bas.",
       demoNote: "(Démo : numéro WhatsApp à configurer dans data/site-config.ts)",
       open: "Ouvrir WhatsApp",
       reset: "Nouvelle demande",
@@ -231,14 +231,13 @@ const fr: Dict = {
   },
   testimonials: {
     eyebrow: "Témoignages",
-    title: "Ils ont vécu l’expérience",
-    intro:
-      "La sérénité de Rayan SPA racontée par celles et ceux qui en ont franchi le seuil.",
+    title: "Ce qu’ils en disent",
+    intro: "L’expérience racontée par celles et ceux qui sont déjà venus.",
     items: [
-      { quote: "Une parenthèse hors du temps. Le hammam traditionnel est un pur moment de grâce, et l’accueil d’une chaleur rare.", origin: "Paris, France" },
-      { quote: "Le massage à l’huile d’argan était divin. J’ai quitté Rayan SPA en lévitation. À ne manquer sous aucun prétexte à Marrakech.", origin: "Genève, Suisse" },
-      { quote: "Un cadre somptueux, des mains expertes et une sérénité absolue. Le forfait rituel vaut chaque minute.", origin: "Casablanca, Maroc" },
-      { quote: "Élégance, propreté et authenticité. Le massage en duo a été le point fort de notre voyage de noces.", origin: "Lyon, France" },
+      { quote: "Le hammam traditionnel était vraiment relaxant, et l’accueil bien plus chaleureux que ce qu’on attendait.", origin: "Paris, France" },
+      { quote: "Le massage à l’huile d’argan était incroyable, je suis restée légère toute la journée après. À faire sans hésiter si vous passez par Marrakech.", origin: "Genève, Suisse" },
+      { quote: "Le cadre est magnifique et le personnel sait clairement ce qu’il fait. Le forfait complet vaut chaque minute.", origin: "Casablanca, Maroc" },
+      { quote: "Très propre, très soigné, et sincèrement marocain. Le massage en duo a été le meilleur moment de notre voyage de noces.", origin: "Lyon, France" },
     ],
   },
   contact: {
@@ -246,10 +245,10 @@ const fr: Dict = {
     title: "Venez nous rendre visite",
     intro: "Au cœur de la médina de Marrakech, à quelques pas des souks.",
     cards: { address: "Adresse", hours: "Horaires", whatsapp: "WhatsApp", email: "Email" },
-    whatsappCta: "Écrivez-nous sur WhatsApp",
-    follow: "Suivez-nous",
+    whatsappCta: "Envoyer un message sur WhatsApp",
+    follow: "Nos réseaux",
     route: "Itinéraire",
-    days: ["Lundi – Vendredi", "Samedi", "Dimanche"],
+    days: ["Du lundi au samedi", "Dimanche"],
   },
   footer: {
     tagline: "Hammam & Massages · Marrakech",
@@ -363,19 +362,19 @@ const en: Dict = {
   nav: { about: "About", services: "Treatments", gallery: "Gallery", reviews: "Reviews", contact: "Contact" },
   header: { book: "Book", language: "Language", openMenu: "Open menu", closeMenu: "Close menu" },
   hero: {
-    tagline: "Hammam & Massages — Marrakech",
-    title: "The ancestral art of Moroccan well-being",
+    tagline: "Hammam & Massages · Marrakech",
+    title: "The Moroccan tradition of hammam and massage",
     subtitle:
-      "In the heart of Marrakech, a haven of calm where the hammam ritual and the touch of expert hands awaken the body and soothe the mind.",
+      "In the heart of the Marrakech medina, the hammam ritual and the touch of expert hands relax the body and calm the mind.",
     ctaBook: "Book now",
     ctaDiscover: "Discover our treatments",
     scroll: "Scroll",
   },
   about: {
     eyebrow: "About",
-    title: "A well-being retreat in the heart of Marrakech",
+    title: "A calm space in the heart of Marrakech",
     p1: "Behind the pink earthen walls of the medina, Rayan SPA opens the doors to an authentic Moroccan ritual. Here, time slows down: the steam of the hammam, the scent of argan and the murmur of the fountain envelop you from the very first step.",
-    p2: "Our philosophy draws on the ancestral wisdom of Berber well-being, where the body is purified and the mind set free. Each treatment is an invitation to travel, conceived as a timeless interlude.",
+    p2: "Our approach draws on traditional Berber techniques, passed down through generations in the hammams of the medina. The body relaxes, the mind settles. Every treatment takes the time it needs, never rushed.",
     values: [
       { k: "Authenticity", v: "Berber rituals passed down from generation to generation." },
       { k: "Serenity", v: "A cocoon of calm, sheltered from the bustle of the medina." },
@@ -384,7 +383,7 @@ const en: Dict = {
   },
   services: {
     eyebrow: "Treatments & Massages",
-    title: "Our well-being rituals",
+    title: "Our rituals of care",
     intro:
       "A treatment menu inspired by Moroccan traditions, from the precious oils of the Atlas to the black soap of ancestral hammams.",
     signature: "Signature",
@@ -414,9 +413,9 @@ const en: Dict = {
   },
   booking: {
     eyebrow: "Booking",
-    title: "Book your escape",
+    title: "Book your treatment",
     intro:
-      "Fill in the form: your request opens directly in WhatsApp, already written. We confirm your appointment within minutes.",
+      "Fill in the form: the message is ready, all that’s left is to send it on WhatsApp. We reply within minutes to confirm the time.",
     perks: [
       "Quick reply via WhatsApp",
       "No commitment or online payment",
@@ -427,7 +426,7 @@ const en: Dict = {
       namePh: "Your name",
       phone: "Phone",
       service: "Desired treatment",
-      servicePh: "— Choose a treatment —",
+      servicePh: "Choose a treatment",
       date: "Date",
       time: "Time",
       people: "People",
@@ -447,7 +446,7 @@ const en: Dict = {
     },
     confirm: {
       title: "Your request is ready",
-      body: "WhatsApp should open with your pre-filled message. If nothing happens, click the button below.",
+      body: "WhatsApp should open with your message already written. If nothing happens, click the button below.",
       demoNote: "(Demo: WhatsApp number to configure in data/site-config.ts)",
       open: "Open WhatsApp",
       reset: "New request",
@@ -455,13 +454,13 @@ const en: Dict = {
   },
   testimonials: {
     eyebrow: "Testimonials",
-    title: "They lived the experience",
-    intro: "The serenity of Rayan SPA told by those who have crossed its threshold.",
+    title: "What people say",
+    intro: "The experience, told by people who have already been.",
     items: [
-      { quote: "A timeless escape. The traditional hammam is a pure moment of grace, and the welcome is wonderfully warm.", origin: "Paris, France" },
-      { quote: "The argan oil massage was divine. I left Rayan SPA floating on air. Not to be missed in Marrakech for anything.", origin: "Geneva, Switzerland" },
-      { quote: "Sumptuous surroundings, expert hands and absolute serenity. The ritual package is worth every minute.", origin: "Casablanca, Morocco" },
-      { quote: "Elegance, cleanliness and authenticity. The couples’ massage was the highlight of our honeymoon.", origin: "Lyon, France" },
+      { quote: "The traditional hammam was genuinely relaxing, and the welcome was warmer than we expected.", origin: "Paris, France" },
+      { quote: "The argan oil massage was amazing, I felt light for the rest of the day. Don’t skip it if you’re in Marrakech.", origin: "Geneva, Switzerland" },
+      { quote: "Beautiful setting, and the staff clearly know what they’re doing. The full package is worth every minute.", origin: "Casablanca, Morocco" },
+      { quote: "Very clean, very thoughtful, and genuinely Moroccan. The couples’ massage was the highlight of our honeymoon.", origin: "Lyon, France" },
     ],
   },
   contact: {
@@ -469,10 +468,10 @@ const en: Dict = {
     title: "Come and visit us",
     intro: "In the heart of the Marrakech medina, a few steps from the souks.",
     cards: { address: "Address", hours: "Opening hours", whatsapp: "WhatsApp", email: "Email" },
-    whatsappCta: "Message us on WhatsApp",
+    whatsappCta: "Send a WhatsApp message",
     follow: "Follow us",
     route: "Directions",
-    days: ["Monday – Friday", "Saturday", "Sunday"],
+    days: ["Monday to Saturday", "Sunday"],
   },
   footer: {
     tagline: "Hammam & Massages · Marrakech",
@@ -586,19 +585,19 @@ const it: Dict = {
   nav: { about: "Chi siamo", services: "Trattamenti", gallery: "Galleria", reviews: "Recensioni", contact: "Contatti" },
   header: { book: "Prenota", language: "Lingua", openMenu: "Apri il menu", closeMenu: "Chiudi il menu" },
   hero: {
-    tagline: "Hammam & Massaggi — Marrakech",
-    title: "L’arte ancestrale del benessere marocchino",
+    tagline: "Hammam & Massaggi · Marrakech",
+    title: "La tradizione marocchina di hammam e massaggio",
     subtitle:
-      "Nel cuore di Marrakech, un’oasi di pace dove il rito dell’hammam e il tocco di mani esperte risvegliano il corpo e placano la mente.",
+      "Nel cuore della medina di Marrakech, il rito dell’hammam e il tocco di mani esperte rilassano il corpo e calmano la mente.",
     ctaBook: "Prenota ora",
     ctaDiscover: "Scopri i trattamenti",
     scroll: "Scorri",
   },
   about: {
     eyebrow: "Chi siamo",
-    title: "Un rifugio di benessere nel cuore di Marrakech",
+    title: "Un luogo di calma nel cuore di Marrakech",
     p1: "Dietro le mura di terra rosa della medina, Rayan SPA vi apre le porte di un autentico rito marocchino. Qui il tempo rallenta: il vapore dell’hammam, il profumo dell’argan e il mormorio della fontana vi avvolgono fin dal primo passo.",
-    p2: "La nostra filosofia attinge alla saggezza ancestrale del benessere berbero, dove il corpo si purifica e la mente si libera. Ogni trattamento è un invito al viaggio, pensato come una parentesi fuori dal tempo.",
+    p2: "Il nostro approccio si ispira ai gesti tradizionali berberi, tramandati da generazioni negli hammam della medina. Il corpo si rilassa, la mente si distende. Ogni trattamento prende il tempo che serve, senza fretta.",
     values: [
       { k: "Autenticità", v: "Riti berberi tramandati di generazione in generazione." },
       { k: "Serenità", v: "Uno scrigno di calma, al riparo dal trambusto della medina." },
@@ -607,7 +606,7 @@ const it: Dict = {
   },
   services: {
     eyebrow: "Trattamenti & Massaggi",
-    title: "I nostri rituali di benessere",
+    title: "I nostri rituali di cura",
     intro:
       "Un menù di trattamenti ispirato alle tradizioni marocchine, dagli oli preziosi dell’Atlante al sapone nero degli hammam ancestrali.",
     signature: "Signature",
@@ -637,9 +636,9 @@ const it: Dict = {
   },
   booking: {
     eyebrow: "Prenotazione",
-    title: "Prenota la tua parentesi",
+    title: "Prenota il tuo trattamento",
     intro:
-      "Compila il modulo: la tua richiesta si apre direttamente in WhatsApp, già scritta. Confermiamo l’appuntamento in pochi minuti.",
+      "Compila il modulo: il messaggio è già pronto, basta inviarlo su WhatsApp. Ti rispondiamo in pochi minuti per confermare l’orario.",
     perks: [
       "Risposta rapida via WhatsApp",
       "Senza impegno né pagamento online",
@@ -650,7 +649,7 @@ const it: Dict = {
       namePh: "Il tuo nome",
       phone: "Telefono",
       service: "Trattamento desiderato",
-      servicePh: "— Scegli un trattamento —",
+      servicePh: "Scegli un trattamento",
       date: "Data",
       time: "Ora",
       people: "Persone",
@@ -670,7 +669,7 @@ const it: Dict = {
     },
     confirm: {
       title: "La tua richiesta è pronta",
-      body: "WhatsApp dovrebbe aprirsi con il messaggio già compilato. Se non accade nulla, clicca il pulsante qui sotto.",
+      body: "WhatsApp dovrebbe aprirsi con il messaggio già scritto. Se non accade nulla, clicca il pulsante qui sotto.",
       demoNote: "(Demo: numero WhatsApp da configurare in data/site-config.ts)",
       open: "Apri WhatsApp",
       reset: "Nuova richiesta",
@@ -678,13 +677,13 @@ const it: Dict = {
   },
   testimonials: {
     eyebrow: "Testimonianze",
-    title: "Hanno vissuto l’esperienza",
-    intro: "La serenità di Rayan SPA raccontata da chi ne ha varcato la soglia.",
+    title: "Cosa dicono di noi",
+    intro: "L’esperienza raccontata da chi è già stato da noi.",
     items: [
-      { quote: "Una parentesi fuori dal tempo. L’hammam tradizionale è un puro momento di grazia e l’accoglienza è di rara calore.", origin: "Parigi, Francia" },
-      { quote: "Il massaggio all’olio di argan è stato divino. Ho lasciato Rayan SPA in levitazione. Da non perdere per nessun motivo a Marrakech.", origin: "Ginevra, Svizzera" },
-      { quote: "Una cornice sontuosa, mani esperte e una serenità assoluta. Il pacchetto rituale vale ogni minuto.", origin: "Casablanca, Marocco" },
-      { quote: "Eleganza, pulizia e autenticità. Il massaggio di coppia è stato il momento clou della nostra luna di miele.", origin: "Lione, Francia" },
+      { quote: "L’hammam tradizionale è stato davvero rilassante, e l’accoglienza più calorosa di quanto ci aspettassimo.", origin: "Parigi, Francia" },
+      { quote: "Il massaggio all’olio di argan è stato fantastico, mi sono sentita leggera per il resto della giornata. Da non perdere se siete a Marrakech.", origin: "Ginevra, Svizzera" },
+      { quote: "Location bellissima, e il personale sa chiaramente quello che fa. Il pacchetto completo vale ogni minuto.", origin: "Casablanca, Marocco" },
+      { quote: "Tutto pulitissimo e curato, e davvero autentico. Il massaggio di coppia è stato il momento più bello della nostra luna di miele.", origin: "Lione, Francia" },
     ],
   },
   contact: {
@@ -695,7 +694,7 @@ const it: Dict = {
     whatsappCta: "Scrivici su WhatsApp",
     follow: "Seguici",
     route: "Indicazioni",
-    days: ["Lunedì – Venerdì", "Sabato", "Domenica"],
+    days: ["Dal lunedì al sabato", "Domenica"],
   },
   footer: {
     tagline: "Hammam & Massaggi · Marrakech",
@@ -809,19 +808,19 @@ const es: Dict = {
   nav: { about: "Nosotros", services: "Tratamientos", gallery: "Galería", reviews: "Opiniones", contact: "Contacto" },
   header: { book: "Reservar", language: "Idioma", openMenu: "Abrir el menú", closeMenu: "Cerrar el menú" },
   hero: {
-    tagline: "Hammam & Masajes — Marrakech",
-    title: "El arte ancestral del bienestar marroquí",
+    tagline: "Hammam & Masajes · Marrakech",
+    title: "La tradición marroquí del hammam y el masaje",
     subtitle:
-      "En el corazón de Marrakech, un remanso de calma donde el ritual del hammam y el tacto de manos expertas despiertan el cuerpo y serenan la mente.",
+      "En el corazón de la medina de Marrakech, el ritual del hammam y el tacto de manos expertas relajan el cuerpo y calman la mente.",
     ctaBook: "Reservar ahora",
     ctaDiscover: "Descubre nuestros tratamientos",
     scroll: "Desplázate",
   },
   about: {
     eyebrow: "Nosotros",
-    title: "Un refugio de bienestar en el corazón de Marrakech",
+    title: "Un espacio de calma en el corazón de Marrakech",
     p1: "Tras los muros de tierra rosada de la medina, Rayan SPA te abre las puertas de un auténtico ritual marroquí. Aquí el tiempo se detiene: el vapor del hammam, el aroma del argán y el murmullo de la fuente te envuelven desde el primer paso.",
-    p2: "Nuestra filosofía bebe de la sabiduría ancestral del bienestar bereber, donde el cuerpo se purifica y la mente se libera. Cada tratamiento es una invitación al viaje, concebido como un paréntesis fuera del tiempo.",
+    p2: "Nuestro enfoque se inspira en los gestos tradicionales bereberes, transmitidos durante generaciones en los hammams de la medina. El cuerpo se relaja, la mente se calma. Cada tratamiento toma el tiempo que necesita, sin prisa.",
     values: [
       { k: "Autenticidad", v: "Rituales bereberes transmitidos de generación en generación." },
       { k: "Serenidad", v: "Un refugio de calma, a salvo del bullicio de la medina." },
@@ -830,7 +829,7 @@ const es: Dict = {
   },
   services: {
     eyebrow: "Tratamientos y Masajes",
-    title: "Nuestros rituales de bienestar",
+    title: "Nuestros rituales de cuidado",
     intro:
       "Una carta de tratamientos inspirada en las tradiciones marroquíes, desde los aceites preciosos del Atlas hasta el jabón negro de los hammams ancestrales.",
     signature: "Signature",
@@ -860,9 +859,9 @@ const es: Dict = {
   },
   booking: {
     eyebrow: "Reserva",
-    title: "Reserva tu paréntesis",
+    title: "Reserva tu tratamiento",
     intro:
-      "Rellena el formulario: tu solicitud se abre directamente en WhatsApp, ya redactada. Confirmamos tu cita en pocos minutos.",
+      "Rellena el formulario: el mensaje ya está listo, solo falta enviarlo por WhatsApp. Te respondemos en pocos minutos para confirmar la hora.",
     perks: [
       "Respuesta rápida por WhatsApp",
       "Sin compromiso ni pago en línea",
@@ -873,7 +872,7 @@ const es: Dict = {
       namePh: "Tu nombre",
       phone: "Teléfono",
       service: "Tratamiento deseado",
-      servicePh: "— Elige un tratamiento —",
+      servicePh: "Elige un tratamiento",
       date: "Fecha",
       time: "Hora",
       people: "Personas",
@@ -901,13 +900,13 @@ const es: Dict = {
   },
   testimonials: {
     eyebrow: "Opiniones",
-    title: "Vivieron la experiencia",
-    intro: "La serenidad de Rayan SPA contada por quienes han cruzado su umbral.",
+    title: "Lo que dicen de nosotros",
+    intro: "La experiencia contada por quienes ya nos han visitado.",
     items: [
-      { quote: "Un paréntesis fuera del tiempo. El hammam tradicional es un puro momento de gracia, y la acogida de una calidez poco común.", origin: "París, Francia" },
-      { quote: "El masaje con aceite de argán fue divino. Salí de Rayan SPA flotando. Imprescindible en Marrakech.", origin: "Ginebra, Suiza" },
-      { quote: "Un entorno suntuoso, manos expertas y una serenidad absoluta. El paquete ritual vale cada minuto.", origin: "Casablanca, Marruecos" },
-      { quote: "Elegancia, limpieza y autenticidad. El masaje en pareja fue lo mejor de nuestra luna de miel.", origin: "Lyon, Francia" },
+      { quote: "El hammam tradicional fue realmente relajante, y la acogida fue más cálida de lo que esperábamos.", origin: "París, Francia" },
+      { quote: "El masaje con aceite de argán fue increíble, me sentí ligera el resto del día. Imprescindible si estás en Marrakech.", origin: "Ginebra, Suiza" },
+      { quote: "Un entorno precioso, y el personal sabe lo que hace. El paquete completo vale cada minuto.", origin: "Casablanca, Marruecos" },
+      { quote: "Todo muy limpio y cuidado, y realmente marroquí. El masaje en pareja fue lo mejor de nuestra luna de miel.", origin: "Lyon, Francia" },
     ],
   },
   contact: {
@@ -918,7 +917,7 @@ const es: Dict = {
     whatsappCta: "Escríbenos por WhatsApp",
     follow: "Síguenos",
     route: "Cómo llegar",
-    days: ["Lunes – Viernes", "Sábado", "Domingo"],
+    days: ["De lunes a sábado", "Domingo"],
   },
   footer: {
     tagline: "Hammam & Masajes · Marrakech",

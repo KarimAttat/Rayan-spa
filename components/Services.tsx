@@ -125,7 +125,7 @@ export default function Services() {
             />
           </Reveal>
           <MenuColumn title={t.services.categoryMassages}>
-            {massages.map((m, i) => (
+            {massages.filter((m) => !m.hidden).map((m, i) => (
               <Reveal key={m.id} delay={i * 0.06} y={14}>
                 <MassageRow
                   name={t.serviceData[m.id].name}
