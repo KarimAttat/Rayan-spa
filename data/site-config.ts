@@ -20,9 +20,15 @@ export const siteConfig = {
     // ⚠️ Formato internazionale SENZA "+" né spazi, es. 212600000000
     // Finché resta il placeholder, il pulsante WhatsApp avvisa l'utente.
     whatsapp: "212690887209",
+    // Affichage lisible du même numéro (ligne « téléphone » du contact).
+    phoneDisplay: "+212 690 887 209",
     email: "rayanspamarrakech@gmail.com",
     address: {
       line1: "Dar El Bacha, 45 Derb Toudgha",
+      // Découpage pour l'adresse en grand (section contact).
+      district: "Dar El Bacha",
+      street: "45 Derb Toudgha",
+      city: "40000 Marrakech",
       line2: "Marrakech 40000, Maroc",
       // Link Google Maps verso la POSIZIONE ESATTA (apre l'app / la mappa).
       mapsLink: "https://maps.app.goo.gl/iZx3PTF6ZZyC15eU7",
@@ -45,34 +51,26 @@ export const siteConfig = {
   // ℹ️ I libellé del menu sono tradotti in data/translations.ts → nav.*
   //    (le ancore #a-propos, #soins, … sono definite in Header.tsx / Footer.tsx)
 
-  /* --------- MEDIA HERO --------- */
-  // Video di sfondo dell'hero. Metti il file in /public/videos/hero.mp4
-  // Lascia "" per usare lo sfondo decorativo (consigliato finché non hai il video).
-  heroVideo: "", // es. "/videos/hero.mp4"
-  heroPoster: {
-    src: "/images/hero.jpg", // es. "/images/hero.jpg"
-    file: "images/hero.jpg",
-    alt: "Soin aux pierres chaudes sur une table de massage, ambiance tamisée",
-    w: 2400,
-    h: 3200,
-  },
+  /* --------- AVIS CLIENTS --------- */
+  // ⚠️ Les avis de data/testimonials.ts sont des exemples (non vérifiés).
+  // La section reste masquée tant qu'ils ne sont pas remplacés par de
+  // vrais avis (Google, TripAdvisor…) : passer à true pour l'afficher.
+  showTestimonials: false,
 
-  /* --------- IMMAGINE "À PROPOS" --------- */
-  aboutImage: {
+  /* --------- IMAGES --------- */
+  // Photo glissée dans le nom, en tête de page : la porte du spa.
+  heroImage: {
+    src: "/images/door1.jpg",
+    w: 1600,
+    h: 1200,
+  },
+  // Image des données structurées / partage (photo dominante).
+  shareImage: "/images/hero.jpg",
+  // Photo d'ambiance à côté de la carte des soins (image d'illustration).
+  menuImage: {
     src: "/images/massage6.jpg",
-    file: "images/massage6.jpg",
-    alt: "Mains expertes massant le dos, gestes enveloppants et huile chaude",
     w: 2848,
     h: 4272,
-  },
-
-  /* --------- IMMAGINE "SOINS" (à côté du menu des massages) --------- */
-  servicesImage: {
-    src: "/images/massage3.jpg",
-    file: "images/massage3.jpg",
-    alt: "Massage du dos aux mains expertes, dans une ambiance tamisée",
-    w: 3270,
-    h: 4365,
   },
 } as const;
 

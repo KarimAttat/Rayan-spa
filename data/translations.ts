@@ -157,7 +157,7 @@ const fr: Dict = {
   about: {
     eyebrow: "À propos",
     title: "Un espace de calme au cœur de Marrakech",
-    p1: "Derrière les murs de terre rose de la médina, Rayan SPA vous ouvre les portes d’un véritable rituel marocain. Ici, le temps ralentit : la vapeur du hammam, le parfum de l’argan et le clapotis de la fontaine vous enveloppent dès le premier pas.",
+    p1: "Derrière les murs de terre rose de la médina, Rayan SPA vous ouvre les portes d’un véritable rituel marocain. Ici, le temps ralentit : la vapeur du hammam, le parfum de l’argan et le clapotis de la fontaine vous enveloppent dès le premier pas.",
     p2: "Notre approche puise dans les gestes traditionnels berbères, transmis depuis des générations dans les hammams de la médina. Le corps se détend, l’esprit se pose. Chaque soin prend le temps qu’il faut, sans jamais être pressé.",
     values: [
       { k: "Authenticité", v: "Des rituels berbères transmis de génération en génération." },
@@ -184,7 +184,7 @@ const fr: Dict = {
     eyebrow: "Galerie",
     title: "L’atmosphère Rayan",
     intro:
-      "Flânez à travers nos espaces : la lumière tamisée, le zellige et la quiétude d’un véritable riad marocain.",
+      "Flânez à travers nos espaces : la lumière tamisée, le zellige et la quiétude d’un véritable riad marocain.",
     enlarge: "Agrandir",
     comingSoon: "Bientôt disponible",
     alts: [
@@ -199,7 +199,7 @@ const fr: Dict = {
     eyebrow: "Réservation",
     title: "Réservez votre soin",
     intro:
-      "Remplissez le formulaire : le message est déjà prêt, il ne reste qu’à l’envoyer sur WhatsApp. Nous vous répondons en quelques minutes pour fixer l’heure.",
+      "Remplissez le formulaire : le message est déjà prêt, il ne reste qu’à l’envoyer sur WhatsApp. Nous vous répondons en quelques minutes pour fixer l’heure.",
     perks: [
       "Réponse rapide via WhatsApp",
       "Sans engagement ni paiement en ligne",
@@ -215,7 +215,7 @@ const fr: Dict = {
       time: "Heure",
       people: "Personnes",
       notes: "Notes (facultatif)",
-      notesPh: "Une préférence, une occasion spéciale ?",
+      notesPh: "Une préférence, une occasion spéciale ?",
     },
     errors: {
       name: "Veuillez indiquer votre nom.",
@@ -225,13 +225,13 @@ const fr: Dict = {
     },
     submit: "Envoyer ma demande",
     demo: {
-      pre: "⚠️ Démo : le numéro WhatsApp n’est pas encore configuré (voir ",
+      pre: "⚠️ Démo : le numéro WhatsApp n’est pas encore configuré (voir ",
       post: ").",
     },
     confirm: {
       title: "Votre demande est prête",
       body: "WhatsApp devrait s’ouvrir avec votre message déjà écrit. Si rien ne se passe, cliquez sur le bouton plus bas.",
-      demoNote: "(Démo : numéro WhatsApp à configurer dans data/site-config.ts)",
+      demoNote: "(Démo : numéro WhatsApp à configurer dans data/site-config.ts)",
       open: "Ouvrir WhatsApp",
       reset: "Nouvelle demande",
     },
@@ -264,7 +264,7 @@ const fr: Dict = {
   },
   whatsapp: {
     greeting: "Bonjour {brand},",
-    intro: "Je souhaite réserver un soin :",
+    intro: "Je souhaite réserver un soin :",
     name: "Nom",
     phone: "Téléphone",
     service: "Soin souhaité",
@@ -282,7 +282,7 @@ const fr: Dict = {
     },
     "pack-classique": {
       name: "Pack Classique",
-      description: "L’essentiel du rituel marocain : hammam, gommage et un massage anti-stress pour repartir léger.",
+      description: "L’essentiel du rituel marocain : hammam, gommage et un massage anti-stress pour repartir léger.",
     },
     "pack-baume": {
       name: "Pack Baume",
@@ -290,12 +290,12 @@ const fr: Dict = {
     },
     "pack-amoureux": {
       name: "Pack Amoureux",
-      description: "Une parenthèse à deux, côte à côte : hammam, gommage, massage au choix et pause thé aux pâtisseries marocaines.",
+      description: "Une parenthèse à deux, côte à côte : hammam, gommage, massage au choix et pause thé aux pâtisseries marocaines.",
       meta: "2 personnes",
     },
     "pack-royal": {
       name: "Pack Royal",
-      description: "L’expérience complète Rayan : quatre heures de soins, du hammam au massage au baume, jusqu’au soin du visage, manucure et pédicure.",
+      description: "L’expérience complète Rayan : quatre heures de soins, du hammam au massage au baume, jusqu’au soin du visage, manucure et pédicure.",
       meta: "4h",
     },
     "massage-relaxant": {

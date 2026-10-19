@@ -4,219 +4,348 @@
 
 /* ============================================================
    RAYAN SPA — feuille de style globale
-   Tokens, textures (zellige + grain), arches mauresques.
+   Palette tirée du logo : le crème rosé du fond, le brun du nom,
+   le bronze du lion, le rouge de l'arche. Des chapitres « nuit »
+   en brun espresso pour les moments de cinéma. L'arche du logo
+   reste le motif. Toutes les couleurs et tailles passent par ici.
    ============================================================ */
 
 :root {
-  --font-display: "Cormorant Garamond", Georgia, serif;
-  --font-body: "Jost", system-ui, sans-serif;
-  --font-brand: "Marcellus", Georgia, serif;
+  /* Couleurs du logo */
+  --bg: #f2e4da; /* crème rosé du logo */
+  --surface: #e8d5c7; /* un pas de ton plus sable */
+  --ink: #2b1b14; /* brun du nom, assombri pour la lecture */
+  --muted: #5c4334; /* brun doux (7:1 sur le crème) */
+  --accent: #852620; /* rouge de l'arche */
+  --accent-strong: #6b1c17;
+  --accent-ink: #f7eee7;
+  --gold: #9a7449; /* bronze du lion */
+  --gold-light: #d6b585; /* bronze lisible sur fond sombre */
+  --night: #241611; /* chapitres sombres */
+  --night-ink: #f2e4da;
+
+  /* Anciennes teintes (réservées aux éléments secondaires) */
+  --tint-1: #241611;
+  --tint-2: #4f3828;
+  --tint-3: #852620;
+  --tint-4: #9a7449;
+  --tint-5: #e8d5c7;
+
+  /* Cinq tailles, pas une de plus */
+  --step-small: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --step-lead: clamp(1.3rem, 1.1rem + 0.8vw, 1.75rem);
+  --step-head: clamp(2.25rem, 1.4rem + 3.4vw, 4.25rem);
+  --step-display: clamp(4.5rem, 12.6vw, 15rem);
+  /* Le mot-bouton et le nom du pied de page partagent cette taille */
+  --step-giant: clamp(5.5rem, 24vw, 26rem);
+
+  /* Marges et rythme */
+  --margin: clamp(1.25rem, 0.9rem + 1.5vw, 2rem);
+  --section: clamp(6rem, 4rem + 8vw, 12rem);
+
+  /* Mouvement */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --t-press: 120ms;
+  --t-hover: 220ms;
 }
 
 @layer base {
   html {
+    position: relative;
     scroll-behavior: smooth;
-    /* compensa l'header sticky quando si salta a una sezione */
-    scroll-padding-top: 5.5rem;
+    scroll-padding-top: 4.5rem;
+    background: var(--bg);
   }
 
   body {
-    @apply bg-noir text-creme font-body antialiased;
+    position: relative;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-jost), system-ui, sans-serif;
+    font-size: var(--step-body);
+    line-height: 1.55;
+    font-kerning: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    overflow-x: clip;
   }
 
-  h1, h2, h3, h4 {
-    @apply font-display;
+  h1,
+  h2,
+  h3,
+  h4,
+  .display {
+    font-family: var(--font-boska), Georgia, serif;
     font-weight: 500;
-    /* Cormorant respire mieux avec un crénage légèrement resserré en grand */
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   ::selection {
-    background: theme("colors.or");
-    color: theme("colors.noir");
+    background: var(--accent);
+    color: var(--accent-ink);
   }
 
-  /* --- Barre de défilement terracotta (desktop) --- */
-  @media (pointer: fine) {
-    ::-webkit-scrollbar {
-      width: 11px;
-    }
-    ::-webkit-scrollbar-track {
-      background: theme("colors.nuit");
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(181, 80, 46, 0.38);
-      border-radius: 999px;
-      border: 3px solid theme("colors.nuit");
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(181, 80, 46, 0.6);
-    }
-  }
-
-  /* Accessibilità: focus visibile e coerente */
   :focus-visible {
-    outline: 2px solid theme("colors.or-clair");
-    outline-offset: 3px;
-    border-radius: 2px;
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
   }
 
-  /* Rispetta la preferenza di movimento ridotto */
+  img {
+    -webkit-user-drag: none;
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
       animation-duration: 0.001ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.001ms !important;
-      scroll-behavior: auto !important;
     }
   }
 }
 
 @layer components {
-  /* --- Etichetta "occhiello" sopra i titoli --- */
-  .eyebrow {
-    @apply font-body uppercase tracking-eyebrow text-[0.72rem] text-or;
+  /* --- Bouton : plein, une couleur, angles droits --- */
+  .button {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 3rem;
+    padding: 0 1.6rem;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-size: var(--step-body);
+    font-weight: 500;
+    line-height: 1;
+    transition:
+      transform var(--t-press) var(--ease-out),
+      background-color var(--t-hover) ease,
+      color var(--t-hover) ease;
   }
-  .eyebrow::before,
-  .eyebrow::after {
-    content: "";
-    width: 1.75rem;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, theme("colors.or"));
+  .button:active {
+    transform: scale(0.97);
   }
-  .eyebrow.eyebrow--left::before { display: none; }
-
-  /* --- Bottoni --- */
-  .btn {
-    @apply relative inline-flex items-center justify-center gap-2 font-body uppercase tracking-wide text-[0.78rem];
-    padding: 0.95rem 1.9rem;
-    border-radius: 999px;
-    overflow: hidden;
-    transition: all 0.45s theme("transitionTimingFunction.riad");
-    will-change: transform;
+  .button--ink {
+    background: var(--bg);
+    color: var(--ink);
   }
-  .btn-gold {
-    @apply bg-or text-ivoire;
-    box-shadow: 0 14px 28px -14px rgba(181, 80, 46, 0.55);
+  .button--light {
+    background: var(--bg);
+    color: var(--ink);
   }
-  /* Reflet doré qui balaie le bouton au survol */
-  .btn-gold::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      110deg,
-      transparent 30%,
-      rgba(255, 252, 246, 0.45) 50%,
-      transparent 70%
-    );
-    transform: translateX(-130%);
-    transition: transform 0.8s theme("transitionTimingFunction.riad");
-    pointer-events: none;
-  }
-  .btn-gold:hover::after {
-    transform: translateX(130%);
-  }
-  .btn-gold:hover {
-    @apply bg-rouge;
-    transform: translateY(-2px);
-    box-shadow: 0 20px 38px -16px rgba(162, 49, 31, 0.55);
-  }
-  .btn-outline {
-    border: 1px solid rgba(58, 42, 31, 0.28);
-    @apply text-creme;
-  }
-  .btn-outline:hover {
-    border-color: theme("colors.or");
-    @apply text-or;
-    transform: translateY(-2px);
+  @media (hover: hover) and (pointer: fine) {
+    .button:hover {
+      background: var(--accent-strong);
+    }
+    .button--ink:hover {
+      background: #000;
+    }
+    .button--light:hover {
+      background: #fff8f2;
+    }
   }
 
-  /* --- Arche mauresque : cadre des médias / éléments clés --- */
+  /* --- Lien texte : soulignement qui se dessine --- */
+  .link {
+    text-decoration: underline;
+    text-decoration-thickness: 0.06em;
+    text-underline-offset: 0.22em;
+    text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+    transition: text-decoration-color var(--t-hover) ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .link:hover {
+      text-decoration-color: currentColor;
+    }
+  }
+
+  /* --- L'arche du logo : unique motif, en masque --- */
   .arch {
-    border-top-left-radius: 9999px;
-    border-top-right-radius: 9999px;
-    border-bottom-left-radius: 14px;
-    border-bottom-right-radius: 14px;
-    overflow: hidden;
-  }
-  .arch-sm {
-    border-top-left-radius: 9999px;
-    border-top-right-radius: 9999px;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    overflow: hidden;
+    clip-path: url(#arch-clip);
+    -webkit-clip-path: url(#arch-clip);
   }
 
-  /* --- Filo d'oro decorativo --- */
-  .hairline {
+  .wrap {
+    width: 100%;
+    padding-left: var(--margin);
+    padding-right: var(--margin);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
     height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(181, 80, 46, 0.55),
-      transparent
-    );
-  }
-}
-
-@layer utilities {
-  /* Texture zellige (pattern geometrico marocchino) molto discreta */
-  .zellige-texture {
-    background-image: url("/patterns/zellige.svg");
-    background-size: 280px 280px;
-    background-repeat: repeat;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
-  /* Velo chiaro per leggibilità sopra i media (fondo crema) */
-  .veil {
-    background: linear-gradient(
-      180deg,
-      rgba(251, 244, 234, 0.1) 0%,
-      rgba(251, 244, 234, 0.4) 55%,
-      rgba(251, 244, 234, 0.85) 100%
-    );
+  /* --- Champs du formulaire (les seuls traits de la page) --- */
+  .field {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.85rem 0;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--step-lead);
+    line-height: 1.2;
+    border: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--ink) 40%, transparent); /* taste-skill-ignore: champ de formulaire */
+    border-radius: 0;
+    transition: border-color var(--t-hover) ease;
+  }
+  .field::placeholder {
+    color: var(--muted);
+    opacity: 1;
+  }
+  .field:focus {
+    outline: none;
+    border-bottom-color: var(--ink);
+  }
+  .field option {
+    background: var(--bg);
+    color: var(--ink);
+  }
+  .field::-webkit-calendar-picker-indicator {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+  select.field {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 2rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%232b1b14' stroke-width='1.6'%3E%3Cpath d='m5 7.5 5 5 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.25rem center;
+    background-size: 1.1rem;
+  }
+  textarea.field {
+    resize: none;
+    font-size: var(--step-body);
+    line-height: 1.5;
   }
 
-  .text-balance {
-    text-wrap: balance;
+  .giant {
+    font-size: var(--step-giant);
   }
 
-  /* Masque la scrollbar du filmstrip (galerie) sans perdre le scroll natif */
   .hide-scrollbar {
     scrollbar-width: none;
-    -ms-overflow-style: none;
   }
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
+}
 
-  /* Bordo terracotta tenue per le card */
-  .ring-riad {
-    box-shadow: inset 0 0 0 1px rgba(181, 80, 46, 0.2);
+/* ============================================================
+   MOUVEMENT
+   Le contenu est visible sans script : les états cachés ne
+   s'appliquent que sous html.js, posé avant le premier rendu.
+   ============================================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Entrées : chaque partie d'une section, dans l'ordre de lecture */
+  .js [data-rv] {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+    transition:
+      opacity 900ms var(--ease-out),
+      transform 900ms var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 75ms);
+  }
+  .js [data-rv="row"] {
+    transform: translate3d(0, 14px, 0);
+    transition-duration: 700ms;
+    transition-delay: calc(var(--i, 0) * 45ms);
+  }
+  /* Le masque vit sur l'enfant : l'élément observé garde sa boîte entière
+     (un élément entièrement découpé ne déclenche jamais l'observateur). */
+  .js [data-rv="mask"] {
+    opacity: 1;
+    transform: none;
+  }
+  .js [data-rv="mask"] > * {
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 1100ms var(--ease-in-out);
+    transition-delay: calc(var(--i, 0) * 75ms);
+  }
+  .js [data-rv="mask"] img {
+    transform: scale(1.12);
+    transition: transform 1600ms var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 75ms);
+  }
+  .js [data-rv].is-in {
+    opacity: 1;
+    transform: none;
+  }
+  .js [data-rv="mask"].is-in > * {
+    clip-path: inset(0 0 0 0);
+  }
+  .js [data-rv="mask"].is-in img {
+    transform: none;
   }
 
-  /* Filet en pointillés entre le nom et le prix — carte de soins */
-  .menu-leader {
-    flex: 1 1 auto;
-    min-width: 0.75rem;
-    height: 0;
-    align-self: center;
-    border-bottom: 1px dotted rgba(58, 42, 31, 0.28);
+  /* Le geste signature : l'arche de la porte s'ouvre comme un volet */
+  .js .shutter {
+    clip-path: inset(100% 0 0 0);
+    animation: shutter-open 1100ms var(--ease-in-out) 350ms forwards;
+  }
+  .js .shutter img {
+    transform: scale(1.12);
+    animation: shutter-settle 1700ms var(--ease-out) 350ms forwards;
+  }
+
+  /* Le nom se pose, lettre par lettre */
+  .js .rise > span {
+    display: inline-block;
+    opacity: 0;
+    transform: translate3d(0, 0.18em, 0);
+    animation: rise 1000ms var(--ease-out) forwards;
+    animation-delay: calc(120ms + var(--i, 0) * 55ms);
+  }
+  .js .fade-late {
+    opacity: 0;
+    animation: fade 900ms var(--ease-out) 1100ms forwards;
   }
 }
 
-/* --- Grain : pellicola fotografica sottile sopra tutto --- */
-.grain::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+@keyframes shutter-open {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes shutter-settle {
+  to {
+    transform: none;
+  }
+}
+@keyframes rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade {
+  to {
+    opacity: 1;
+  }
 }

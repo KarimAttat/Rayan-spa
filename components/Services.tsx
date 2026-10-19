@@ -1,10 +1,6 @@
 "use client";
 
 import type { ReactNode } from "react";
-import Section, { SectionHeader } from "./ui/Section";
-import Reveal from "./ui/Reveal";
-import ZelligeDivider from "./ui/ZelligeDivider";
-import MediaFrame from "./ui/MediaFrame";
 import {
   forfaits,
   massages,
@@ -15,258 +11,225 @@ import {
 } from "@/data/services";
 import { siteConfig } from "@/data/site-config";
 import { useI18n } from "@/lib/i18n";
+import { selectService } from "@/lib/booking-bus";
+import { rv } from "./ui/Reveal";
+import { ParallaxImage } from "./ui/motion";
 
+/**
+ * La carte, composée comme un vrai menu de soins : une photo pleine
+ * hauteur collée au bord gauche (elle reste pendant la lecture et se
+ * pose en zoom), les groupes à droite. Nom à gauche, prix à droite,
+ * la devise une seule fois par groupe. Chaque soin se réserve d'un clic :
+ * il est présélectionné dans le formulaire de réservation.
+ */
 export default function Services() {
-  const { t } = useI18n();
+  const { t, x } = useI18n();
+  const { menuImage } = siteConfig;
+  const steps = (ids: readonly string[]) =>
+    ids.map((id, i) => (
+      <span key={id}>
+        {i > 0 && " · "}
+        <span
+          className={unavailableStepIds.has(id) ? "line-through" : undefined}
+          title={unavailableStepIds.has(id) ? t.services.unavailable : undefined}
+        >
+          {t.stepData[id]}
+        </span>
+      </span>
+    ));
 
   return (
-    <Section id="soins" className="bg-noir">
-      <SectionHeader
-        eyebrow={t.services.eyebrow}
-        title={t.services.title}
-        intro={t.services.intro}
-      />
-
-      {/* ---------- Forfaits signature ---------- */}
-      <div className="mt-16">
-        <Reveal>
-          <span className="eyebrow eyebrow--left">
-            {t.services.categoryForfaits}
-          </span>
-        </Reveal>
-
-        <div className="mt-8 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-          {forfaits.filter((f) => !f.hidden).map((f, i) => {
-            const copy = t.serviceData[f.id];
-            return (
-              <Reveal as="article" key={f.id} delay={(i % 3) * 0.08}>
-                <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-nuit p-6 ring-riad transition-all duration-500 hover:-translate-y-1.5 hover:shadow-riad hover:ring-1 hover:ring-or/40">
-                  {f.featured && (
-                    <span className="mb-3 self-start rounded-full bg-rouge px-2.5 py-0.5 text-[0.58rem] font-medium uppercase tracking-eyebrow text-ivoire">
-                      {t.services.signature}
-                    </span>
-                  )}
-
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <h3 className="font-display text-2xl leading-tight text-creme">
-                        {copy.name}
-                      </h3>
-                      {copy.meta && (
-                        <span className="mt-1 inline-block text-[0.68rem] uppercase tracking-wide text-or/70">
-                          {copy.meta}
-                        </span>
-                      )}
-                    </div>
-                    <span className="shrink-0 font-display text-2xl text-or">
-                      {f.price}
-                      <span className="ml-1 text-xs font-body uppercase tracking-wide text-or/70">
-                        {currency}
-                      </span>
-                    </span>
-                  </div>
-
-                  <p className="mt-3 text-sm font-light leading-relaxed text-sable/85">
-                    {copy.description}
-                  </p>
-
-                  <div className="mt-5 flex flex-1 flex-col justify-end gap-2 border-t border-creme/10 pt-4">
-                    <span className="text-[0.65rem] uppercase tracking-eyebrow text-sable/45">
-                      {t.services.includes}
-                    </span>
-                    <p className="text-[0.78rem] leading-relaxed text-sable/75">
-                      {f.stepIds.map((id, idx) => (
-                        <span key={id}>
-                          {idx > 0 && " · "}
-                          <span
-                            className={
-                              unavailableStepIds.has(id)
-                                ? "text-sable/40 line-through decoration-sable/30"
-                                : undefined
-                            }
-                            title={
-                              unavailableStepIds.has(id)
-                                ? t.services.unavailable
-                                : undefined
-                            }
-                          >
-                            {t.stepData[id]}
-                          </span>
-                        </span>
-                      ))}
-                    </p>
-                  </div>
-
-                  <a
-                    href="#reservation"
-                    className="group/link mt-5 inline-flex items-center gap-1 self-start text-xs uppercase tracking-wide text-or transition hover:text-or-clair"
-                  >
-                    {t.services.book}
-                  </a>
-                </article>
-              </Reveal>
-            );
-          })}
-        </div>
-      </div>
-
-      <ZelligeDivider className="my-16 sm:my-20" />
-
-      {/* ---------- Menu à la carte ---------- */}
-      <div className="grid gap-14 md:grid-cols-[1.2fr_1fr_1fr] md:gap-10">
-        <div className="grid gap-7 sm:grid-cols-[190px_1fr] sm:gap-7">
-          <Reveal className="h-full">
-            <MediaFrame
-              src={siteConfig.servicesImage.src}
-              file={siteConfig.servicesImage.file}
-              alt={siteConfig.servicesImage.alt}
-              className="aspect-[3/4] w-full sm:h-full sm:aspect-auto"
-              sizes="(max-width: 640px) 60vw, 190px"
+    <section id="carte" className="relative bg-bg">
+      <div className="grid md:grid-cols-12">
+        {/* Photo plein-hauteur, collée au bord, qui reste pendant la lecture de la carte */}
+        <div className="relative md:col-span-5">
+          <div className="md:sticky md:top-0 md:h-[100svh]">
+            <ParallaxImage
+              src={menuImage.src}
+              alt=""
+              sizes="(max-width: 768px) 100vw, 42vw"
+              zoom={1.35}
+              drift={4}
+              className="h-[70svh] md:h-full"
             />
-          </Reveal>
-          <MenuColumn title={t.services.categoryMassages}>
-            {massages.filter((m) => !m.hidden).map((m, i) => (
-              <Reveal key={m.id} delay={i * 0.06} y={14}>
-                <MassageRow
-                  name={t.serviceData[m.id].name}
-                  variants={m.variants}
-                />
-              </Reveal>
-            ))}
-          </MenuColumn>
+          </div>
         </div>
 
-        <MenuColumn title={t.services.categoryHammams}>
-          {hammams.map((h, i) => (
-            <Reveal key={h.id} delay={i * 0.06} y={14}>
-              <PriceRow
-                name={t.serviceData[h.id].name}
-                price={h.price}
-                caption={h.stepIds.map((id) => t.stepData[id]).join(" · ")}
-              />
-            </Reveal>
-          ))}
-        </MenuColumn>
+        <div className="wrap py-section md:col-span-7 md:pl-[6vw]">
+          <h2 {...rv(0)} className="text-[clamp(3.5rem,2rem+7vw,9rem)] leading-[0.9]">
+            {x.menu.title}
+          </h2>
+          <p {...rv(1)} className="mt-8 max-w-[38ch] text-lead">
+            {t.services.intro}
+          </p>
 
-        <MenuColumn title={t.services.categoryBeaute}>
-          {beaute.map((b, i) => (
-            <Reveal key={b.id} delay={i * 0.06} y={14}>
-              <PriceRow
-                name={t.serviceData[b.id].name}
-                price={b.price}
-                unavailable={b.unavailable}
-                unavailableLabel={t.services.unavailable}
-              />
-            </Reveal>
-          ))}
-        </MenuColumn>
+          <div className="mt-20 grid gap-16 xl:grid-cols-2 xl:gap-x-14">
+          <div className="space-y-16">
+            <Group title={t.services.categoryForfaits}>
+              {forfaits
+                .filter((f) => !f.hidden)
+                .map((f, i) => {
+                  const copy = t.serviceData[f.id];
+                  return (
+                    <Item
+                      key={f.id}
+                      i={i}
+                      name={copy.name}
+                      meta={copy.meta}
+                      price={f.price}
+                      value={copy.name}
+                      bookLabel={x.menu.bookItem}
+                    >
+                      {steps(f.stepIds)}
+                    </Item>
+                  );
+                })}
+            </Group>
+
+            <Group title={t.services.categoryHammams}>
+              {hammams.map((h, i) => {
+                const name = t.serviceData[h.id].name;
+                return (
+                  <Item
+                    key={h.id}
+                    i={i}
+                    name={name}
+                    price={h.price}
+                    value={name}
+                    bookLabel={x.menu.bookItem}
+                  >
+                    {steps(h.stepIds)}
+                  </Item>
+                );
+              })}
+            </Group>
+          </div>
+
+          <div className="space-y-16">
+            <Group title={t.services.categoryMassages}>
+              {massages
+                .filter((m) => !m.hidden)
+                .map((m, i) => {
+                  const copy = t.serviceData[m.id];
+                  return (
+                    <div key={m.id} {...rv(i, "row")}>
+                      <p className="text-body">{copy.name}</p>
+                      {copy.description && (
+                        <p className="mt-1 max-w-[36ch] text-small text-muted">
+                          {copy.description}
+                        </p>
+                      )}
+                      <ul className="mt-2">
+                        {m.variants.map((v) => (
+                          <li key={v.duration}>
+                            <button
+                              type="button"
+                              onClick={() => selectService(`${copy.name} (${v.duration})`)}
+                              aria-label={`${x.menu.bookItem} : ${copy.name}, ${v.duration}, ${v.price} ${currency}`}
+                              className="menu-row flex w-full items-baseline justify-between gap-6 py-1 text-left text-body tabular-nums"
+                            >
+                              <span className="text-muted">{v.duration}</span>
+                              <span>{v.price}</span>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })}
+            </Group>
+
+            <Group title={t.services.categoryBeaute} currencyShown={false}>
+              {beaute.map((b, i) => (
+                <div
+                  key={b.id}
+                  {...rv(i, "row")}
+                  className="flex items-baseline justify-between gap-6 text-body"
+                >
+                  <span className={b.unavailable ? "text-muted" : undefined}>
+                    {t.serviceData[b.id].name}
+                  </span>
+                  <span className="text-small text-muted">
+                    {b.unavailable ? t.services.unavailable : `${b.price} ${currency}`}
+                  </span>
+                </div>
+              ))}
+            </Group>
+          </div>
+
+          <p {...rv(0)} className="text-small text-muted xl:col-span-2">
+            {t.services.priceNote.replace("{currency}", currency)}
+          </p>
+          </div>
+        </div>
       </div>
 
-      <Reveal delay={0.1}>
-        <p className="mt-16 text-center text-xs uppercase tracking-eyebrow text-sable/45">
-          {t.services.priceNote.replace("{currency}", currency)}
-        </p>
-      </Reveal>
-    </Section>
+      <style dangerouslySetInnerHTML={{ __html: `
+        .menu-row { transition: color var(--t-hover) ease; }
+        @media (hover: hover) and (pointer: fine) {
+          .menu-row:hover .text-muted, .menu-row:hover { color: var(--accent); }
+          .menu-row:hover .menu-name { text-decoration-color: currentColor; }
+        }
+        .menu-row:active { transform: translateX(2px); }
+      ` }} />
+    </section>
   );
 }
 
-/* ---------- Sous-composants de la carte à l'unité ---------- */
-
-function MenuColumn({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <Reveal>
-      <div>
-        <h3 className="font-display text-xl text-creme">{title}</h3>
-        <div className="mt-6 space-y-5 border-t border-creme/10 pt-6">
-          {children}
-        </div>
-      </div>
-    </Reveal>
-  );
-}
-
-/** Ligne nom .... prix, avec filet en pointillés (esprit carte de soins). */
-function PriceRow({
-  name,
-  price,
-  caption,
-  unavailable,
-  unavailableLabel,
+function Group({
+  title,
+  children,
+  currencyShown = true,
 }: {
-  name: string;
-  price: number;
-  caption?: string;
-  unavailable?: boolean;
-  unavailableLabel?: string;
+  title: string;
+  children: ReactNode;
+  currencyShown?: boolean;
 }) {
   return (
-    <div
-      className={
-        unavailable
-          ? "opacity-60"
-          : "group/row transition-transform duration-300 ease-riad hover:translate-x-1.5"
-      }
-    >
-      <div className="flex items-baseline gap-3">
-        <span
-          className={
-            unavailable
-              ? "shrink-0 font-display text-[1.05rem] leading-snug text-sable/60 line-through decoration-sable/40"
-              : "shrink-0 font-display text-[1.05rem] leading-snug text-creme transition-colors duration-300 group-hover/row:text-rouge"
-          }
-        >
-          {name}
-        </span>
-        <span aria-hidden className="menu-leader" />
-        {unavailable ? (
-          <span className="shrink-0 text-[0.62rem] uppercase tracking-eyebrow text-sable/50">
-            {unavailableLabel}
-          </span>
-        ) : (
-          <span className="shrink-0 font-display text-[1.05rem] text-or transition-colors duration-300 group-hover/row:text-rouge">
-            {price}
-            <span className="ml-1 text-[0.6rem] font-body uppercase tracking-wide text-or/70">
-              {currency}
-            </span>
-          </span>
-        )}
+    <div>
+      <div {...rv(0)} className="flex items-baseline justify-between gap-6">
+        <h3 className="text-lead">{title}</h3>
+        {currencyShown && <span className="text-small text-muted">{currency}</span>}
       </div>
-      {caption && (
-        <p className="mt-1 text-xs font-light leading-relaxed text-sable/65">
-          {caption}
-        </p>
-      )}
+      <div className="mt-6 space-y-6">{children}</div>
     </div>
   );
 }
 
-/** Ligne massage : un nom, plusieurs couples durée / prix (variants). */
-function MassageRow({
+function Item({
+  i,
   name,
-  variants,
+  meta,
+  price,
+  value,
+  bookLabel,
+  children,
 }: {
+  i: number;
   name: string;
-  variants: { duration: string; price: number }[];
+  meta?: string;
+  price: number;
+  value: string;
+  bookLabel: string;
+  children?: ReactNode;
 }) {
   return (
-    <div className="group/row transition-transform duration-300 ease-riad hover:translate-x-1.5">
-      <span className="font-display text-[1.05rem] leading-snug text-creme transition-colors duration-300 group-hover/row:text-rouge">
-        {name}
-      </span>
-      <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1.5">
-        {variants.map((v) => (
-          <span
-            key={v.duration}
-            className="flex items-baseline gap-1.5 transition-transform duration-300 ease-riad hover:scale-110"
-          >
-            <span className="text-[0.68rem] uppercase tracking-wide text-sable/55">
-              {v.duration}
-            </span>
-            <span className="font-display text-sm text-or">{v.price}</span>
-          </span>
-        ))}
-      </div>
+    <div {...rv(i, "row")}>
+      <button
+        type="button"
+        onClick={() => selectService(value)}
+        aria-label={`${bookLabel} : ${name}, ${price} ${currency}`}
+        className="menu-row flex w-full items-baseline justify-between gap-6 text-left text-body tabular-nums"
+      >
+        <span className="menu-name link">
+          {name}
+          {meta && <span className="text-muted"> · {meta}</span>}
+        </span>
+        <span>{price}</span>
+      </button>
+      {children && (
+        <p className="mt-1 max-w-[40ch] text-small text-muted">{children}</p>
+      )}
     </div>
   );
 }

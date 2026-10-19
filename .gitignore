@@ -29,3 +29,6 @@ yarn-error.log*
 
 # claude local settings
 .claude/settings.local.json
+
+# taste-skill (rapports et captures locales)
+.taste-skill/

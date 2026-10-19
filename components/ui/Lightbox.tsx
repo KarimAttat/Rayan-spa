@@ -1,40 +1,46 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import type { GalleryItem } from "@/data/gallery";
-import MediaFrame from "./MediaFrame";
-import { CloseIcon, ArrowIcon } from "@/components/icons";
+import { useI18n } from "@/lib/i18n";
+
+type LightboxItem = { id: string; src: string; alt: string; w: number; h: number };
 
 type LightboxProps = {
-  items: GalleryItem[];
+  items: LightboxItem[];
   index: number | null;
   onClose: () => void;
   onNavigate: (i: number) => void;
 };
 
-export default function Lightbox({
-  items,
-  index,
-  onClose,
-  onNavigate,
-}: LightboxProps) {
+/** Photo en grand : Échap pour fermer, flèches pour naviguer, focus piégé sur le bouton fermer. */
+export default function Lightbox({ items, index, onClose, onNavigate }: LightboxProps) {
+  const { locale } = useI18n();
+  const closeRef = useRef<HTMLButtonElement>(null);
   const open = index !== null;
+  const labels = {
+    fr: { close: "Fermer", prev: "Précédente", next: "Suivante" },
+    en: { close: "Close", prev: "Previous", next: "Next" },
+    it: { close: "Chiudi", prev: "Precedente", next: "Successiva" },
+    es: { close: "Cerrar", prev: "Anterior", next: "Siguiente" },
+  }[locale];
 
-  // Tastiera: Esc per chiudere, frecce per navigare
   useEffect(() => {
     if (!open) return;
+    const previous = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowRight") onNavigate((index! + 1) % items.length);
-      if (e.key === "ArrowLeft")
-        onNavigate((index! - 1 + items.length) % items.length);
+      if (e.key === "ArrowLeft") onNavigate((index! - 1 + items.length) % items.length);
     };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
+      previous?.focus();
     };
   }, [open, index, items.length, onClose, onNavigate]);
 
@@ -42,82 +48,54 @@ export default function Lightbox({
     <AnimatePresence>
       {open && index !== null && (
         <motion.div
-          className="fixed inset-0 z-[80] flex items-center justify-center bg-noir/95 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-[80] flex flex-col bg-bg"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose}
+          transition={{ duration: 0.25 }}
           role="dialog"
           aria-modal="true"
-          aria-label="Galerie agrandie"
+          aria-label={items[index].alt}
         >
-          <button
-            onClick={onClose}
-            aria-label="Fermer"
-            className="absolute right-5 top-5 z-10 rounded-full border border-or/30 p-2 text-creme transition hover:border-or hover:text-or"
-          >
-            <CloseIcon />
-          </button>
+          <div className="wrap flex h-16 items-center justify-between text-body">
+            <span className="tabular-nums text-muted">
+              {index + 1} / {items.length}
+            </span>
+            <button ref={closeRef} onClick={onClose} className="link min-h-[2.75rem]">
+              {labels.close}
+            </button>
+          </div>
 
-          <NavButton
-            side="left"
-            onClick={(e) => {
-              e.stopPropagation();
-              onNavigate((index - 1 + items.length) % items.length);
-            }}
-          />
-          <NavButton
-            side="right"
-            onClick={(e) => {
-              e.stopPropagation();
-              onNavigate((index + 1) % items.length);
-            }}
-          />
-
-          <motion.div
+          <motion.figure
             key={items[index].id}
-            className="w-full max-w-3xl"
-            initial={{ scale: 0.96, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.96, opacity: 0 }}
+            className="relative mx-margin flex-1"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            onClick={(e) => e.stopPropagation()}
           >
-            <MediaFrame
+            <Image
               src={items[index].src}
               alt={items[index].alt}
-              file={items[index].file}
-              type={items[index].type}
-              arch
-              className="aspect-[4/3] w-full"
-              sizes="(max-width: 768px) 100vw, 768px"
+              fill
+              sizes="100vw"
+              className="object-contain"
             />
-            <p className="mt-4 text-center font-display text-xl text-creme/90">
-              {items[index].alt}
-            </p>
-          </motion.div>
+          </motion.figure>
+
+          <div className="wrap flex min-h-24 items-center justify-between gap-6 py-4 text-body">
+            <button
+              onClick={() => onNavigate((index - 1 + items.length) % items.length)}
+              className="link min-h-[2.75rem]"
+            >
+              {labels.prev}
+            </button>
+            <p className="hidden max-w-[48ch] text-center md:block">{items[index].alt}</p>
+            <button onClick={() => onNavigate((index + 1) % items.length)} className="link min-h-[2.75rem]">
+              {labels.next}
+            </button>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
-  );
-}
-
-function NavButton({
-  side,
-  onClick,
-}: {
-  side: "left" | "right";
-  onClick: (e: React.MouseEvent) => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      aria-label={side === "left" ? "Précédent" : "Suivant"}
-      className={`absolute top-1/2 z-10 -translate-y-1/2 rounded-full border border-or/30 p-3 text-creme transition hover:border-or hover:text-or ${
-        side === "left" ? "left-4" : "right-4"
-      }`}
-    >
-      <ArrowIcon className={side === "left" ? "rotate-180" : ""} />
-    </button>
   );
 }

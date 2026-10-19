@@ -14,14 +14,14 @@ export default function LocaleError({
   }, [error]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-noir px-6 text-center">
-      <h1 className="font-display text-3xl text-creme">
+    <div className="flex min-h-[100svh] flex-col items-start justify-center gap-6 bg-bg px-margin">
+      <h1 className="text-head">
         Une erreur est survenue
       </h1>
-      <p className="max-w-sm text-sm font-light text-creme/70">
+      <p className="max-w-[40ch] text-body">
         Désolé, quelque chose s’est mal passé. Merci de réessayer.
       </p>
-      <button onClick={reset} className="btn btn-gold mt-2">
+      <button onClick={reset} className="button mt-2">
         Réessayer
       </button>
     </div>

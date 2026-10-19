@@ -1,31 +1,29 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Cormorant_Garamond, Jost, Marcellus } from "next/font/google";
+import localFont from "next/font/local";
+import { Jost } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { siteConfig } from "@/data/site-config";
 import { locales, translations, type Locale } from "@/data/translations";
 import "../globals.css";
 
-/* --- Typographie --- */
-const display = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-display",
+/* --- Typographie : Boska (titres, Fontshare, licence libre, auto-hébergée) + Jost (texte) --- */
+const boska = localFont({
+  src: [
+    { path: "../fonts/Boska-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/Boska-Medium.woff2", weight: "500", style: "normal" },
+  ],
+  variable: "--font-boska",
   display: "swap",
+  fallback: ["Georgia", "serif"],
 });
 
-const body = Jost({
+/* Texte courant : un sans lisible, déjà celui du site d'origine. */
+const jost = Jost({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-const brand = Marcellus({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-brand",
+  weight: ["400", "500"],
+  variable: "--font-jost",
   display: "swap",
 });
 
@@ -75,7 +73,7 @@ export function generateMetadata({ params }: LocaleParams): Metadata {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#15100C",
+  themeColor: "#f2e4da",
   width: "device-width",
   initialScale: 1,
 };
@@ -97,7 +95,7 @@ export default function LocaleLayout({
     name: siteBrand.name,
     description: t.meta.description,
     url: `${url}/${params.locale}`,
-    image: `${url}/images/hero.jpg`,
+    image: `${url}${siteConfig.shareImage}`,
     telephone: `+${contact.whatsapp}`,
     email: contact.email,
     address: {
@@ -128,9 +126,25 @@ export default function LocaleLayout({
   return (
     <html
       lang={t.htmlLang}
-      className={`${display.variable} ${body.variable} ${brand.variable}`}
+      className={`${boska.variable} ${jost.variable}`}
+      suppressHydrationWarning
     >
-      <body className="grain">
+      <head>
+        {/* Active les états d'animation seulement si le script tourne :
+            sans JavaScript, tout le contenu reste visible. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
+      </head>
+      <body>
+        {/* L'arche du logo, réutilisée comme masque des photos (classe .arch). */}
+        <svg width="0" height="0" aria-hidden="true" focusable="false" className="absolute">
+          <clipPath id="arch-clip" clipPathUnits="objectBoundingBox">
+            <path d="M0,1 V0.36 C0,0.21 0.2,0.14 0.37,0.09 C0.45,0.065 0.49,0.035 0.5,0 C0.51,0.035 0.55,0.065 0.63,0.09 C0.8,0.14 1,0.21 1,0.36 V1 Z" />
+          </clipPath>
+        </svg>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

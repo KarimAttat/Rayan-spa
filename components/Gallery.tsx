@@ -2,206 +2,149 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Section, { SectionHeader } from "./ui/Section";
-import Reveal from "./ui/Reveal";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
 import Lightbox from "./ui/Lightbox";
-import { gallery, type GalleryItem } from "@/data/gallery";
+import { gallery } from "@/data/gallery";
 import { useI18n } from "@/lib/i18n";
-import { ArrowIcon, PlayIcon } from "@/components/icons";
 
+/**
+ * Les lieux : la section se fixe et le défilement vertical fait glisser
+ * de côté une rangée de grandes photos du spa. Chaque photo pivote en 3D
+ * selon sa place (elle fait face au visiteur au centre de l'écran).
+ * Uniquement des photos du spa. Un clic ouvre la photo en grand.
+ * Avec prefers-reduced-motion : simple rangée qui défile au doigt.
+ */
 export default function Gallery() {
-  const { t } = useI18n();
+  const { x } = useI18n();
+  const reduce = useReducedMotion();
   const [index, setIndex] = useState<number | null>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
-  const drag = useRef<{ startX: number; startScroll: number; moved: boolean } | null>(null);
+  const ref = useRef<HTMLElement>(null);
+  const trackRef = useRef<HTMLUListElement>(null);
+  const [distance, setDistance] = useState(0);
+  // Pour chaque photo : à quelle progression elle passe au centre de l'écran.
+  const [centers, setCenters] = useState<{ c: number; w: number }[]>([]);
 
-  // Légendes localisées (les médias/tailles restent dans data/gallery.ts).
-  const items = gallery.map((item, i) => ({
-    ...item,
-    alt: t.gallery.alts[i] ?? item.alt,
-  }));
+  const items = gallery.map((g, i) => ({ ...g, alt: x.places.alts[i] ?? "" }));
 
-  const updateProgress = () => {
-    const el = trackRef.current;
-    if (!el) return;
-    const max = el.scrollWidth - el.clientWidth;
-    setProgress(max > 0 ? el.scrollLeft / max : 0);
-  };
-
+  // Distance à parcourir = largeur de la rangée moins la largeur de l'écran.
   useEffect(() => {
-    updateProgress();
-    window.addEventListener("resize", updateProgress);
-    return () => window.removeEventListener("resize", updateProgress);
+    const measure = () => {
+      const el = trackRef.current;
+      if (!el) return;
+      const d = Math.max(1, el.scrollWidth - window.innerWidth);
+      setDistance(d);
+      const cards = Array.from(el.children).slice(1) as HTMLElement[];
+      setCenters(
+        cards.map((li) => ({
+          c: (li.offsetLeft + li.offsetWidth / 2 - window.innerWidth / 2) / d,
+          w: (li.offsetWidth * 1.1) / d,
+        }))
+      );
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (trackRef.current) ro.observe(trackRef.current);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
   }, []);
 
-  function scrollByViewport(dir: 1 | -1) {
-    trackRef.current?.scrollBy({
-      left: dir * trackRef.current.clientWidth * 0.85,
-      behavior: "smooth",
-    });
-  }
-
-  // Drag-to-scroll à la souris uniquement : au tactile, le scroll natif
-  // (avec son momentum) est déjà optimal et ne doit pas être intercepté.
-  function onPointerDown(e: React.PointerEvent) {
-    const el = trackRef.current;
-    if (!el || e.pointerType !== "mouse") return;
-    drag.current = { startX: e.clientX, startScroll: el.scrollLeft, moved: false };
-    el.setPointerCapture(e.pointerId);
-  }
-  function onPointerMove(e: React.PointerEvent) {
-    if (!drag.current || !trackRef.current || e.pointerType !== "mouse") return;
-    const dx = e.clientX - drag.current.startX;
-    if (Math.abs(dx) > 4) drag.current.moved = true;
-    trackRef.current.scrollLeft = drag.current.startScroll - dx;
-  }
-  function onPointerUp(e: React.PointerEvent) {
-    if (e.pointerType !== "mouse" || !drag.current) return;
-    trackRef.current?.releasePointerCapture(e.pointerId);
-    // Laisse un instant à onClick pour lire "moved" avant de le réinitialiser.
-    setTimeout(() => (drag.current = null), 0);
-  }
+  const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const tx = useTransform(p, [0, 1], [0, -distance]);
+  const pinned = !reduce;
 
   return (
-    <Section id="galerie" className="bg-nuit">
-      <SectionHeader
-        eyebrow={t.gallery.eyebrow}
-        title={t.gallery.title}
-        intro={t.gallery.intro}
-      />
-
-      <div className="mt-14">
-        <div
+    <section
+      ref={ref}
+      id="lieux"
+      className="relative bg-surface"
+      style={pinned ? { height: `calc(100svh + ${distance}px)` } : undefined}
+    >
+      <div className={pinned ? "sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden" : "py-section"}>
+        <motion.ul
           ref={trackRef}
-          onScroll={updateProgress}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerLeave={onPointerUp}
-          className="hide-scrollbar flex cursor-grab snap-x snap-mandatory gap-5 overflow-x-auto pb-2 active:cursor-grabbing"
+          className={[
+            "flex items-center gap-[6vw] px-margin",
+            pinned ? "w-max" : "hide-scrollbar snap-x overflow-x-auto",
+          ].join(" ")}
+          style={pinned ? { x: tx, perspective: "1400px" } : { perspective: "1400px" }}
         >
+          <li className="flex w-[78vw] shrink-0 flex-col justify-end self-stretch pb-[6svh] md:w-[34vw]">
+            <h2 className="text-[clamp(3.5rem,2rem+7vw,9rem)] leading-[0.9]">{x.places.title}</h2>
+            <p className="mt-6 text-lead text-muted">
+              {items.length} photos · Dar El Bacha, 45 Derb Toudgha
+            </p>
+          </li>
+
           {items.map((item, i) => (
-            <Reveal
+            <Card
               key={item.id}
-              delay={i * 0.07}
-              y={22}
-              className={[
-                "h-[380px] shrink-0 snap-center sm:h-[440px] md:h-[480px]",
-                item.size === "lg"
-                  ? "w-[82vw] sm:w-[430px] md:w-[490px]"
-                  : "w-[72vw] sm:w-[300px] md:w-[330px]",
-              ].join(" ")}
-            >
-              <GalleryCard
-                item={item}
-                onOpen={() => {
-                  if (!drag.current?.moved) setIndex(i);
-                }}
-                enlargeLabel={t.gallery.enlarge}
-                comingSoonLabel={t.gallery.comingSoon}
-              />
-            </Reveal>
-          ))}
-        </div>
-
-        {/* Contrôles : flèches + barre de progression (reflète le scroll réel) */}
-        <div className="mt-8 flex items-center gap-5">
-          <NavButton dir={-1} onClick={() => scrollByViewport(-1)} />
-          <div className="relative h-px flex-1 overflow-hidden rounded-full bg-creme/15">
-            <span
-              className="absolute inset-y-0 left-0 rounded-full bg-or transition-[width] duration-150 ease-out"
-              style={{ width: `${Math.max(6, progress * 100)}%` }}
+              item={item}
+              i={i}
+              at={centers[i] ?? { c: (i + 0.5) / items.length, w: 1.6 / items.length }}
+              p={p}
+              pinned={pinned}
+              onOpen={() => setIndex(i)}
             />
-          </div>
-          <NavButton dir={1} onClick={() => scrollByViewport(1)} />
-        </div>
+          ))}
+        </motion.ul>
       </div>
 
-      <Lightbox
-        items={items}
-        index={index}
-        onClose={() => setIndex(null)}
-        onNavigate={setIndex}
-      />
-    </Section>
+      <Lightbox items={items} index={index} onClose={() => setIndex(null)} onNavigate={setIndex} />
+    </section>
   );
 }
 
-/* ---------- Carte du filmstrip ---------- */
-
-function GalleryCard({
+function Card({
   item,
+  i,
+  at,
+  p,
+  pinned,
   onOpen,
-  enlargeLabel,
-  comingSoonLabel,
 }: {
-  item: GalleryItem & { alt: string };
+  item: (typeof gallery)[number] & { alt: string };
+  i: number;
+  at: { c: number; w: number };
+  p: MotionValue<number>;
+  pinned: boolean;
   onOpen: () => void;
-  enlargeLabel: string;
-  comingSoonLabel: string;
 }) {
-  const isPendingVideo = item.type === "video" && !item.src;
+  const { c, w } = at;
+  const rotateY = useTransform(p, [c - w, c, c + w], pinned ? [-16, 0, 16] : [0, 0, 0]);
+  const scale = useTransform(p, [c - w, c, c + w], pinned ? [0.88, 1, 0.88] : [1, 1, 1]);
+  // Les photos alternent haut / bas : une rangée qui ne s'aligne pas.
+  const offset = i % 2 === 0 ? "md:-translate-y-[5svh]" : "md:translate-y-[5svh]";
 
-  if (isPendingVideo) {
-    return (
-      <div className="relative flex h-full w-full select-none flex-col items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-ombre to-nuit ring-riad">
-        <div className="zellige-texture absolute inset-0 opacity-[0.14]" />
-        <div
-          aria-hidden
-          className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50 blur-[70px] animate-shimmer"
-          style={{
-            background: "radial-gradient(circle, rgba(181,80,46,0.4), transparent 70%)",
-          }}
+  return (
+    <motion.li
+      className={`relative shrink-0 snap-center ${offset}`}
+      style={pinned ? { rotateY, scale } : undefined}
+    >
+      <button
+        type="button"
+        onClick={onOpen}
+        aria-label={item.alt}
+        className="frame group relative block h-[62svh] w-[46.5svh] overflow-hidden md:h-[72svh] md:w-[54svh]"
+      >
+        <Image
+          src={item.src}
+          alt={item.alt}
+          fill
+          sizes="(max-width: 768px) 70vw, 40vw"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          style={{ objectPosition: item.focus }}
         />
-        <span className="relative flex h-16 w-16 items-center justify-center rounded-full border border-or/40 text-or">
-          <PlayIcon width={22} height={22} />
-        </span>
-        <span className="relative mt-5 rounded-full border border-or/25 px-3 py-1 text-[0.62rem] uppercase tracking-eyebrow text-or/80">
-          {comingSoonLabel}
-        </span>
-        <p className="relative mt-4 max-w-[80%] text-center font-display text-lg leading-snug text-creme/85">
-          {item.alt}
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={onOpen}
-      aria-label={`${enlargeLabel} : ${item.alt}`}
-      className="group relative block h-full w-full overflow-hidden rounded-2xl text-left ring-riad"
-    >
-      <Image
-        src={item.src}
-        alt={item.alt}
-        fill
-        draggable={false}
-        sizes="(max-width: 640px) 82vw, 490px"
-        className="object-cover transition-transform duration-[900ms] ease-riad group-hover:scale-110"
-      />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-creme/85 via-creme/10 to-transparent transition-opacity duration-500 group-hover:from-creme/90" />
-      <span className="pointer-events-none absolute bottom-0 left-0 right-0 p-5 font-display text-lg leading-snug text-ivoire [text-shadow:0_2px_10px_rgba(32,15,12,0.6)]">
-        {item.alt}
-      </span>
-      <span className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-ivoire/30 text-ivoire opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:opacity-100 group-hover:border-or group-hover:text-or">
-        <ArrowIcon width={14} height={14} className="-rotate-45" />
-      </span>
-    </button>
-  );
-}
-
-function NavButton({ dir, onClick }: { dir: 1 | -1; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={dir === -1 ? "Précédent" : "Suivant"}
-      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-or/25 text-or transition hover:border-or hover:bg-or/10"
-    >
-      <ArrowIcon width={16} height={16} className={dir === -1 ? "rotate-180" : ""} />
-    </button>
+      </button>
+      <p className="mt-4 max-w-[54svh] text-small text-muted">{item.alt}</p>
+    </motion.li>
   );
 }

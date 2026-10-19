@@ -1,196 +1,134 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
-import { MenuIcon, CloseIcon } from "@/components/icons";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
-/** Sections ancrées : href + clé de traduction + id observé. */
+/** Sections ancrées : href + clé de traduction (data/experience.ts → nav). */
 const NAV = [
-  { href: "#a-propos", id: "a-propos", key: "about" },
-  { href: "#soins", id: "soins", key: "services" },
-  { href: "#galerie", id: "galerie", key: "gallery" },
-  { href: "#avis", id: "avis", key: "reviews" },
-  { href: "#contact", id: "contact", key: "contact" },
+  { id: "rituel", key: "ritual" },
+  { id: "carte", key: "menu" },
+  { id: "lieux", key: "places" },
+  { id: "contact", key: "contact" },
 ] as const;
 
 export default function Header() {
-  const { t } = useI18n();
-  const [scrolled, setScrolled] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [active, setActive] = useState<string>("");
+  const { x, t } = useI18n();
+  const [solid, setSolid] = useState(false);
+  const [active, setActive] = useState("");
   const [open, setOpen] = useState(false);
 
-  // État de défilement + barre de progression de lecture.
+  // La barre devient un champ plein une fois le premier écran dépassé.
   useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 24);
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(max > 0 ? Math.min(y / max, 1) : 0);
-    };
+    const onScroll = () => setSolid(window.scrollY > window.innerHeight * 0.6);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Surligne la section en cours de lecture (scroll-spy).
+  // Section en cours de lecture.
   useEffect(() => {
     const sections = NAV.map((n) => document.getElementById(n.id)).filter(
       (el): el is HTMLElement => el !== null
     );
-    if (!sections.length) return;
-    const observer = new IntersectionObserver(
+    const io = new IntersectionObserver(
       (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActive(visible.target.id);
+        const hit = entries.find((e) => e.isIntersecting);
+        if (hit) setActive(hit.target.id);
       },
-      { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5] }
+      { rootMargin: "-45% 0px -50% 0px" }
     );
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
   }, []);
+
+  // Menu mobile : Échap pour fermer, page figée derrière.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   return (
     <header
       className={[
-        "fixed inset-x-0 top-0 z-50 transition-all duration-500",
-        scrolled
-          ? "bg-noir/85 backdrop-blur-md shadow-[0_1px_0_rgba(181,80,46,0.2)]"
-          : "bg-transparent",
+        "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
+        solid || open ? "bg-bg" : "bg-transparent",
       ].join(" ")}
     >
-      <nav className="mx-auto flex max-w-content items-center justify-between px-6 py-4 sm:px-8">
-        {/* Logo : emblème + wordmark */}
-        <a href="#top" className="group flex items-center gap-2.5">
-          <Image
-            src="/images/logo-icon.png"
-            alt=""
-            width={80}
-            height={80}
-            priority
-            className={[
-              "h-9 w-9 shrink-0 object-contain transition-[filter] duration-500 sm:h-10 sm:w-10",
-              scrolled ? "" : "drop-shadow-[0_2px_8px_rgba(32,15,12,0.55)]",
-            ].join(" ")}
-          />
-          <span className="flex flex-col leading-none">
-            <span
-              className={[
-                "font-brand text-2xl tracking-wide transition-colors",
-                scrolled ? "text-creme" : "text-ivoire [text-shadow:0_2px_10px_rgba(32,15,12,0.5)]",
-              ].join(" ")}
-            >
-              Rayan<span className="text-rouge"> SPA</span>
-            </span>
-            <span
-              className={[
-                "mt-0.5 text-[0.6rem] uppercase tracking-eyebrow transition-colors",
-                scrolled ? "text-sable/60" : "text-ivoire/65",
-              ].join(" ")}
-            >
-              Marrakech
-            </span>
-          </span>
+      <nav className="wrap flex h-16 items-center justify-between gap-6 md:h-[4.5rem]">
+        <a href="#top" className="display text-lead leading-none tracking-[-0.01em]">
+          Rayan Spa
         </a>
 
-        {/* Menu desktop */}
-        <ul className="hidden items-center gap-9 md:flex">
-          {NAV.map((item) => {
-            const isActive = active === item.id;
-            return (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  aria-current={isActive ? "true" : undefined}
-                  className={[
-                    "group relative text-sm font-light tracking-wide transition",
-                    isActive
-                      ? "text-or"
-                      : scrolled
-                        ? "text-creme/85 hover:text-or"
-                        : "text-ivoire/90 [text-shadow:0_1px_8px_rgba(32,15,12,0.5)] hover:text-or",
-                  ].join(" ")}
-                >
-                  {t.nav[item.key]}
-                  <span
-                    className={[
-                      "absolute -bottom-1.5 left-0 h-px bg-or transition-all duration-300",
-                      isActive ? "w-full" : "w-0 group-hover:w-full",
-                    ].join(" ")}
-                  />
-                </a>
-              </li>
-            );
-          })}
+        <ul className="hidden items-center gap-9 text-small md:flex">
+          {NAV.map((item) => (
+            <li key={item.id}>
+              <a
+                href={`#${item.id}`}
+                aria-current={active === item.id ? "true" : undefined}
+                className={[
+                  "link",
+                  active === item.id ? "!decoration-current" : "",
+                ].join(" ")}
+              >
+                {x.nav[item.key]}
+              </a>
+            </li>
+          ))}
         </ul>
 
-        <div className="flex items-center gap-3">
-          <div className="hidden sm:block">
-            <LanguageSwitcher tone={scrolled ? "dark" : "light"} />
+        <div className="flex items-center gap-5">
+          <div className="hidden md:block">
+            <LanguageSwitcher />
           </div>
-          <a href="#reservation" className="btn btn-gold hidden sm:inline-flex">
+          <a href="#reservation" className="button hidden !min-h-[2.75rem] !px-5 !text-small md:inline-flex">
             {t.header.book}
           </a>
           <button
+            type="button"
             onClick={() => setOpen((v) => !v)}
-            aria-label={open ? t.header.closeMenu : t.header.openMenu}
             aria-expanded={open}
-            className={[
-              "rounded-full border p-2 md:hidden transition-colors",
-              scrolled ? "border-or/25 text-creme" : "border-ivoire/30 text-ivoire",
-            ].join(" ")}
+            aria-controls="menu-mobile"
+            aria-label={open ? t.header.closeMenu : t.header.openMenu}
+            className="flex min-h-[2.75rem] items-center text-body md:hidden"
           >
-            {open ? <CloseIcon /> : <MenuIcon />}
+            {/* « Fermer » / « Close » / « Chiudi » / « Cerrar » */}
+            {open ? t.header.closeMenu.split(" ")[0] : "Menu"}
           </button>
         </div>
       </nav>
 
-      {/* Barre de progression de lecture */}
+      {/* Menu mobile : un champ plein, les sections en grand */}
       <div
-        aria-hidden
-        className="absolute inset-x-0 bottom-0 h-px origin-left bg-or/70 transition-transform duration-150 ease-out"
-        style={{ transform: `scaleX(${progress})`, opacity: scrolled ? 1 : 0 }}
-      />
-
-      {/* Menu mobile */}
-      <div
-        className={[
-          "overflow-hidden border-t border-or/10 bg-noir/95 backdrop-blur-md transition-[max-height,opacity] duration-500 md:hidden",
-          open ? "max-h-[32rem] opacity-100" : "max-h-0 opacity-0",
-        ].join(" ")}
+        id="menu-mobile"
+        hidden={!open}
+        className="h-[calc(100svh-4rem)] overflow-y-auto bg-bg md:hidden"
       >
-        <ul className="flex flex-col gap-1 px-6 py-4">
+        <ul className="wrap flex flex-col gap-2 pt-6">
           {NAV.map((item) => (
-            <li key={item.href}>
+            <li key={item.id}>
               <a
-                href={item.href}
+                href={`#${item.id}`}
                 onClick={() => setOpen(false)}
-                className="block border-b border-creme/10 py-3 font-display text-2xl text-creme/90"
+                className="display block py-2 text-head"
               >
-                {t.nav[item.key]}
+                {x.nav[item.key]}
               </a>
             </li>
           ))}
-          <li className="flex items-center justify-between gap-4 pt-5">
-            <span className="text-xs uppercase tracking-eyebrow text-sable/55">
-              {t.header.language}
-            </span>
-            <LanguageSwitcher variant="stack" />
-          </li>
-          <li className="pt-4">
-            <a
-              href="#reservation"
-              onClick={() => setOpen(false)}
-              className="btn btn-gold w-full"
-            >
-              {t.header.book}
-            </a>
-          </li>
         </ul>
+        <div className="wrap mt-10 flex flex-col gap-8 pb-10">
+          <LanguageSwitcher variant="stack" />
+          <a href="#reservation" onClick={() => setOpen(false)} className="button w-full">
+            {t.header.book}
+          </a>
+        </div>
       </div>
     </header>
   );

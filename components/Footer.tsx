@@ -1,71 +1,77 @@
 "use client";
 
 import Image from "next/image";
-import ZelligeDivider from "./ui/ZelligeDivider";
 import { siteConfig } from "@/data/site-config";
 import { useI18n } from "@/lib/i18n";
+import { rv } from "./ui/Reveal";
 
-const NAV = [
-  { href: "#a-propos", key: "about" },
-  { href: "#soins", key: "services" },
-  { href: "#galerie", key: "gallery" },
-  { href: "#avis", key: "reviews" },
-  { href: "#contact", key: "contact" },
-] as const;
-
+/**
+ * La fin de page : fond sable, une invitation, l'emblème du lion
+ * sous l'arche, et le nom qui revient en entier, dans le rouge du logo,
+ * coupé par le bord bas.
+ */
 export default function Footer() {
-  const { t } = useI18n();
-  const { brand, contact } = siteConfig;
+  const { t, x } = useI18n();
+  const { brand, contact, social } = siteConfig;
   const year = new Date().getFullYear();
 
+  const links = [
+    { label: "WhatsApp", href: `https://wa.me/${contact.whatsapp}`, ext: true },
+    social.instagram && { label: "Instagram", href: social.instagram, ext: true },
+    social.tiktok && { label: "TikTok", href: social.tiktok, ext: true },
+    { label: contact.email, href: `mailto:${contact.email}`, ext: false },
+  ].filter(Boolean) as { label: string; href: string; ext: boolean }[];
+
   return (
-    <footer className="border-t border-or/10 bg-noir">
-      <div className="mx-auto max-w-content px-6 py-16 sm:px-8">
-        <div className="flex flex-col items-center text-center">
-          <a href="#top" className="flex flex-col items-center leading-none">
-            <Image
-              src="/images/logo-icon.png"
-              alt=""
-              width={80}
-              height={80}
-              className="mb-3 h-14 w-14 object-contain"
-            />
-            <span className="font-brand text-3xl tracking-wide text-creme">
-              Rayan<span className="text-rouge"> SPA</span>
-            </span>
-            <span className="mt-1 text-[0.62rem] uppercase tracking-eyebrow text-sable/60">
-              {t.footer.tagline}
-            </span>
-          </a>
-
-          <ZelligeDivider className="my-8" />
-
-          <nav className="flex flex-wrap items-center justify-center gap-x-7 gap-y-2">
-            {NAV.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="text-sm font-light text-sable/75 transition hover:text-or"
-              >
-                {t.nav[item.key]}
-              </a>
-            ))}
-          </nav>
-
-          <p className="mt-8 max-w-md text-sm font-light leading-relaxed text-sable/70">
-            {contact.address.line1}, {contact.address.line2}
-            <br />
-            {contact.email}
+    <footer className="relative flex min-h-[100svh] flex-col overflow-hidden bg-surface text-ink">
+      <div className="wrap grid gap-12 pt-section md:grid-cols-12 md:gap-x-8">
+        <div className="md:col-span-7">
+          <p {...rv(0)} className="display max-w-[12ch] text-head">
+            {x.footer.invite}
           </p>
+          <a {...rv(1)} href="#reservation" className="button mt-10">
+            {x.footer.cta}
+          </a>
         </div>
+        <ul className="space-y-2 text-body md:col-span-3 md:col-start-10">
+          {links.map((l, i) => (
+            <li key={l.href} {...rv(i, "row")}>
+              <a
+                href={l.href}
+                className="link break-all"
+                {...(l.ext ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              >
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-creme/10 pt-6 text-xs text-sable/60 sm:flex-row">
+      <div className="wrap mt-auto flex flex-col gap-10 pt-20">
+        <Image
+          src="/images/logo-icon.png"
+          alt=""
+          width={96}
+          height={96}
+          className="h-20 w-20 md:h-24 md:w-24"
+        />
+        <div className="flex flex-col gap-2 text-small sm:flex-row sm:justify-between">
           <p>
             © {year} {brand.name}. {t.footer.rights}
           </p>
-          <p className="uppercase tracking-wide">{t.footer.vitrine}</p>
+          <p>
+            {contact.address.line1}, {contact.address.line2}
+          </p>
         </div>
       </div>
+
+      <p
+        aria-hidden="true"
+        className="giant display -mb-[0.24em] select-none whitespace-nowrap pl-[0.02em] leading-[0.8] tracking-[-0.055em] text-accent"
+      >
+        RAYAN SPA
+      </p>
     </footer>
   );
 }
