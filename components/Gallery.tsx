@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useTransform,
   type MotionValue,
@@ -12,6 +11,7 @@ import {
 import Lightbox from "./ui/Lightbox";
 import { gallery } from "@/data/gallery";
 import { useI18n } from "@/lib/i18n";
+import { useStill } from "@/lib/use-still";
 
 /**
  * Les lieux : la section se fixe et le défilement vertical fait glisser
@@ -22,7 +22,7 @@ import { useI18n } from "@/lib/i18n";
  */
 export default function Gallery() {
   const { x } = useI18n();
-  const reduce = useReducedMotion();
+  const reduce = useStill();
   const [index, setIndex] = useState<number | null>(null);
   const ref = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLUListElement>(null);

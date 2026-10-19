@@ -2,10 +2,11 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import type { RitualStage } from "@/data/experience";
 import { rv } from "./ui/Reveal";
+import { useStill } from "@/lib/use-still";
 
 /**
  * Le rituel du hammam, étape par étape : des panneaux plein écran qui
@@ -15,12 +16,11 @@ import { rv } from "./ui/Reveal";
  */
 const STAGES = [
   { img: "/images/hammam2.jpg", focus: "45% 50%", side: "left" },
-  // Photo d'illustration (banque d'images), pas une salle du spa.
+  // Photo d'illustration (banque d'images) : l'huile d'argan du massage.
   { img: "/images/massage5.jpg", focus: "50% 40%", side: "right" },
-  { img: "/images/hammam1.jpg", focus: "50% 45%", side: "left" },
   // Photo d'illustration (banque d'images), pas une salle du spa.
-  { img: "/images/massage3.jpg", focus: "50% 45%", side: "right" },
-  { img: "/images/rooftop2.jpg", focus: "60% 55%", side: "left" },
+  { img: "/images/massage3.jpg", focus: "50% 45%", side: "left" },
+  { img: "/images/rooftop2.jpg", focus: "60% 55%", side: "right" },
 ] as const;
 
 export default function Ritual() {
@@ -48,7 +48,7 @@ export default function Ritual() {
 
 function Stage({ stage, index, last }: { stage: RitualStage; index: number; last: boolean }) {
   const ref = useRef<HTMLLIElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = useStill();
   const s = STAGES[index];
 
   // Entrée : la photo arrive agrandie et se pose.

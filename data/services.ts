@@ -23,17 +23,15 @@ export const massages: Massage[] = [
   {
     id: "massage-relaxant",
     variants: [
-      { duration: "30 min", price: 200 },
-      { duration: "45 min", price: 300 },
-      { duration: "1h", price: 400 },
+      { duration: "20 min", price: 250 },
+      { duration: "40 min", price: 400 },
     ],
   },
   {
     id: "massage-tonifiant",
     variants: [
-      { duration: "30 min", price: 300 },
-      { duration: "45 min", price: 450 },
-      { duration: "1h", price: 500 },
+      { duration: "20 min", price: 300 },
+      { duration: "40 min", price: 500 },
     ],
   },
   {
@@ -44,8 +42,8 @@ export const massages: Massage[] = [
     ],
     hidden: true,
   },
-  { id: "massage-dabachi", variants: [{ duration: "1h", price: 400 }] },
-  { id: "massage-dos", variants: [{ duration: "30 min", price: 250 }] },
+  { id: "massage-dabachi", variants: [{ duration: "30 min", price: 500 }] },
+  { id: "massage-dos", variants: [{ duration: "20 min", price: 200 }] },
   { id: "massage-pieds", variants: [{ duration: "20 min", price: 200 }] },
 ];
 
@@ -95,20 +93,20 @@ export const forfaits: Forfait[] = [
   {
     id: "pack-relaxant",
     price: 550,
-    stepIds: ["massageRelaxant1h", "soinVisage1h", "pauseThe"],
+    stepIds: ["massageRelaxant40", "soinVisage1h", "pauseThe"],
     // Masqué tant que le soin visage n'est pas disponible (pas de machine).
     hidden: true,
   },
   {
     id: "pack-classique",
-    price: 500,
+    price: 450,
     stepIds: [
       "hammam30",
       "gommage",
       "shampooingBio",
       "savonnage",
       "pauseThe",
-      "massageAntiStress30",
+      "massageAntiStress20",
     ],
   },
   {
@@ -122,7 +120,7 @@ export const forfaits: Forfait[] = [
       "shampooingBio",
       "gommageGhassoul",
       "gommageCafe",
-      "massageBaumeArgan45",
+      "massageBaumeArgan40",
       "pauseThe",
     ],
   },
@@ -137,7 +135,7 @@ export const forfaits: Forfait[] = [
       "savonnage",
       "shampooing",
       "masqueCheveux",
-      "massageChoix30",
+      "massageChoix40",
       "pauseThePatisserie",
     ],
   },
@@ -155,7 +153,7 @@ export const forfaits: Forfait[] = [
       "savonnage",
       "pauseThe",
       "soinVisage45",
-      "massageBaume1h",
+      "massageBaume40",
       "manucure",
       "pedicure",
     ],

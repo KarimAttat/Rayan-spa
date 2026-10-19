@@ -58,11 +58,11 @@ export const siteConfig = {
   showTestimonials: false,
 
   /* --------- IMAGES --------- */
-  // Photo glissée dans le nom, en tête de page : la porte du spa.
+  // Photo vue à travers les lettres du nom, en tête de page : la salle aux lumières rouges.
   heroImage: {
-    src: "/images/door1.jpg",
-    w: 1600,
-    h: 1200,
+    src: "/images/massage1.jpg",
+    w: 1200,
+    h: 1600,
   },
   // Image des données structurées / partage (photo dominante).
   shareImage: "/images/hero.jpg",

@@ -4,11 +4,11 @@ import { useRef, type ReactNode } from "react";
 import Image from "next/image";
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useTransform,
   type MotionValue,
 } from "framer-motion";
+import { useStill } from "@/lib/use-still";
 
 /* ============================================================
    Primitives de mouvement liées au défilement.
@@ -42,7 +42,7 @@ export function ParallaxImage({
   drift?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = useStill();
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const scale = useTransform(p, [0, 0.6], [reduce ? 1 : zoom, 1]);
   const y = useTransform(p, [0, 1], [reduce ? "0%" : `${drift}%`, reduce ? "0%" : `-${drift}%`]);
@@ -79,7 +79,7 @@ export function TiltIn({
   from?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = useStill();
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start end", "center center"] });
   const rotateX = useTransform(p, [0, 1], [reduce ? 0 : from, 0]);
   const scale = useTransform(p, [0, 1], [reduce ? 1 : 0.86, 1]);
@@ -103,7 +103,7 @@ export function TiltIn({
  */
 export function WordsReveal({ text, className = "" }: { text: string; className?: string }) {
   const ref = useRef<HTMLParagraphElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = useStill();
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start 85%", "end 45%"] });
   const words = text.split(" ");
 
@@ -137,10 +137,3 @@ function Word({
   );
 }
 
-/** Raccourci : progression d'un élément à travers l'écran (0 → 1). */
-export function useProgress(
-  ref: React.RefObject<HTMLElement>,
-  offset: ["start end", "end start"] | ["start start", "end end"] | ["start end", "end end"] = ["start end", "end start"]
-) {
-  return useScroll({ target: ref, offset }).scrollYProgress;
-}

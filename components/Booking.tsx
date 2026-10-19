@@ -144,12 +144,6 @@ export default function Booking() {
               <Field label={t.booking.fields.service} error={errors.service} htmlFor="service" wide>
                 <select id="service" value={form.service} onChange={update("service")} className="field" aria-invalid={!!errors.service}>
                   <option value="">{t.booking.fields.servicePh}</option>
-                  <optgroup label={t.services.categoryForfaits}>
-                    {forfaits.filter((f) => !f.hidden).map((f) => {
-                      const name = t.serviceData[f.id].name;
-                      return <option key={f.id} value={name}>{name} · {f.price} {currency}</option>;
-                    })}
-                  </optgroup>
                   <optgroup label={t.services.categoryMassages}>
                     {massages.filter((m) => !m.hidden).map((m) =>
                       m.variants.map((v) => {
@@ -166,6 +160,12 @@ export default function Booking() {
                     {hammams.map((h) => {
                       const name = t.serviceData[h.id].name;
                       return <option key={h.id} value={name}>{name} · {h.price} {currency}</option>;
+                    })}
+                  </optgroup>
+                  <optgroup label={t.services.categoryForfaits}>
+                    {forfaits.filter((f) => !f.hidden).map((f) => {
+                      const name = t.serviceData[f.id].name;
+                      return <option key={f.id} value={name}>{name} · {f.price} {currency}</option>;
                     })}
                   </optgroup>
                   {beaute.some((b) => !b.unavailable) && (

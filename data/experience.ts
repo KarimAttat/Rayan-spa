@@ -20,9 +20,7 @@ export type ExperienceCopy = {
     line: string;
     cta: string;
     menuLink: string;
-    /** Alt de la photo glissée dans le nom. */
-    doorAlt: string;
-    /** Texte posé sur le hammam en plein écran, à la fin de l'ouverture. */
+    /** Texte posé sur le hammam en plein écran, une fois entré dans le nom. */
     revealTitle: string;
     revealText: string;
   };
@@ -55,9 +53,8 @@ const fr: ExperienceCopy = {
     line: "Hammam et massages dans la médina de Marrakech, au 45 Derb Toudgha.",
     cta: "Réserver",
     menuLink: "Voir la carte",
-    doorAlt: "Porte en bois sculpté du spa, encadrée de plâtre ciselé",
-    revealTitle: "Derrière la porte",
-    revealText: "La vapeur, le savon noir, le zellige noir et blanc : le rituel commence ici.",
+    revealTitle: "Entrez, respirez",
+    revealText: "Lumière tamisée, huiles chaudes et mains expertes : le soin commence ici.",
   },
   status: {
     openUntil: "Ouvert aujourd’hui jusqu’à {time}",
@@ -78,8 +75,7 @@ const fr: ExperienceCopy = {
       "Du hammam à la pause thé, nos forfaits suivent les gestes des hammams de la médina. Voici les étapes, dans l’ordre.",
     stages: [
       { name: "Vapeur", text: "La chaleur du hammam détend les muscles et prépare la peau. On s’installe, on respire, le temps ralentit." },
-      { name: "Savon noir", text: "Le savon noir est appliqué sur tout le corps, puis vient le gommage, qui laisse la peau neuve et douce." },
-      { name: "Ghassoul", text: "L’argile de l’Atlas, en masque sur le corps et les cheveux, purifie la peau avant le rinçage." },
+      { name: "Huile d’argan", text: "L’huile d’argan, chauffée entre les mains, nourrit la peau et accompagne chaque geste du massage." },
       { name: "Massage", text: "Relaxant, tonifiant, dabachi ou au baume d’argan : le massage prolonge la détente du hammam." },
       { name: "Thé", text: "Une pause thé, avec des pâtisseries marocaines dans certains forfaits, pour revenir doucement à la journée." },
     ],
@@ -89,14 +85,9 @@ const fr: ExperienceCopy = {
     title: "Les lieux",
     alts: [
       "Le rooftop, ses chapeaux de paille et la vue sur les toits de la médina",
-      "Coin salon ombragé sur le rooftop",
-      "Le salon d’accueil, entre voilages et tapis berbère",
       "Le hammam, habillé de zellige noir et blanc",
-      "La banquette du hammam en zellige",
       "Salle de massage baignée de lumière rouge",
       "La salle de massage duo",
-      "Porte en bois sculpté et frise de plâtre ciselé",
-      "Le vestiaire et ses casiers en bois",
     ],
   },
   band: {
@@ -125,9 +116,8 @@ const en: ExperienceCopy = {
     line: "Hammam and massages in the Marrakech medina, at 45 Derb Toudgha.",
     cta: "Book",
     menuLink: "See the menu",
-    doorAlt: "The spa’s carved wooden door, framed in chiselled plaster",
-    revealTitle: "Behind the door",
-    revealText: "Steam, black soap, black and white zellige: the ritual begins here.",
+    revealTitle: "Come in, breathe",
+    revealText: "Soft light, warm oils and expert hands: your treatment begins here.",
   },
   status: {
     openUntil: "Open today until {time}",
@@ -148,8 +138,7 @@ const en: ExperienceCopy = {
       "From the hammam to the tea break, our packages follow the gestures of the medina’s hammams. Here are the steps, in order.",
     stages: [
       { name: "Steam", text: "The heat of the hammam loosens the muscles and prepares the skin. You settle in, you breathe, time slows down." },
-      { name: "Black soap", text: "Black soap is applied all over the body, then comes the scrub, which leaves the skin new and soft." },
-      { name: "Ghassoul", text: "Clay from the Atlas, as a mask on the body and hair, cleanses the skin before rinsing." },
+      { name: "Argan oil", text: "Argan oil, warmed between the hands, nourishes the skin and carries every movement of the massage." },
       { name: "Massage", text: "Relaxing, toning, dabachi or with argan balm: the massage carries on the calm of the hammam." },
       { name: "Tea", text: "A tea break, with Moroccan pastries in some packages, to ease gently back into the day." },
     ],
@@ -159,14 +148,9 @@ const en: ExperienceCopy = {
     title: "The spa",
     alts: [
       "The rooftop, its straw hats and the view over the medina roofs",
-      "Shaded seating corner on the rooftop",
-      "The welcome lounge, with sheer curtains and a Berber rug",
       "The hammam, clad in black and white zellige",
-      "The tiled bench in the hammam",
       "Massage room bathed in red light",
       "The couples’ massage room",
-      "Carved wooden door and chiselled plaster frieze",
-      "The changing room and its wooden lockers",
     ],
   },
   band: {
@@ -195,9 +179,8 @@ const it: ExperienceCopy = {
     line: "Hammam e massaggi nella medina di Marrakech, al 45 di Derb Toudgha.",
     cta: "Prenota",
     menuLink: "Vedi il listino",
-    doorAlt: "La porta in legno intagliato della spa, incorniciata da stucco cesellato",
-    revealTitle: "Dietro la porta",
-    revealText: "Il vapore, il sapone nero, lo zellige bianco e nero: il rituale comincia qui.",
+    revealTitle: "Entrate, respirate",
+    revealText: "Luce soffusa, oli caldi e mani esperte: il trattamento comincia qui.",
   },
   status: {
     openUntil: "Aperto oggi fino alle {time}",
@@ -218,8 +201,7 @@ const it: ExperienceCopy = {
       "Dall’hammam alla pausa tè, i nostri pacchetti seguono i gesti degli hammam della medina. Ecco le tappe, in ordine.",
     stages: [
       { name: "Vapore", text: "Il calore dell’hammam scioglie i muscoli e prepara la pelle. Ci si sistema, si respira, il tempo rallenta." },
-      { name: "Sapone nero", text: "Il sapone nero viene steso su tutto il corpo, poi arriva lo scrub, che lascia la pelle nuova e morbida." },
-      { name: "Ghassoul", text: "L’argilla dell’Atlante, in maschera su corpo e capelli, purifica la pelle prima del risciacquo." },
+      { name: "Olio di argan", text: "L’olio di argan, scaldato tra le mani, nutre la pelle e accompagna ogni gesto del massaggio." },
       { name: "Massaggio", text: "Rilassante, tonificante, dabachi o al balsamo di argan: il massaggio prolunga la calma dell’hammam." },
       { name: "Tè", text: "Una pausa tè, con pasticceria marocchina in alcuni pacchetti, per tornare piano alla giornata." },
     ],
@@ -229,14 +211,9 @@ const it: ExperienceCopy = {
     title: "Gli spazi",
     alts: [
       "Il rooftop, i cappelli di paglia e la vista sui tetti della medina",
-      "Angolo salotto all’ombra sul rooftop",
-      "Il salotto d’accoglienza, tra tende leggere e tappeto berbero",
       "L’hammam, rivestito di zellige bianco e nero",
-      "La panca dell’hammam in zellige",
       "Sala massaggi immersa nella luce rossa",
       "La sala massaggi di coppia",
-      "Porta in legno intagliato e fregio in stucco cesellato",
-      "Lo spogliatoio e i suoi armadietti in legno",
     ],
   },
   band: {
@@ -265,9 +242,8 @@ const es: ExperienceCopy = {
     line: "Hammam y masajes en la medina de Marrakech, en el 45 de Derb Toudgha.",
     cta: "Reservar",
     menuLink: "Ver la carta",
-    doorAlt: "La puerta de madera tallada del spa, enmarcada en yeso cincelado",
-    revealTitle: "Tras la puerta",
-    revealText: "El vapor, el jabón negro, el zellige blanco y negro: el ritual empieza aquí.",
+    revealTitle: "Entra, respira",
+    revealText: "Luz tenue, aceites calientes y manos expertas: el tratamiento empieza aquí.",
   },
   status: {
     openUntil: "Abierto hoy hasta las {time}",
@@ -288,8 +264,7 @@ const es: ExperienceCopy = {
       "Del hammam a la pausa del té, nuestros paquetes siguen los gestos de los hammams de la medina. Estas son las etapas, en orden.",
     stages: [
       { name: "Vapor", text: "El calor del hammam relaja los músculos y prepara la piel. Te acomodas, respiras, el tiempo se detiene." },
-      { name: "Jabón negro", text: "El jabón negro se aplica por todo el cuerpo y después llega la exfoliación, que deja la piel nueva y suave." },
-      { name: "Ghassoul", text: "La arcilla del Atlas, en mascarilla sobre el cuerpo y el cabello, purifica la piel antes del aclarado." },
+      { name: "Aceite de argán", text: "El aceite de argán, templado entre las manos, nutre la piel y acompaña cada gesto del masaje." },
       { name: "Masaje", text: "Relajante, tonificante, dabachi o con bálsamo de argán: el masaje prolonga la calma del hammam." },
       { name: "Té", text: "Una pausa con té, y pastelería marroquí en algunos paquetes, para volver despacio al día." },
     ],
@@ -299,14 +274,9 @@ const es: ExperienceCopy = {
     title: "El espacio",
     alts: [
       "La azotea, sus sombreros de paja y la vista sobre los tejados de la medina",
-      "Rincón de descanso a la sombra en la azotea",
-      "El salón de bienvenida, entre visillos y alfombra bereber",
       "El hammam, revestido de zellige blanco y negro",
-      "El banco de zellige del hammam",
       "Sala de masaje bañada de luz roja",
       "La sala de masaje para dos",
-      "Puerta de madera tallada y friso de yeso cincelado",
-      "El vestuario y sus taquillas de madera",
     ],
   },
   band: {

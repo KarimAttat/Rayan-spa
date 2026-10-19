@@ -18,7 +18,8 @@ import { ParallaxImage } from "./ui/motion";
 /**
  * La carte, composée comme un vrai menu de soins : une photo pleine
  * hauteur collée au bord gauche (elle reste pendant la lecture et se
- * pose en zoom), les groupes à droite. Nom à gauche, prix à droite,
+ * pose en zoom), les groupes à droite : d'abord les massages (les plus
+ * demandés), puis les hammams, puis les forfaits. Nom à gauche, prix à droite,
  * la devise une seule fois par groupe. Chaque soin se réserve d'un clic :
  * il est présélectionné dans le formulaire de réservation.
  */
@@ -64,48 +65,7 @@ export default function Services() {
           </p>
 
           <div className="mt-20 grid gap-16 xl:grid-cols-2 xl:gap-x-14">
-          <div className="space-y-16">
-            <Group title={t.services.categoryForfaits}>
-              {forfaits
-                .filter((f) => !f.hidden)
-                .map((f, i) => {
-                  const copy = t.serviceData[f.id];
-                  return (
-                    <Item
-                      key={f.id}
-                      i={i}
-                      name={copy.name}
-                      meta={copy.meta}
-                      price={f.price}
-                      value={copy.name}
-                      bookLabel={x.menu.bookItem}
-                    >
-                      {steps(f.stepIds)}
-                    </Item>
-                  );
-                })}
-            </Group>
-
-            <Group title={t.services.categoryHammams}>
-              {hammams.map((h, i) => {
-                const name = t.serviceData[h.id].name;
-                return (
-                  <Item
-                    key={h.id}
-                    i={i}
-                    name={name}
-                    price={h.price}
-                    value={name}
-                    bookLabel={x.menu.bookItem}
-                  >
-                    {steps(h.stepIds)}
-                  </Item>
-                );
-              })}
-            </Group>
-          </div>
-
-          <div className="space-y-16">
+          <div className="xl:col-start-1 xl:row-start-1">
             <Group title={t.services.categoryMassages}>
               {massages
                 .filter((m) => !m.hidden)
@@ -139,6 +99,50 @@ export default function Services() {
                 })}
             </Group>
 
+          </div>
+
+          <div className="space-y-16 xl:col-start-2 xl:row-span-2 xl:row-start-1">
+            <Group title={t.services.categoryHammams}>
+              {hammams.map((h, i) => {
+                const name = t.serviceData[h.id].name;
+                return (
+                  <Item
+                    key={h.id}
+                    i={i}
+                    name={name}
+                    price={h.price}
+                    value={name}
+                    bookLabel={x.menu.bookItem}
+                  >
+                    {steps(h.stepIds)}
+                  </Item>
+                );
+              })}
+            </Group>
+
+            <Group title={t.services.categoryForfaits}>
+              {forfaits
+                .filter((f) => !f.hidden)
+                .map((f, i) => {
+                  const copy = t.serviceData[f.id];
+                  return (
+                    <Item
+                      key={f.id}
+                      i={i}
+                      name={copy.name}
+                      meta={copy.meta}
+                      price={f.price}
+                      value={copy.name}
+                      bookLabel={x.menu.bookItem}
+                    >
+                      {steps(f.stepIds)}
+                    </Item>
+                  );
+                })}
+            </Group>
+          </div>
+
+          <div className="xl:col-start-1 xl:row-start-2">
             <Group title={t.services.categoryBeaute} currencyShown={false}>
               {beaute.map((b, i) => (
                 <div
