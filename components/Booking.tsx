@@ -193,7 +193,7 @@ export default function Booking() {
         <aside {...rv(3)} aria-live="polite" className="md:col-span-5 md:col-start-8">
           <div className="md:sticky md:top-28">
             <p className="text-small text-muted">{x.booking.preview}</p>
-            <div className="mt-3 bg-bg p-6 md:p-8">
+            <div className="mt-3 rounded-[var(--radius-card)] bg-bg p-6 md:p-8">
               <p className={["whitespace-pre-line text-body", started ? "" : "text-muted"].join(" ")}>
                 {preview}
               </p>

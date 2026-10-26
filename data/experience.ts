@@ -90,7 +90,7 @@ const fr: ExperienceCopy = {
     stages: [
       { name: "Vapeur", text: "La chaleur du hammam détend les muscles et prépare la peau. On s’installe, on respire, le temps ralentit." },
       { name: "Huile d’argan", text: "L’huile d’argan, chauffée entre les mains, nourrit la peau et accompagne chaque geste du massage." },
-      { name: "Massage", text: "Relaxant, tonifiant, dabachi ou au baume d’argan : le massage prolonge la détente du hammam." },
+      { name: "Massage", text: "Relaxant, tonifiant ou dabachi : le massage prolonge la détente du hammam." },
       { name: "Thé", text: "Une pause thé, avec des pâtisseries marocaines dans certains forfaits, pour revenir doucement à la journée." },
     ],
   },
@@ -166,7 +166,7 @@ const en: ExperienceCopy = {
     stages: [
       { name: "Steam", text: "The heat of the hammam loosens the muscles and prepares the skin. You settle in, you breathe, time slows down." },
       { name: "Argan oil", text: "Argan oil, warmed between the hands, nourishes the skin and carries every movement of the massage." },
-      { name: "Massage", text: "Relaxing, toning, dabachi or with argan balm: the massage carries on the calm of the hammam." },
+      { name: "Massage", text: "Relaxing, toning or dabachi: the massage carries on the calm of the hammam." },
       { name: "Tea", text: "A tea break, with Moroccan pastries in some packages, to ease gently back into the day." },
     ],
   },
@@ -242,7 +242,7 @@ const it: ExperienceCopy = {
     stages: [
       { name: "Vapore", text: "Il calore dell’hammam scioglie i muscoli e prepara la pelle. Ci si sistema, si respira, il tempo rallenta." },
       { name: "Olio di argan", text: "L’olio di argan, scaldato tra le mani, nutre la pelle e accompagna ogni gesto del massaggio." },
-      { name: "Massaggio", text: "Rilassante, tonificante, dabachi o al balsamo di argan: il massaggio prolunga la calma dell’hammam." },
+      { name: "Massaggio", text: "Rilassante, tonificante o dabachi: il massaggio prolunga la calma dell’hammam." },
       { name: "Tè", text: "Una pausa tè, con pasticceria marocchina in alcuni pacchetti, per tornare piano alla giornata." },
     ],
   },
@@ -318,7 +318,7 @@ const es: ExperienceCopy = {
     stages: [
       { name: "Vapor", text: "El calor del hammam relaja los músculos y prepara la piel. Te acomodas, respiras, el tiempo se detiene." },
       { name: "Aceite de argán", text: "El aceite de argán, templado entre las manos, nutre la piel y acompaña cada gesto del masaje." },
-      { name: "Masaje", text: "Relajante, tonificante, dabachi o con bálsamo de argán: el masaje prolonga la calma del hammam." },
+      { name: "Masaje", text: "Relajante, tonificante o dabachi: el masaje prolonga la calma del hammam." },
       { name: "Té", text: "Una pausa con té, y pastelería marroquí en algunos paquetes, para volver despacio al día." },
     ],
   },

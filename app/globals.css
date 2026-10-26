@@ -14,6 +14,10 @@
   /* Couleurs du logo */
   --bg: #f2e4da; /* crème rosé du logo */
   --surface: #e8d5c7; /* un pas de ton plus sable */
+  --paper: #fbf5f0; /* le plus clair : les fiches de la carte */
+  /* Formes : boutons en pilule (l'arrondi de l'arche du logo), fiches aux angles doux */
+  --radius-card: 1.5rem;
+  --radius-inner: 1rem;
   --ink: #2b1b14; /* brun du nom, assombri pour la lecture */
   --muted: #5c4334; /* brun doux (7:1 sur le crème) */
   --accent: #852620; /* rouge de l'arche */
@@ -118,14 +122,15 @@
 }
 
 @layer components {
-  /* --- Bouton : plein, une couleur, angles droits --- */
+  /* --- Bouton : plein, une couleur, en pilule --- */
   .button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.6rem;
     min-height: 3rem;
-    padding: 0 1.6rem;
+    padding: 0 1.75rem;
+    border-radius: 999px;
     background: var(--accent);
     color: var(--accent-ink);
     font-size: var(--step-body);

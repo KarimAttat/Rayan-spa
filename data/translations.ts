@@ -282,11 +282,11 @@ const fr: Dict = {
     },
     "pack-classique": {
       name: "Pack Classique",
-      description: "L’essentiel du rituel marocain : hammam, gommage et un massage anti-stress pour repartir léger.",
+      description: "L’essentiel du rituel marocain : hammam, gommage et un massage relaxant pour repartir léger.",
     },
     "pack-baume": {
       name: "Pack Baume",
-      description: "Un hammam complet suivi d’un massage au baume concentré à l’huile d’argan — la signature Rayan pour une peau nourrie et un corps détendu.",
+      description: "Un hammam complet suivi d’un massage relaxant de 40 min à l’huile d’argan — la signature Rayan pour une peau nourrie et un corps détendu.",
     },
     "pack-amoureux": {
       name: "Pack Amoureux",
@@ -350,10 +350,9 @@ const fr: Dict = {
     pauseThePatisserie: "Pause thé & pâtisserie marocaine",
     soinVisage45: "Soin du visage 45 min",
     soinVisage1h: "Soin du visage 1h",
-    massageBaumeArgan40: "Massage au baume d’argan 40 min",
     massageBaume40: "Massage au baume 40 min",
     massageRelaxant40: "Massage relaxant 40 min",
-    massageAntiStress20: "Massage anti-stress 20 min",
+    massageRelaxant20: "Massage relaxant 20 min",
     massageChoix40: "Massage au choix 40 min (relaxant ou tonifiant)",
     manucure: "Manucure",
     pedicure: "Pédicure",
@@ -510,11 +509,11 @@ const en: Dict = {
     },
     "pack-classique": {
       name: "Classic Package",
-      description: "The essence of the Moroccan ritual: hammam, scrub and an anti-stress massage to leave feeling light.",
+      description: "The essence of the Moroccan ritual: hammam, scrub and a relaxing massage to leave feeling light.",
     },
     "pack-baume": {
       name: "Balm Package",
-      description: "A full hammam followed by a massage with concentrated argan balm — the Rayan signature for nourished skin and a relaxed body.",
+      description: "A full hammam followed by a 40 min relaxing massage with argan oil — the Rayan signature for nourished skin and a relaxed body.",
     },
     "pack-amoureux": {
       name: "Lovers’ Package",
@@ -578,10 +577,9 @@ const en: Dict = {
     pauseThePatisserie: "Tea break with Moroccan pastries",
     soinVisage45: "45 min facial treatment",
     soinVisage1h: "1h facial treatment",
-    massageBaumeArgan40: "40 min argan balm massage",
     massageBaume40: "40 min balm massage",
     massageRelaxant40: "40 min relaxing massage",
-    massageAntiStress20: "20 min anti-stress massage",
+    massageRelaxant20: "20 min relaxing massage",
     massageChoix40: "40 min massage of your choice (relaxing or toning)",
     manucure: "Manicure",
     pedicure: "Pedicure",
@@ -738,11 +736,11 @@ const it: Dict = {
     },
     "pack-classique": {
       name: "Pack Classico",
-      description: "L’essenziale del rito marocchino: hammam, scrub e un massaggio anti-stress per ripartire leggeri.",
+      description: "L’essenziale del rito marocchino: hammam, scrub e un massaggio relax per ripartire leggeri.",
     },
     "pack-baume": {
       name: "Pack Baume",
-      description: "Un hammam completo seguito da un massaggio al balsamo concentrato di olio di argan — la signature Rayan per una pelle nutrita e un corpo rilassato.",
+      description: "Un hammam completo seguito da un massaggio relax di 40 min all’olio di argan — la signature Rayan per una pelle nutrita e un corpo rilassato.",
     },
     "pack-amoureux": {
       name: "Pack Innamorati",
@@ -806,10 +804,9 @@ const it: Dict = {
     pauseThePatisserie: "Pausa tè con dolci marocchini",
     soinVisage45: "Trattamento viso 45 min",
     soinVisage1h: "Trattamento viso 1h",
-    massageBaumeArgan40: "Massaggio al balsamo di argan 40 min",
     massageBaume40: "Massaggio al balsamo 40 min",
     massageRelaxant40: "Massaggio relax 40 min",
-    massageAntiStress20: "Massaggio anti-stress 20 min",
+    massageRelaxant20: "Massaggio relax 20 min",
     massageChoix40: "Massaggio a scelta 40 min (relax o tonificante)",
     manucure: "Manicure",
     pedicure: "Pedicure",
@@ -966,11 +963,11 @@ const es: Dict = {
     },
     "pack-classique": {
       name: "Pack Clásico",
-      description: "Lo esencial del ritual marroquí: hammam, exfoliación y un masaje antiestrés para salir ligero.",
+      description: "Lo esencial del ritual marroquí: hammam, exfoliación y un masaje relajante para salir ligero.",
     },
     "pack-baume": {
       name: "Pack Bálsamo",
-      description: "Un hammam completo seguido de un masaje con bálsamo concentrado de aceite de argán — la firma de Rayan para una piel nutrida y un cuerpo relajado.",
+      description: "Un hammam completo seguido de un masaje relajante de 40 min con aceite de argán — la firma de Rayan para una piel nutrida y un cuerpo relajado.",
     },
     "pack-amoureux": {
       name: "Pack Enamorados",
@@ -1034,10 +1031,9 @@ const es: Dict = {
     pauseThePatisserie: "Pausa de té con dulces marroquíes",
     soinVisage45: "Tratamiento facial de 45 min",
     soinVisage1h: "Tratamiento facial de 1h",
-    massageBaumeArgan40: "Masaje con bálsamo de argán 40 min",
     massageBaume40: "Masaje con bálsamo 40 min",
     massageRelaxant40: "Masaje relajante 40 min",
-    massageAntiStress20: "Masaje antiestrés 20 min",
+    massageRelaxant20: "Masaje relajante 20 min",
     massageChoix40: "Masaje a elegir 40 min (relajante o tonificante)",
     manucure: "Manicura",
     pedicure: "Pedicura",

@@ -84,9 +84,9 @@ export default function WhatsAppFloat() {
         .wa-float, .cta-bar { opacity: 0; transform: translateY(16px); pointer-events: none;
           transition: transform 320ms var(--ease-out), opacity 320ms var(--ease-out), background-color var(--t-hover) ease; }
         .wa-float.is-shown, .cta-bar.is-shown { opacity: 1; transform: none; pointer-events: auto; }
-        /* Le vert de WhatsApp, reconnu d'un coup d'œil ; texte foncé pour rester lisible */
-        .button--wa { background: #25d366; color: #0b2a17; }
-        .button--wa:active { background: #1fb457; }
+        /* Le vert profond de WhatsApp : reconnu d'un coup d'œil, accordé au bordeaux et au sable */
+        .button--wa { background: #075e54; color: var(--accent-ink); }
+        .button--wa:active { background: #054a42; }
         .cta-bar { box-shadow: 0 -1px 0 color-mix(in srgb, var(--ink) 12%, transparent); } /* taste-skill-ignore: barre flottante */
         @media (hover: hover) and (pointer: fine) { .wa-float.is-shown:hover { transform: translateY(-3px); background: var(--accent-strong); } }
         .wa-float.is-shown:active { transform: scale(0.94); }

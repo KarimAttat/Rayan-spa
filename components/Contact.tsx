@@ -77,7 +77,7 @@ export default function Contact() {
         {/* La carte : à droite des rangées sur grand écran, en dessous sur mobile */}
         <div
           {...rv(1, "mask")}
-          className="relative h-[20rem] md:absolute md:bottom-0 md:right-margin md:top-0 md:h-auto md:w-[36%]"
+          className="relative h-[20rem] overflow-hidden rounded-[var(--radius-card)] md:absolute md:bottom-0 md:right-margin md:top-0 md:h-auto md:w-[36%]"
         >
           <a
             href={contact.address.mapsLink}

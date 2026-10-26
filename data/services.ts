@@ -106,7 +106,7 @@ export const forfaits: Forfait[] = [
       "shampooingBio",
       "savonnage",
       "pauseThe",
-      "massageAntiStress20",
+      "massageRelaxant20",
     ],
   },
   {
@@ -120,7 +120,7 @@ export const forfaits: Forfait[] = [
       "shampooingBio",
       "gommageGhassoul",
       "gommageCafe",
-      "massageBaumeArgan40",
+      "massageRelaxant40",
       "pauseThe",
     ],
   },
