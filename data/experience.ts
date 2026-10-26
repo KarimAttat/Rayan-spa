@@ -20,7 +20,6 @@ export type ExperienceCopy = {
     line: string;
     cta: string;
     menuLink: string;
-    /** Texte posé sur le hammam en plein écran, une fois entré dans le nom. */
   };
   status: {
     openUntil: string; // {time}
@@ -36,7 +35,17 @@ export type ExperienceCopy = {
     placeList: string[];
   };
   ritual: { title: string; intro: string; stages: RitualStage[] };
-  menu: { title: string; bookItem: string; perDuration: string };
+  menu: {
+    title: string;
+    bookItem: string;
+    perDuration: string;
+    /** Liens courts vers chaque groupe de la carte. */
+    jump: { massages: string; hammams: string; forfaits: string; beaute: string };
+    /** « Comprend » : devant la liste des étapes d'un hammam ou d'un forfait. */
+    includes: string;
+    /** Indication sous les durées : un toucher suffit pour réserver. */
+    tapHint: string;
+  };
   places: { title: string; alts: string[] };
   band: { sentence: string; verb: string; label: string };
   booking: { preview: string; previewHint: string; optional: string };
@@ -85,7 +94,14 @@ const fr: ExperienceCopy = {
       { name: "Thé", text: "Une pause thé, avec des pâtisseries marocaines dans certains forfaits, pour revenir doucement à la journée." },
     ],
   },
-  menu: { title: "La carte", bookItem: "Réserver", perDuration: "selon la durée" },
+  menu: {
+    title: "La carte",
+    bookItem: "Réserver",
+    perDuration: "selon la durée",
+    jump: { massages: "Massages", hammams: "Hammams", forfaits: "Forfaits", beaute: "Beauté" },
+    includes: "Comprend",
+    tapHint: "Touchez une durée pour la réserver.",
+  },
   places: {
     title: "Les lieux",
     alts: [
@@ -154,7 +170,14 @@ const en: ExperienceCopy = {
       { name: "Tea", text: "A tea break, with Moroccan pastries in some packages, to ease gently back into the day." },
     ],
   },
-  menu: { title: "The menu", bookItem: "Book", perDuration: "by duration" },
+  menu: {
+    title: "The menu",
+    bookItem: "Book",
+    perDuration: "by duration",
+    jump: { massages: "Massages", hammams: "Hammams", forfaits: "Packages", beaute: "Beauty" },
+    includes: "Includes",
+    tapHint: "Tap a duration to book it.",
+  },
   places: {
     title: "The spa",
     alts: [
@@ -223,7 +246,14 @@ const it: ExperienceCopy = {
       { name: "Tè", text: "Una pausa tè, con pasticceria marocchina in alcuni pacchetti, per tornare piano alla giornata." },
     ],
   },
-  menu: { title: "Il listino", bookItem: "Prenota", perDuration: "secondo la durata" },
+  menu: {
+    title: "Il listino",
+    bookItem: "Prenota",
+    perDuration: "secondo la durata",
+    jump: { massages: "Massaggi", hammams: "Hammam", forfaits: "Pacchetti", beaute: "Bellezza" },
+    includes: "Comprende",
+    tapHint: "Tocca una durata per prenotarla.",
+  },
   places: {
     title: "Gli spazi",
     alts: [
@@ -292,7 +322,14 @@ const es: ExperienceCopy = {
       { name: "Té", text: "Una pausa con té, y pastelería marroquí en algunos paquetes, para volver despacio al día." },
     ],
   },
-  menu: { title: "La carta", bookItem: "Reservar", perDuration: "según la duración" },
+  menu: {
+    title: "La carta",
+    bookItem: "Reservar",
+    perDuration: "según la duración",
+    jump: { massages: "Masajes", hammams: "Hammams", forfaits: "Paquetes", beaute: "Belleza" },
+    includes: "Incluye",
+    tapHint: "Toca una duración para reservarla.",
+  },
   places: {
     title: "El espacio",
     alts: [
