@@ -11,6 +11,7 @@ import {
   type BookingPayload,
 } from "@/lib/whatsapp";
 import { onSelectService } from "@/lib/booking-bus";
+import { track } from "@vercel/analytics";
 import { rv } from "./ui/Reveal";
 
 const empty: BookingPayload = {
@@ -26,10 +27,10 @@ const empty: BookingPayload = {
 type Errors = Partial<Record<keyof BookingPayload, string>>;
 
 /**
- * Réservation, en deux temps :
- * 1. un bandeau en forme d'arche — un seul mot, un seul lien, WhatsApp direct ;
- * 2. le formulaire, avec le message WhatsApp qui s'écrit en direct à côté
- *    (exactement le texte qui sera envoyé).
+ * Réservation, juste après la carte : le formulaire, avec le message
+ * WhatsApp qui s'écrit en direct à côté (exactement le texte envoyé).
+ * Seul le soin est obligatoire ; pour qui ne veut rien remplir, un lien
+ * WhatsApp direct sous le bouton.
  */
 export default function Booking() {
   const { t, x } = useI18n();
@@ -58,12 +59,10 @@ export default function Booking() {
     };
 
   function validate(): boolean {
+    // Un seul champ obligatoire : le soin. Le reste se précise sur WhatsApp
+    // (le numéro du client y est déjà, la date peut rester « à convenir »).
     const next: Errors = {};
-    if (!form.name.trim()) next.name = t.booking.errors.name;
-    if (!form.phone.trim() || form.phone.replace(/\D/g, "").length < 6)
-      next.phone = t.booking.errors.phone;
     if (!form.service) next.service = t.booking.errors.service;
-    if (!form.date) next.date = t.booking.errors.date;
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -73,14 +72,17 @@ export default function Booking() {
     if (!validate()) return;
     const link = buildWhatsAppLink(form, { whatsapp: t.whatsapp, intl: t.intl });
     setSentLink(link);
-    window.open(link, "_blank", "noopener,noreferrer");
+    track("booking_submit", { service: form.service });
+    // Même onglet : les navigateurs intégrés (Instagram, TikTok, Facebook)
+    // bloquent souvent l'ouverture d'un nouvel onglet.
+    window.location.href = link;
   }
 
   // Le message tel qu'il partira, mis à jour à chaque frappe.
   const preview = useMemo(
     () =>
       buildWhatsAppMessage(
-        { ...form, name: form.name || "…", phone: form.phone || "…", service: form.service || "…" },
+        { ...form, service: form.service || "…" },
         { whatsapp: t.whatsapp, intl: t.intl }
       ),
     [form, t.whatsapp, t.intl]
@@ -88,38 +90,7 @@ export default function Booking() {
   const started = !!(form.service || form.date || form.name);
 
   return (
-    <section id="reservation" className="bg-bg pt-section">
-      {/* ---------- Le bandeau : un mot, un lien ---------- */}
-      <a
-        href={direct}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={x.band.label}
-        className="band arch relative mx-margin flex h-[52svh] flex-col justify-between overflow-hidden bg-accent text-accent-ink md:h-[68svh]"
-      >
-        <span className="mt-[46%] flex items-start justify-between gap-6 px-5 sm:mt-[30%] md:mt-[11%] md:px-8">
-          <span className="max-w-[24ch] text-body md:text-lead">{x.band.sentence}</span>
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 48 48"
-            className="band-arrow h-8 w-8 shrink-0 md:h-12 md:w-12"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-          >
-            <path d="M12 36 36 12M16 12h20v20" strokeLinecap="square" />
-          </svg>
-        </span>
-        <span
-          aria-hidden="true"
-          className="giant display block whitespace-nowrap px-3 pb-[0.06em] font-medium leading-[0.74] tracking-[-0.055em]"
-          // Le mot remplit la largeur sur une ligne, quelle que soit la langue.
-          style={{ fontSize: `min(var(--step-giant), ${(86 / (x.band.verb.length * 0.5)).toFixed(1)}vw)` }}
-        >
-          {x.band.verb}
-        </span>
-      </a>
-
+    <section id="reservation" className="bg-surface">
       {/* ---------- Le formulaire et son message ---------- */}
       <div id="formulaire" className="wrap grid gap-16 py-section md:grid-cols-12 md:gap-x-8">
         <div className="md:col-span-6">
@@ -134,13 +105,6 @@ export default function Booking() {
             <Confirmation link={sentLink} placeholder={placeholder} onReset={() => { setSentLink(null); setForm(empty); }} />
           ) : (
             <form {...rv(2)} onSubmit={onSubmit} noValidate className="mt-12 grid gap-x-8 gap-y-7 sm:grid-cols-2">
-              <Field label={t.booking.fields.name} error={errors.name} htmlFor="name">
-                <input id="name" type="text" autoComplete="name" value={form.name} onChange={update("name")} placeholder={t.booking.fields.namePh} className="field" aria-invalid={!!errors.name} />
-              </Field>
-              <Field label={t.booking.fields.phone} error={errors.phone} htmlFor="phone">
-                <input id="phone" type="tel" autoComplete="tel" value={form.phone} onChange={update("phone")} placeholder="+212 6 …" className="field" aria-invalid={!!errors.phone} />
-              </Field>
-
               <Field label={t.booking.fields.service} error={errors.service} htmlFor="service" wide>
                 <select id="service" value={form.service} onChange={update("service")} className="field" aria-invalid={!!errors.service}>
                   <option value="">{t.booking.fields.servicePh}</option>
@@ -179,8 +143,8 @@ export default function Booking() {
                 </select>
               </Field>
 
-              <Field label={t.booking.fields.date} error={errors.date} htmlFor="date">
-                <input id="date" type="date" value={form.date} onChange={update("date")} className="field" aria-invalid={!!errors.date} />
+              <Field label={`${t.booking.fields.date} (${x.booking.optional})`} htmlFor="date">
+                <input id="date" type="date" value={form.date} onChange={update("date")} className="field" />
               </Field>
               <div className="grid grid-cols-2 gap-x-8">
                 <Field label={t.booking.fields.time} htmlFor="time">
@@ -195,14 +159,26 @@ export default function Booking() {
                 </Field>
               </div>
 
+              <Field label={`${t.booking.fields.name} (${x.booking.optional})`} htmlFor="name">
+                <input id="name" type="text" autoComplete="name" value={form.name} onChange={update("name")} placeholder={t.booking.fields.namePh} className="field" />
+              </Field>
+              <Field label={`${t.booking.fields.phone} (${x.booking.optional})`} htmlFor="phone">
+                <input id="phone" type="tel" autoComplete="tel" value={form.phone} onChange={update("phone")} placeholder="+212 6 …" className="field" />
+              </Field>
+
               <Field label={t.booking.fields.notes} htmlFor="notes" wide>
                 <textarea id="notes" rows={2} value={form.notes} onChange={update("notes")} placeholder={t.booking.fields.notesPh} className="field" />
               </Field>
 
               <div className="sm:col-span-2">
-                <button type="submit" className="button w-full sm:w-auto">
-                  {t.booking.submit}
-                </button>
+                <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
+                  <button type="submit" className="button w-full sm:w-auto">
+                    {t.booking.submit}
+                  </button>
+                  <a href={direct} data-cta="booking-direct" className="link text-body">
+                    {x.cta.whatsapp}
+                  </a>
+                </div>
                 {placeholder && (
                   <p className="mt-3 text-small text-muted">
                     {t.booking.demo.pre}data/site-config.ts{t.booking.demo.post}
@@ -217,7 +193,7 @@ export default function Booking() {
         <aside {...rv(3)} aria-live="polite" className="md:col-span-5 md:col-start-8">
           <div className="md:sticky md:top-28">
             <p className="text-small text-muted">{x.booking.preview}</p>
-            <div className="mt-3 bg-surface p-6 md:p-8">
+            <div className="mt-3 bg-bg p-6 md:p-8">
               <p className={["whitespace-pre-line text-body", started ? "" : "text-muted"].join(" ")}>
                 {preview}
               </p>
@@ -227,14 +203,6 @@ export default function Booking() {
         </aside>
       </div>
 
-      <style dangerouslySetInnerHTML={{ __html: `
-        .band { transition: background-color 0ms, color 0ms; }
-        .band-arrow { transition: transform var(--t-hover) var(--ease-out); }
-        .band:hover, .band:focus-visible { background: var(--accent-strong); }
-        .band:hover .band-arrow { transform: translate(4px, -4px); }
-        .band:active { transform: scale(0.995); }
-        .band:focus-visible { outline-offset: 6px; }
-      ` }} />
     </section>
   );
 }
@@ -283,7 +251,7 @@ function Confirmation({
       <p className="mt-3 max-w-[44ch] text-body">{t.booking.confirm.body}</p>
       {placeholder && <p className="mt-3 text-small text-muted">{t.booking.confirm.demoNote}</p>}
       <div className="mt-8 flex flex-wrap items-center gap-6">
-        <a href={link} target="_blank" rel="noopener noreferrer" className="button">
+        <a href={link} className="button">
           {t.booking.confirm.open}
         </a>
         <button onClick={onReset} className="link min-h-[2.75rem] text-body">

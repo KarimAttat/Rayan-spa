@@ -2,13 +2,22 @@
    Lien carte → formulaire : un clic sur un soin de la carte le
    présélectionne dans le formulaire de réservation et fait défiler
    jusqu'à lui. La valeur est exactement celle d'une <option>.
+   goToBooking() : même défilement, sans présélection (boutons
+   « Réserver » de la page).
    ============================================================ */
+
+import { track } from "@vercel/analytics";
 
 const EVENT = "rayan:select-service";
 
 export function selectService(value: string) {
   window.dispatchEvent(new CustomEvent<string>(EVENT, { detail: value }));
-  // On vise le titre du formulaire, sous la barre de navigation (≈ 72 px) avec de l'air.
+  track("menu_select", { service: value });
+  goToBooking();
+}
+
+/** Fait défiler jusqu'au formulaire, titre sous la barre de navigation (≈ 72 px) avec de l'air. */
+export function goToBooking() {
   const target = document.querySelector("#formulaire h2") ?? document.getElementById("formulaire");
   if (!target) return;
   const top = target.getBoundingClientRect().top + window.scrollY - 112;

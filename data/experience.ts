@@ -41,7 +41,16 @@ export type ExperienceCopy = {
   menu: { title: string; bookItem: string; perDuration: string };
   places: { title: string; alts: string[] };
   band: { sentence: string; verb: string; label: string };
-  booking: { preview: string; previewHint: string };
+  booking: { preview: string; previewHint: string; optional: string };
+  /** Appels à l'action répétés le long de la page. */
+  cta: {
+    title: string;
+    text: string;
+    choose: string;
+    whatsapp: string;
+    ritual: string;
+    book: string;
+  };
   contact: { hoursLine: string[]; greeting: string; greetingLabel: string; map: string; phoneLabel: string };
   footer: { invite: string; cta: string };
 };
@@ -98,6 +107,15 @@ const fr: ExperienceCopy = {
   booking: {
     preview: "Votre message",
     previewHint: "Il s’écrit pendant que vous remplissez le formulaire.",
+    optional: "facultatif",
+  },
+  cta: {
+    title: "Réservez en une minute",
+    text: "Choisissez un soin, envoyez le message : nous confirmons l’heure sur WhatsApp.",
+    choose: "Choisir un soin",
+    whatsapp: "Écrire sur WhatsApp",
+    ritual: "Réserver ce soin",
+    book: "Réserver",
   },
   contact: {
     hoursLine: ["Lun – Sam", "10h – 20h"],
@@ -161,6 +179,15 @@ const en: ExperienceCopy = {
   booking: {
     preview: "Your message",
     previewHint: "It writes itself as you fill in the form.",
+    optional: "optional",
+  },
+  cta: {
+    title: "Book in one minute",
+    text: "Pick a treatment, send the message: we confirm the time on WhatsApp.",
+    choose: "Choose a treatment",
+    whatsapp: "Message us on WhatsApp",
+    ritual: "Book this treatment",
+    book: "Book",
   },
   contact: {
     hoursLine: ["Mon – Sat", "10:00 – 20:00"],
@@ -224,6 +251,15 @@ const it: ExperienceCopy = {
   booking: {
     preview: "Il tuo messaggio",
     previewHint: "Si scrive mentre compili il modulo.",
+    optional: "facoltativo",
+  },
+  cta: {
+    title: "Prenota in un minuto",
+    text: "Scegli un trattamento, invia il messaggio: confermiamo l’orario su WhatsApp.",
+    choose: "Scegli un trattamento",
+    whatsapp: "Scrivici su WhatsApp",
+    ritual: "Prenota questo trattamento",
+    book: "Prenota",
   },
   contact: {
     hoursLine: ["Lun – Sab", "10 – 20"],
@@ -287,6 +323,15 @@ const es: ExperienceCopy = {
   booking: {
     preview: "Tu mensaje",
     previewHint: "Se escribe mientras rellenas el formulario.",
+    optional: "opcional",
+  },
+  cta: {
+    title: "Reserva en un minuto",
+    text: "Elige un tratamiento, envía el mensaje: confirmamos la hora por WhatsApp.",
+    choose: "Elegir tratamiento",
+    whatsapp: "Escríbenos por WhatsApp",
+    ritual: "Reservar este tratamiento",
+    book: "Reservar",
   },
   contact: {
     hoursLine: ["Lun – Sáb", "10 – 20 h"],

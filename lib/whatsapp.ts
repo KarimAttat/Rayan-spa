@@ -38,8 +38,9 @@ export function buildWhatsAppMessage(
     "",
     w.intro,
     "",
-    `• ${w.name} : ${data.name}`,
-    `• ${w.phone} : ${data.phone}`,
+    // Nom et téléphone sont facultatifs : WhatsApp transmet déjà le numéro.
+    ...(data.name.trim() ? [`• ${w.name} : ${data.name.trim()}`] : []),
+    ...(data.phone.trim() ? [`• ${w.phone} : ${data.phone.trim()}`] : []),
     `• ${w.service} : ${data.service}`,
     `• ${w.date} : ${formatDate(data.date, loc.intl, w.toConvene)}`,
     `• ${w.time} : ${data.time || w.toConvene}`,

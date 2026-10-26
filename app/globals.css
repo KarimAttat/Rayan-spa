@@ -140,8 +140,8 @@
     transform: scale(0.97);
   }
   .button--ink {
-    background: var(--bg);
-    color: var(--ink);
+    background: var(--night);
+    color: var(--night-ink);
   }
   .button--light {
     background: var(--bg);

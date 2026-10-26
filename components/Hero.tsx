@@ -10,6 +10,7 @@ import {
 import { siteConfig } from "@/data/site-config";
 import { useI18n } from "@/lib/i18n";
 import OpenStatus from "@/components/ui/OpenStatus";
+import { goToBooking } from "@/lib/booking-bus";
 import { useStill } from "@/lib/use-still";
 
 /**
@@ -198,12 +199,15 @@ export default function Hero() {
   const scrim = useTransform(p, [0.55, 0.72], [0, still ? 0 : 1]);
   const tx = useTransform(p, [0.62, 0.85], ["-8vw", "0vw"]);
   const to = useTransform(p, [0.62, 0.8], [0, still ? 0 : 1]);
+  // Les boutons posés sur la photo ne captent les clics qu'une fois visibles.
+  const [ctaOn, setCtaOn] = useState(false);
+  useMotionValueEvent(to, "change", (v) => setCtaOn(v > 0.6));
 
   const svgReady = !!layout && !still;
   const photo = optimized(heroImage.src, 1920);
 
   return (
-    <section ref={ref} id="top" className="relative h-[100svh] bg-bg motion-safe:h-[260svh]">
+    <section ref={ref} id="top" className="relative h-[100svh] bg-bg motion-safe:h-[220svh]">
       <div ref={stageRef} className="sticky top-0 h-[100svh] overflow-hidden">
         <h1 className="sr-only">Rayan SPA — {x.hero.h1Suffix}</h1>
 
@@ -281,13 +285,32 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
+        {/* Les actions posées sur la photo : actives seulement quand elles se voient */}
+        <motion.div
+          data-cta-zone="hero-photo"
+          className="wrap absolute inset-x-0 bottom-[5svh] flex flex-wrap items-center gap-6"
+          style={{ x: tx, opacity: to, pointerEvents: ctaOn ? "auto" : "none" }}
+          aria-hidden={ctaOn ? undefined : true}
+        >
+          <button type="button" tabIndex={ctaOn ? undefined : -1} onClick={goToBooking} className="button">
+            {x.hero.cta}
+          </button>
+          <a
+            href={`https://wa.me/${siteConfig.contact.whatsapp}`}
+            tabIndex={ctaOn ? undefined : -1}
+            className="link text-body text-night-ink"
+          >
+            {x.cta.whatsapp}
+          </a>
+        </motion.div>
+
         {/* Bord inférieur : état d'ouverture, phrase, action */}
         <motion.div style={{ opacity: chrome }} className="absolute inset-x-0 bottom-0">
           <div className="fade-late wrap grid gap-5 pb-8 md:pb-10 lg:grid-cols-12 lg:items-end">
             <OpenStatus className="text-small text-muted lg:col-span-4" />
             <p className="max-w-[34ch] text-body lg:col-span-4 lg:col-start-6">{x.hero.line}</p>
             <div className="flex items-center gap-6 lg:col-span-3 lg:col-start-10 lg:justify-end">
-              <a href="#reservation" className="button">
+              <a href="#reservation" onClick={(e) => { e.preventDefault(); goToBooking(); }} className="button">
                 {x.hero.cta}
               </a>
               <a href="#carte" className="link whitespace-nowrap text-body">

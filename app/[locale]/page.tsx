@@ -12,11 +12,16 @@ import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import CtaInline from "@/components/CtaInline";
+import CtaBand from "@/components/CtaBand";
+import ConversionTracker from "@/components/ui/ConversionTracker";
 import RevealObserver from "@/components/ui/Reveal";
 
 /**
- * L'ordre de la page suit l'argument : le nom et la porte, la maison,
- * le rituel, la carte et ses prix, les lieux, la réservation, l'adresse.
+ * L'ordre de la page suit la décision du visiteur : le nom, puis tout de
+ * suite la carte et le formulaire (ce qu'on vient chercher), puis ce qui
+ * donne envie (la maison, le rituel, les lieux), relancé par des appels
+ * à réserver entre les sections, et l'adresse pour finir.
  */
 export default function Home({ params }: { params: { locale: Locale } }) {
   return (
@@ -24,17 +29,20 @@ export default function Home({ params }: { params: { locale: Locale } }) {
       <Header />
       <main>
         <Hero />
-        <About />
-        <Ritual />
         <Services />
-        <Gallery />
         <Booking />
+        <About />
+        <CtaInline zone="after-about" />
+        <Ritual />
+        <Gallery />
+        <CtaBand />
         {siteConfig.showTestimonials && <Testimonials />}
         <Contact />
       </main>
       <Footer />
       <WhatsAppFloat />
       <RevealObserver key={params.locale} />
+      <ConversionTracker />
     </I18nProvider>
   );
 }

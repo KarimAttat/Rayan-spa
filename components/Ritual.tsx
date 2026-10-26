@@ -7,6 +7,8 @@ import { useI18n } from "@/lib/i18n";
 import type { RitualStage } from "@/data/experience";
 import { rv } from "./ui/Reveal";
 import { useStill } from "@/lib/use-still";
+import { selectService } from "@/lib/booking-bus";
+import type { Dict } from "@/data/translations";
 
 /**
  * Le rituel du hammam, étape par étape : des panneaux plein écran qui
@@ -22,6 +24,14 @@ const STAGES = [
   { img: "/images/massage3.jpg", focus: "50% 45%", side: "left" },
   { img: "/images/rooftop2.jpg", focus: "60% 55%", side: "right" },
 ] as const;
+
+/** Le soin à réserver depuis chaque étape (valeur exacte d'une option du formulaire). */
+const STAGE_SERVICE: ((t: Dict) => string)[] = [
+  (t) => t.serviceData["hammam-oriental"].name,
+  (t) => t.serviceData["pack-baume"].name,
+  (t) => `${t.serviceData["massage-relaxant"].name} (20 min)`,
+  (t) => t.serviceData["pack-classique"].name,
+];
 
 export default function Ritual() {
   const { x } = useI18n();
@@ -47,6 +57,7 @@ export default function Ritual() {
 }
 
 function Stage({ stage, index, last }: { stage: RitualStage; index: number; last: boolean }) {
+  const { t, x } = useI18n();
   const ref = useRef<HTMLLIElement>(null);
   const reduce = useStill();
   const s = STAGES[index];
@@ -98,6 +109,13 @@ function Stage({ stage, index, last }: { stage: RitualStage; index: number; last
             {stage.name}
           </h3>
           <p className="max-w-[34ch] text-lead">{stage.text}</p>
+          <button
+            type="button"
+            onClick={() => selectService(STAGE_SERVICE[index](t))}
+            className="button button--light"
+          >
+            {x.cta.ritual}
+          </button>
         </motion.div>
 
         {/* L'assombrissement quand l'étape suivante passe dessus */}

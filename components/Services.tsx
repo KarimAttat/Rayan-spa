@@ -51,7 +51,7 @@ export default function Services() {
               sizes="(max-width: 768px) 100vw, 42vw"
               zoom={1.35}
               drift={4}
-              className="h-[70svh] md:h-full"
+              className="h-[42svh] md:h-full"
             />
           </div>
         </div>
@@ -89,7 +89,10 @@ export default function Services() {
                               className="menu-row flex w-full items-baseline justify-between gap-6 py-1 text-left text-body tabular-nums"
                             >
                               <span className="text-muted">{v.duration}</span>
-                              <span>{v.price}</span>
+                              <span className="flex items-baseline gap-4">
+                                <span>{v.price}</span>
+                                <BookHint label={x.menu.bookItem} />
+                              </span>
                             </button>
                           </li>
                         ))}
@@ -175,6 +178,8 @@ export default function Services() {
           .menu-row:hover .menu-name { text-decoration-color: currentColor; }
         }
         .menu-row:active { transform: translateX(2px); }
+        .menu-book { display: inline-block; transition: transform var(--t-hover) var(--ease-out); }
+        @media (hover: hover) and (pointer: fine) { .menu-row:hover .menu-book { transform: translateX(4px); } }
       ` }} />
     </section>
   );
@@ -197,6 +202,15 @@ function Group({
       </div>
       <div className="mt-6 space-y-6">{children}</div>
     </div>
+  );
+}
+
+/** « Réserver → » visible sur chaque ligne : la carte se lit comme un bon de commande. */
+function BookHint({ label }: { label: string }) {
+  return (
+    <span aria-hidden="true" className="menu-book whitespace-nowrap text-small font-medium text-accent">
+      {label}&nbsp;→
+    </span>
   );
 }
 
@@ -229,7 +243,10 @@ function Item({
           {name}
           {meta && <span className="text-muted"> · {meta}</span>}
         </span>
-        <span>{price}</span>
+        <span className="flex shrink-0 items-baseline gap-4">
+          <span>{price}</span>
+          <BookHint label={bookLabel} />
+        </span>
       </button>
       {children && (
         <p className="mt-1 max-w-[40ch] text-small text-muted">{children}</p>

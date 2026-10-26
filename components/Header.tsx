@@ -6,8 +6,8 @@ import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
 /** Sections ancrées : href + clé de traduction (data/experience.ts → nav). */
 const NAV = [
-  { id: "rituel", key: "ritual" },
   { id: "carte", key: "menu" },
+  { id: "rituel", key: "ritual" },
   { id: "lieux", key: "places" },
   { id: "contact", key: "contact" },
 ] as const;
