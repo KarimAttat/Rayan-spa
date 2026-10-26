@@ -58,9 +58,9 @@ export const siteConfig = {
   showTestimonials: false,
 
   /* --------- IMAGES --------- */
-  // Photo vue à travers les lettres du nom, en tête de page : la salle aux lumières rouges.
+  // Photo vue à travers les lettres du nom, en tête de page : le zellige du hammam.
   heroImage: {
-    src: "/images/massage1.jpg",
+    src: "/images/hammam1.jpg",
     w: 1200,
     h: 1600,
   },

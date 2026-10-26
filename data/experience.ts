@@ -21,8 +21,6 @@ export type ExperienceCopy = {
     cta: string;
     menuLink: string;
     /** Texte posé sur le hammam en plein écran, une fois entré dans le nom. */
-    revealTitle: string;
-    revealText: string;
   };
   status: {
     openUntil: string; // {time}
@@ -62,8 +60,6 @@ const fr: ExperienceCopy = {
     line: "Hammam et massages dans la médina de Marrakech, au 45 Derb Toudgha.",
     cta: "Réserver",
     menuLink: "Voir la carte",
-    revealTitle: "Entrez, respirez",
-    revealText: "Lumière tamisée, huiles chaudes et mains expertes : le soin commence ici.",
   },
   status: {
     openUntil: "Ouvert aujourd’hui jusqu’à {time}",
@@ -95,7 +91,6 @@ const fr: ExperienceCopy = {
     alts: [
       "Le rooftop, ses chapeaux de paille et la vue sur les toits de la médina",
       "Le hammam, habillé de zellige noir et blanc",
-      "Salle de massage baignée de lumière rouge",
       "La salle de massage duo",
     ],
   },
@@ -134,8 +129,6 @@ const en: ExperienceCopy = {
     line: "Hammam and massages in the Marrakech medina, at 45 Derb Toudgha.",
     cta: "Book",
     menuLink: "See the menu",
-    revealTitle: "Come in, breathe",
-    revealText: "Soft light, warm oils and expert hands: your treatment begins here.",
   },
   status: {
     openUntil: "Open today until {time}",
@@ -167,7 +160,6 @@ const en: ExperienceCopy = {
     alts: [
       "The rooftop, its straw hats and the view over the medina roofs",
       "The hammam, clad in black and white zellige",
-      "Massage room bathed in red light",
       "The couples’ massage room",
     ],
   },
@@ -206,8 +198,6 @@ const it: ExperienceCopy = {
     line: "Hammam e massaggi nella medina di Marrakech, al 45 di Derb Toudgha.",
     cta: "Prenota",
     menuLink: "Vedi il listino",
-    revealTitle: "Entrate, respirate",
-    revealText: "Luce soffusa, oli caldi e mani esperte: il trattamento comincia qui.",
   },
   status: {
     openUntil: "Aperto oggi fino alle {time}",
@@ -239,7 +229,6 @@ const it: ExperienceCopy = {
     alts: [
       "Il rooftop, i cappelli di paglia e la vista sui tetti della medina",
       "L’hammam, rivestito di zellige bianco e nero",
-      "Sala massaggi immersa nella luce rossa",
       "La sala massaggi di coppia",
     ],
   },
@@ -278,8 +267,6 @@ const es: ExperienceCopy = {
     line: "Hammam y masajes en la medina de Marrakech, en el 45 de Derb Toudgha.",
     cta: "Reservar",
     menuLink: "Ver la carta",
-    revealTitle: "Entra, respira",
-    revealText: "Luz tenue, aceites calientes y manos expertas: el tratamiento empieza aquí.",
   },
   status: {
     openUntil: "Abierto hoy hasta las {time}",
@@ -311,7 +298,6 @@ const es: ExperienceCopy = {
     alts: [
       "La azotea, sus sombreros de paja y la vista sobre los tejados de la medina",
       "El hammam, revestido de zellige blanco y negro",
-      "Sala de masaje bañada de luz roja",
       "La sala de masaje para dos",
     ],
   },

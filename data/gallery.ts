@@ -20,6 +20,5 @@ export type GalleryItem = {
 export const gallery: GalleryItem[] = [
   { id: "rooftop", src: "/images/rooftop1.jpg", w: 1200, h: 1600, focus: "50% 50%" },
   { id: "hammam", src: "/images/hammam1.jpg", w: 1200, h: 1600, focus: "50% 40%" },
-  { id: "massage", src: "/images/massage1.jpg", w: 1200, h: 1600, focus: "50% 60%" },
   { id: "massage-duo", src: "/images/massage2.jpg", w: 1200, h: 1600, focus: "50% 55%" },
 ];
