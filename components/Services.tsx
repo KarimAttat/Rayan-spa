@@ -9,28 +9,25 @@ import {
   currency,
   unavailableStepIds,
 } from "@/data/services";
-import { siteConfig } from "@/data/site-config";
 import { useI18n } from "@/lib/i18n";
 import { selectService } from "@/lib/booking-bus";
 import { rv } from "./ui/Reveal";
-import { ParallaxImage } from "./ui/motion";
 import { useStill } from "@/lib/use-still";
 
 /**
- * La carte, composée pour se lire d'un coup d'œil, même sur téléphone :
- * chaque groupe (massages, hammams, forfaits, beauté) occupe sa propre
- * bande de couleur avec un grand titre ; chaque soin porte son nom en
- * grand et son prix bien visible. Les durées d'un massage sont des pavés
- * à toucher ; les hammams et forfaits listent leurs étapes une par ligne,
- * avec leur bouton « Réserver ». Tout choix présélectionne le soin dans
- * le formulaire de réservation.
+ * La carte, sur toute la largeur de l'écran, composée pour se lire d'un
+ * coup d'œil : chaque groupe (massages, hammams, forfaits, beauté) occupe
+ * sa propre bande de couleur avec un grand titre ; chaque soin a sa fiche,
+ * son nom dans la police du texte (nette à toutes les tailles) et son prix
+ * bien visible. Les durées d'un massage sont des pavés à toucher ; les
+ * hammams et forfaits listent leurs étapes une par ligne, avec leur bouton
+ * « Réserver ». Tout choix présélectionne le soin dans le formulaire.
  */
 
 type Tone = "bg" | "surface";
 
 export default function Services() {
   const { t, x } = useI18n();
-  const { menuImage } = siteConfig;
 
   const groups = [
     { id: "carte-massages", label: x.menu.jump.massages },
@@ -42,146 +39,125 @@ export default function Services() {
 
   return (
     <section id="carte" className="relative bg-bg">
-      <div className="grid md:grid-cols-12">
-        {/* Photo plein-hauteur, collée au bord, qui reste pendant la lecture de la carte */}
-        <div className="relative md:col-span-5">
-          <div className="md:sticky md:top-0 md:h-[100svh]">
-            <ParallaxImage
-              src={menuImage.src}
-              alt=""
-              sizes="(max-width: 768px) 100vw, 42vw"
-              zoom={1.35}
-              drift={4}
-              className="h-[42svh] md:h-full"
-            />
-          </div>
-        </div>
-
-        <div className="md:col-span-7">
-          <div className="px-margin pb-10 pt-14 md:pl-[6vw] md:pt-section">
-            <h2 {...rv(0)} className="text-[clamp(3.5rem,2rem+7vw,9rem)] leading-[0.9]">
-              {x.menu.title}
-            </h2>
-            <p {...rv(1)} className="mt-8 max-w-[38ch] text-lead">
-              {t.services.intro}
-            </p>
-          </div>
-
-          <MenuTabs groups={groups} label={x.menu.title} />
-
-          <Group id="carte-massages" title={t.services.categoryMassages} tone="surface" hint={x.menu.tapHint}>
-            {massages
-              .filter((m) => !m.hidden)
-              .map((m, i) => {
-                const copy = t.serviceData[m.id];
-                return (
-                  <article key={m.id} {...rv(i, "row")} className="menu-card">
-                    <h4 className="menu-name">{copy.name}</h4>
-                    {copy.description && (
-                      <p className="mt-2 max-w-[42ch] text-body text-muted">{copy.description}</p>
-                    )}
-                    <ul className="mt-5 grid max-w-[30rem] grid-cols-2 gap-3">
-                      {m.variants.map((v) => (
-                        <li key={v.duration}>
-                          <button
-                            type="button"
-                            onClick={() => selectService(`${copy.name} (${v.duration})`)}
-                            aria-label={`${x.menu.bookItem} : ${copy.name}, ${v.duration}, ${v.price} ${currency}`}
-                            className="menu-pick flex w-full flex-col items-start px-4 py-3.5 text-left"
-                          >
-                            <span className="flex w-full items-baseline justify-between gap-3">
-                              <span className="whitespace-nowrap text-body">{v.duration}</span>
-                              <span aria-hidden="true" className="menu-arrow text-body leading-none text-accent">
-                                →
-                              </span>
-                            </span>
-                            <span className="mt-1">
-                              <Price value={v.price} />
-                            </span>
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </article>
-                );
-              })}
-          </Group>
-
-          <Group id="carte-hammams" title={t.services.categoryHammams} tone="bg">
-            {hammams.map((h, i) => {
-              const name = t.serviceData[h.id].name;
-              return (
-                <Formula
-                  key={h.id}
-                  i={i}
-                  name={name}
-                  price={h.price}
-                  includes={x.menu.includes}
-                  bookLabel={x.menu.bookItem}
-                  onBook={() => selectService(name)}
-                  steps={h.stepIds}
-                />
-              );
-            })}
-          </Group>
-
-          <Group id="carte-forfaits" title={t.services.categoryForfaits} tone="surface">
-            {forfaits
-              .filter((f) => !f.hidden)
-              .map((f, i) => {
-                const copy = t.serviceData[f.id];
-                return (
-                  <Formula
-                    key={f.id}
-                    i={i}
-                    name={copy.name}
-                    meta={copy.meta}
-                    price={f.price}
-                    includes={x.menu.includes}
-                    bookLabel={x.menu.bookItem}
-                    onBook={() => selectService(copy.name)}
-                    steps={f.stepIds}
-                  />
-                );
-              })}
-          </Group>
-
-          <Group
-            id="carte-beaute"
-            title={t.services.categoryBeaute}
-            tone="bg"
-            columns={false}
-            hint={allBeauteOff ? t.services.unavailable : undefined}
-          >
-            <ul className="space-y-4">
-              {beaute.map((b, i) => (
-                <li
-                  key={b.id}
-                  {...rv(i, "row")}
-                  className="flex items-baseline justify-between gap-6 text-lead"
-                >
-                  <span className={b.unavailable ? "text-muted" : undefined}>{t.serviceData[b.id].name}</span>
-                  {!allBeauteOff && (
-                    <span className="shrink-0 text-small text-muted">
-                      {b.unavailable ? t.services.unavailable : `${b.price} ${currency}`}
-                    </span>
-                  )}
-                </li>
-              ))}
-            </ul>
-            <p {...rv(0)} className="text-small text-muted">
-              {t.services.priceNote.replace("{currency}", currency)}
-            </p>
-          </Group>
+      <div className="wrap pb-10 pt-section">
+        <div className="mx-auto grid max-w-[90rem] gap-8 md:grid-cols-12 md:items-end">
+          <h2 {...rv(0)} className="text-[clamp(3.5rem,2rem+7vw,9rem)] leading-[0.9] md:col-span-6">
+            {x.menu.title}
+          </h2>
+          <p {...rv(1)} className="max-w-[38ch] text-lead md:col-span-5 md:col-start-8 md:pb-3">
+            {t.services.intro}
+          </p>
         </div>
       </div>
 
+      <MenuTabs groups={groups} label={x.menu.title} />
+
+      <Group id="carte-massages" title={t.services.categoryMassages} tone="surface" hint={x.menu.tapHint}>
+        {massages
+          .filter((m) => !m.hidden)
+          .map((m, i) => {
+            const copy = t.serviceData[m.id];
+            return (
+              <article key={m.id} {...rv(i, "card")} className="menu-card flex flex-col">
+                <h4 className="menu-name">{copy.name}</h4>
+                {copy.description && <p className="mt-3 text-body text-muted">{copy.description}</p>}
+                <ul className="mt-auto grid grid-cols-2 gap-3 pt-6">
+                  {m.variants.map((v) => (
+                    <li key={v.duration}>
+                      <button
+                        type="button"
+                        onClick={() => selectService(`${copy.name} (${v.duration})`)}
+                        aria-label={`${x.menu.bookItem} : ${copy.name}, ${v.duration}, ${v.price} ${currency}`}
+                        className="menu-pick flex w-full flex-col items-start px-4 py-3.5 text-left"
+                      >
+                        <span className="flex w-full items-baseline justify-between gap-3">
+                          <span className="whitespace-nowrap text-body">{v.duration}</span>
+                          <span aria-hidden="true" className="menu-arrow text-body leading-none text-accent">
+                            →
+                          </span>
+                        </span>
+                        <span className="mt-1">
+                          <Price value={v.price} />
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            );
+          })}
+      </Group>
+
+      <Group id="carte-hammams" title={t.services.categoryHammams} tone="bg">
+        {hammams.map((h, i) => {
+          const name = t.serviceData[h.id].name;
+          return (
+            <Formula
+              key={h.id}
+              i={i}
+              name={name}
+              price={h.price}
+              includes={x.menu.includes}
+              bookLabel={x.menu.bookItem}
+              onBook={() => selectService(name)}
+              steps={h.stepIds}
+            />
+          );
+        })}
+      </Group>
+
+      <Group id="carte-forfaits" title={t.services.categoryForfaits} tone="surface">
+        {forfaits
+          .filter((f) => !f.hidden)
+          .map((f, i) => {
+            const copy = t.serviceData[f.id];
+            return (
+              <Formula
+                key={f.id}
+                i={i}
+                name={copy.name}
+                meta={copy.meta}
+                price={f.price}
+                includes={x.menu.includes}
+                bookLabel={x.menu.bookItem}
+                onBook={() => selectService(copy.name)}
+                steps={f.stepIds}
+              />
+            );
+          })}
+      </Group>
+
+      <Group
+        id="carte-beaute"
+        title={t.services.categoryBeaute}
+        tone="bg"
+        columns={false}
+        hint={allBeauteOff ? t.services.unavailable : undefined}
+      >
+        <ul className="grid gap-x-10 gap-y-4 sm:grid-cols-2 xl:grid-cols-4">
+          {beaute.map((b, i) => (
+            <li key={b.id} {...rv(i, "row")} className="flex items-baseline justify-between gap-6 text-lead">
+              <span className={b.unavailable ? "text-muted" : undefined}>{t.serviceData[b.id].name}</span>
+              {!allBeauteOff && (
+                <span className="shrink-0 text-small text-muted">
+                  {b.unavailable ? t.services.unavailable : `${b.price} ${currency}`}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+        <p {...rv(0)} className="text-small text-muted">
+          {t.services.priceNote.replace("{currency}", currency)}
+        </p>
+      </Group>
+
       <style dangerouslySetInnerHTML={{ __html: `
+        /* Le nom de chaque soin : la police du texte, en gras moyen — nette à toutes les tailles */
         .menu-name {
-          font-family: var(--font-boska), Georgia, serif;
+          font-family: var(--font-jost), system-ui, sans-serif;
           font-weight: 500;
-          font-size: clamp(1.6rem, 1.3rem + 1.1vw, 2.25rem);
-          line-height: 1.05;
+          font-size: clamp(1.35rem, 1.2rem + 0.6vw, 1.65rem);
+          line-height: 1.2;
           letter-spacing: -0.01em;
         }
         /* Chaque soin sur sa propre fiche, d'un ton franchement différent de sa bande */
@@ -196,6 +172,7 @@ export default function Services() {
         @media (hover: hover) and (pointer: fine) {
           [data-tone] .menu-pick:hover { background: var(--accent); color: var(--accent-ink); }
           .menu-pick:hover .menu-arrow { color: var(--accent-ink); transform: translateX(4px); }
+          .menu-pick:hover .text-muted { color: var(--accent-ink); }
         }
         .menu-pick:active { transform: scale(0.97); }
 
@@ -223,23 +200,33 @@ function Group({
   title: string;
   tone: Tone;
   hint?: string;
-  /** Sur grand écran, les soins sur deux colonnes. */
+  /** Les soins en fiches : une colonne sur téléphone, deux puis trois sur grand écran. */
   columns?: boolean;
   children: ReactNode;
 }) {
   return (
     <div id={id} data-tone={tone} className={tone === "surface" ? "bg-surface" : "bg-bg"}>
-      <div className="px-margin py-12 md:py-20 md:pl-[6vw] md:pr-[4vw]">
-        <h3 {...rv(0)} className="display text-head leading-[0.95]">
-          {title}
-        </h3>
-        {hint && (
-          <p {...rv(1)} className="mt-4 text-body text-muted">
-            {hint}
-          </p>
-        )}
-        <div className={columns ? "mt-10 grid gap-4 md:gap-5 xl:grid-cols-2" : "mt-10 space-y-12"}>
-          {children}
+      <div className="wrap py-14 md:py-24">
+        <div className="mx-auto max-w-[90rem]">
+          <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-3">
+            <h3 {...rv(0)} className="display text-head leading-[0.95]">
+              {title}
+            </h3>
+            {hint && (
+              <p {...rv(1)} className="text-body text-muted md:pb-2">
+                {hint}
+              </p>
+            )}
+          </div>
+          <div
+            className={
+              columns
+                ? "mt-10 grid gap-4 md:mt-14 md:grid-cols-2 md:gap-5 xl:grid-cols-3"
+                : "mt-10 space-y-12 md:mt-14"
+            }
+          >
+            {children}
+          </div>
         </div>
       </div>
     </div>
@@ -248,9 +235,9 @@ function Group({
 
 function Price({ value }: { value: number }) {
   return (
-    <span className="whitespace-nowrap text-lead tabular-nums">
+    <span className="whitespace-nowrap text-lead font-medium tabular-nums">
       {value}
-      <span className="ml-1.5 text-small text-muted">{currency}</span>
+      <span className="ml-1.5 text-small font-normal text-muted">{currency}</span>
     </span>
   );
 }
@@ -277,7 +264,7 @@ function Formula({
 }) {
   const { t } = useI18n();
   return (
-    <article {...rv(i, "row")} className="menu-card">
+    <article {...rv(i, "card")} className="menu-card flex flex-col">
       <div className="flex items-baseline justify-between gap-6">
         <h4 className="menu-name">{name}</h4>
         <Price value={price} />
@@ -295,14 +282,16 @@ function Formula({
           </li>
         ))}
       </ul>
-      <button
-        type="button"
-        onClick={onBook}
-        aria-label={`${bookLabel} : ${name}, ${price} ${currency}`}
-        className="button mt-6"
-      >
-        {bookLabel}
-      </button>
+      <div className="mt-auto pt-6">
+        <button
+          type="button"
+          onClick={onBook}
+          aria-label={`${bookLabel} : ${name}, ${price} ${currency}`}
+          className="button"
+        >
+          {bookLabel}
+        </button>
+      </div>
     </article>
   );
 }
@@ -356,11 +345,8 @@ function MenuTabs({ groups, label }: { groups: { id: string; label: string }[]; 
   const inset = `inset(0 ${((n - 1 - active) * 100) / n}% 0 ${(active * 100) / n}% round 999px)`;
 
   return (
-    <div
-      ref={barRef}
-      className="sticky top-16 z-30 bg-bg px-margin pb-4 pt-2 md:top-[4.5rem] md:pl-[6vw] md:pr-[4vw]"
-    >
-      <nav aria-label={label} className="relative">
+    <div ref={barRef} className="wrap sticky top-16 z-30 bg-bg pb-4 pt-2 md:top-[4.5rem]">
+      <nav aria-label={label} className="relative mx-auto max-w-[90rem]">
         <ul className="grid rounded-full bg-surface" style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))` }}>
           {groups.map((g, i) => (
             <li key={g.id}>

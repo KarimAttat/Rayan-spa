@@ -46,6 +46,14 @@ export type ExperienceCopy = {
     /** Indication sous les durées : un toucher suffit pour réserver. */
     tapHint: string;
   };
+  /** La photo plein écran entre le nom et la carte : promesse + deux chemins. */
+  invite: {
+    title: string;
+    /** {price} et {currency} sont remplacés par le prix d'entrée de la carte. */
+    text: string;
+    book: string;
+    menu: string;
+  };
   places: { title: string; alts: string[] };
   band: { sentence: string; verb: string; label: string };
   booking: { preview: string; previewHint: string; optional: string };
@@ -101,6 +109,12 @@ const fr: ExperienceCopy = {
     jump: { massages: "Massages", hammams: "Hammams", forfaits: "Forfaits", beaute: "Beauté" },
     includes: "Comprend",
     tapHint: "Touchez une durée pour la réserver.",
+  },
+  invite: {
+    title: "Le massage, au cœur de la médina",
+    text: "Relaxant, tonifiant ou dabachi, à partir de {price} {currency}. Réservez en une minute : nous confirmons l’heure sur WhatsApp.",
+    book: "Réserver un massage",
+    menu: "Voir la carte et les prix",
   },
   places: {
     title: "Les lieux",
@@ -178,6 +192,12 @@ const en: ExperienceCopy = {
     includes: "Includes",
     tapHint: "Tap a duration to book it.",
   },
+  invite: {
+    title: "Massage in the heart of the medina",
+    text: "Relaxing, toning or dabachi, from {price} {currency}. Book in a minute: we confirm the time on WhatsApp.",
+    book: "Book a massage",
+    menu: "See the menu and prices",
+  },
   places: {
     title: "The spa",
     alts: [
@@ -254,6 +274,12 @@ const it: ExperienceCopy = {
     includes: "Comprende",
     tapHint: "Tocca una durata per prenotarla.",
   },
+  invite: {
+    title: "Il massaggio, nel cuore della medina",
+    text: "Rilassante, tonificante o dabachi, da {price} {currency}. Prenota in un minuto: confermiamo l’orario su WhatsApp.",
+    book: "Prenota un massaggio",
+    menu: "Vedi il listino e i prezzi",
+  },
   places: {
     title: "Gli spazi",
     alts: [
@@ -329,6 +355,12 @@ const es: ExperienceCopy = {
     jump: { massages: "Masajes", hammams: "Hammams", forfaits: "Paquetes", beaute: "Belleza" },
     includes: "Incluye",
     tapHint: "Toca una duración para reservarla.",
+  },
+  invite: {
+    title: "El masaje, en el corazón de la medina",
+    text: "Relajante, tonificante o dabachi, desde {price} {currency}. Reserva en un minuto: confirmamos la hora por WhatsApp.",
+    book: "Reservar un masaje",
+    menu: "Ver la carta y los precios",
   },
   places: {
     title: "El espacio",

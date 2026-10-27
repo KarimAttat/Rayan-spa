@@ -282,6 +282,12 @@
     transition-duration: 700ms;
     transition-delay: calc(var(--i, 0) * 45ms);
   }
+  /* Les fiches de la carte : elles montent et se posent, l'une après l'autre */
+  .js [data-rv="card"] {
+    transform: translate3d(0, 32px, 0) scale(0.97);
+    transition-duration: 800ms;
+    transition-delay: calc(var(--i, 0) * 70ms);
+  }
   /* Le masque vit sur l'enfant : l'élément observé garde sa boîte entière
      (un élément entièrement découpé ne déclenche jamais l'observateur). */
   .js [data-rv="mask"] {

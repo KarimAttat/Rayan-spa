@@ -36,7 +36,7 @@ export default function RevealObserver() {
 }
 
 /** Raccourci : props d'entrée pour un élément, avec sa place dans la cascade. */
-export function rv(i = 0, kind: "up" | "row" | "mask" = "up") {
+export function rv(i = 0, kind: "up" | "row" | "mask" | "card" = "up") {
   return {
     "data-rv": kind === "up" ? "" : kind,
     style: { "--i": i } as React.CSSProperties,
