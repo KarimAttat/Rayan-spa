@@ -71,7 +71,7 @@ export default function Contact() {
         </div>
       </div>
 
-      <div {...rv(1, "mask")} className="relative h-[70svh] md:h-auto">
+      <div {...rv(1, "mask")} className="relative h-[70svh] overflow-hidden md:h-auto">
         <div className="absolute inset-0 bg-surface">
           <iframe
             title={x.contact.map}

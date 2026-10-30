@@ -13,6 +13,7 @@ import {
 import { onSelectService } from "@/lib/booking-bus";
 import { track } from "@vercel/analytics";
 import { rv } from "./ui/Reveal";
+import { WhatsAppIcon } from "./icons";
 
 const empty: BookingPayload = {
   name: "",
@@ -27,10 +28,13 @@ const empty: BookingPayload = {
 type Errors = Partial<Record<keyof BookingPayload, string>>;
 
 /**
- * Réservation, juste après la carte : le formulaire, avec le message
- * WhatsApp qui s'écrit en direct à côté (exactement le texte envoyé).
- * Seul le soin est obligatoire ; pour qui ne veut rien remplir, un lien
- * WhatsApp direct sous le bouton.
+ * Réservation, juste après la carte : sur le fond sombre des chapitres
+ * « nuit », une fiche couleur papier, encadrée d'un filet, qui réunit le
+ * titre, le formulaire et le message WhatsApp qui s'écrit en direct à côté
+ * (exactement le texte envoyé). Le plus court possible : le soin et le nom
+ * (obligatoires), le jour, l'heure et le nombre de personnes sur une ligne,
+ * une note facultative. Pas de téléphone : le message part de WhatsApp,
+ * qui transmet déjà le numéro.
  */
 export default function Booking() {
   const { t, x } = useI18n();
@@ -59,10 +63,11 @@ export default function Booking() {
     };
 
   function validate(): boolean {
-    // Un seul champ obligatoire : le soin. Le reste se précise sur WhatsApp
-    // (le numéro du client y est déjà, la date peut rester « à convenir »).
+    // Deux champs obligatoires : le soin et le nom. Le reste se précise sur
+    // WhatsApp (le numéro du client y est déjà, la date peut rester « à convenir »).
     const next: Errors = {};
     if (!form.service) next.service = t.booking.errors.service;
+    if (!form.name.trim()) next.name = t.booking.errors.name;
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -90,21 +95,29 @@ export default function Booking() {
   const started = !!(form.service || form.date || form.name);
 
   return (
-    <section id="reservation" className="bg-surface">
-      {/* ---------- Le formulaire et son message ---------- */}
-      <div id="formulaire" className="wrap grid gap-16 py-section md:grid-cols-12 md:gap-x-8">
-        <div className="md:col-span-6">
-          <h2 {...rv(0)} className="text-head">
+    <section id="reservation" data-header="dark" className="bg-night py-16 md:py-24">
+      {/* ---------- La fiche : le formulaire et son message ---------- */}
+      <div className="wrap">
+      <div
+        id="formulaire"
+        {...rv(0, "card")}
+        className="booking-card mx-auto grid max-w-[80rem] gap-12 p-6 sm:p-10 md:grid-cols-12 md:gap-x-10 md:p-14 lg:p-16"
+      >
+        <div className="md:col-span-7">
+          <p {...rv(0)} className="eyebrow text-muted">
+            {x.about.facts.booking}
+          </p>
+          <h2 {...rv(1)} className="mt-4 text-head">
             {t.booking.title}
           </h2>
-          <p {...rv(1)} className="mt-6 max-w-[44ch] text-body">
+          <p {...rv(2)} className="mt-5 max-w-[46ch] text-body text-muted">
             {t.booking.intro}
           </p>
 
           {sentLink ? (
             <Confirmation link={sentLink} placeholder={placeholder} onReset={() => { setSentLink(null); setForm(empty); }} />
           ) : (
-            <form {...rv(2)} onSubmit={onSubmit} noValidate className="mt-12 grid gap-x-8 gap-y-7 sm:grid-cols-2">
+            <form {...rv(3)} onSubmit={onSubmit} noValidate className="mt-10 grid gap-x-5 gap-y-6 sm:grid-cols-2">
               <Field label={t.booking.fields.service} error={errors.service} htmlFor="service" wide>
                 <select id="service" value={form.service} onChange={update("service")} className="field" aria-invalid={!!errors.service}>
                   <option value="">{t.booking.fields.servicePh}</option>
@@ -143,10 +156,24 @@ export default function Booking() {
                 </select>
               </Field>
 
-              <Field label={`${t.booking.fields.date} (${x.booking.optional})`} htmlFor="date">
-                <input id="date" type="date" value={form.date} onChange={update("date")} className="field" />
+              <Field label={t.booking.fields.name} error={errors.name} htmlFor="name" wide>
+                <input
+                  id="name"
+                  type="text"
+                  autoComplete="name"
+                  value={form.name}
+                  onChange={update("name")}
+                  placeholder={t.booking.fields.namePh}
+                  className="field"
+                  aria-invalid={!!errors.name}
+                />
               </Field>
-              <div className="grid grid-cols-2 gap-x-8">
+
+              {/* Jour, heure et personnes sur une seule ligne (le jour seul sur téléphone) */}
+              <div className="grid min-w-0 grid-cols-2 gap-3 sm:col-span-2 sm:grid-cols-[1.4fr_1fr_0.8fr] sm:gap-4 [&>*]:min-w-0">
+                <Field label={t.booking.fields.date} htmlFor="date" className="col-span-2 sm:col-span-1">
+                  <input id="date" type="date" value={form.date} onChange={update("date")} className="field" />
+                </Field>
                 <Field label={t.booking.fields.time} htmlFor="time">
                   <input id="time" type="time" value={form.time} onChange={update("time")} className="field" />
                 </Field>
@@ -159,20 +186,14 @@ export default function Booking() {
                 </Field>
               </div>
 
-              <Field label={`${t.booking.fields.name} (${x.booking.optional})`} htmlFor="name">
-                <input id="name" type="text" autoComplete="name" value={form.name} onChange={update("name")} placeholder={t.booking.fields.namePh} className="field" />
-              </Field>
-              <Field label={`${t.booking.fields.phone} (${x.booking.optional})`} htmlFor="phone">
-                <input id="phone" type="tel" autoComplete="tel" value={form.phone} onChange={update("phone")} placeholder="+212 6 …" className="field" />
-              </Field>
-
               <Field label={t.booking.fields.notes} htmlFor="notes" wide>
                 <textarea id="notes" rows={2} value={form.notes} onChange={update("notes")} placeholder={t.booking.fields.notesPh} className="field" />
               </Field>
 
               <div className="sm:col-span-2">
                 <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
-                  <button type="submit" className="button w-full sm:w-auto">
+                  <button type="submit" className="button booking-send w-full sm:w-auto">
+                    <WhatsAppIcon width={20} height={20} aria-hidden="true" />
                     {t.booking.submit}
                   </button>
                   <a href={direct} data-cta="booking-direct" className="link text-body">
@@ -190,10 +211,10 @@ export default function Booking() {
         </div>
 
         {/* Le message en direct — le « reçu » de la demande */}
-        <aside {...rv(3)} aria-live="polite" className="md:col-span-5 md:col-start-8">
+        <aside {...rv(4)} aria-live="polite" className="md:col-span-5">
           <div className="md:sticky md:top-28">
-            <p className="text-small text-muted">{x.booking.preview}</p>
-            <div className="mt-3 rounded-[var(--radius-card)] bg-bg p-6 md:p-8">
+            <p className="eyebrow text-muted">{x.booking.preview}</p>
+            <div className="booking-preview mt-4 p-6 md:p-8">
               <p className={["whitespace-pre-line text-body", started ? "" : "text-muted"].join(" ")}>
                 {preview}
               </p>
@@ -202,7 +223,26 @@ export default function Booking() {
           </div>
         </aside>
       </div>
+      </div>
 
+      <style dangerouslySetInnerHTML={{ __html: `
+        /* La fiche : couleur papier, un filet doré à l'intérieur, une ombre douce */
+        .booking-card {
+          background: var(--paper);
+          color: var(--ink);
+          outline: 1px solid color-mix(in srgb, var(--gold) 55%, transparent); /* taste-skill-ignore: filet de la fiche */
+          outline-offset: -12px;
+          box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.55); /* taste-skill-ignore: fiche posée sur le fond sombre */
+        }
+        /* Le seul bouton plein de la page : on ne peut pas le manquer */
+        .booking-send { background: var(--night); color: var(--night-ink); border-color: var(--night); min-height: 3.5rem; padding: 0 2.25rem; }
+        @media (hover: hover) and (pointer: fine) { .booking-send:hover { box-shadow: none; background: #000; } }
+        .booking-preview {
+          background: var(--bg);
+          border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); /* taste-skill-ignore: cadre du message */
+        }
+        @media (max-width: 639px) { .booking-card { outline-offset: -8px; } }
+      ` }} />
     </section>
   );
 }
@@ -212,17 +252,19 @@ function Field({
   htmlFor,
   error,
   wide,
+  className = "",
   children,
 }: {
   label: string;
   htmlFor: string;
   error?: string;
   wide?: boolean;
+  className?: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className={wide ? "sm:col-span-2" : undefined}>
-      <label htmlFor={htmlFor} className="block text-small font-medium text-muted">
+    <div className={["min-w-0", wide ? "sm:col-span-2" : "", className].join(" ")}>
+      <label htmlFor={htmlFor} className="mb-2 block text-small font-medium text-muted">
         {label}
       </label>
       {children}

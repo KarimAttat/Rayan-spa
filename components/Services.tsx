@@ -271,7 +271,7 @@ function Split({
     <div id={id} className="grid scroll-mt-8 md:min-h-[100svh] md:grid-cols-2">
       <div
         {...rv(0, "mask")}
-        className={["relative h-[62svh] md:h-auto", side === "right" ? "md:order-2" : ""].join(" ")}
+        className={["relative h-[62svh] overflow-hidden md:h-auto", side === "right" ? "md:order-2" : ""].join(" ")}
       >
         <div className="absolute inset-0">
           <Image src={img} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" style={{ objectPosition: focus }} />

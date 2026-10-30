@@ -206,8 +206,8 @@ const fr: Dict = {
       "Conseils personnalisés pour votre soin",
     ],
     fields: {
-      name: "Nom complet",
-      namePh: "Votre nom",
+      name: "Votre nom",
+      namePh: "Prénom et nom",
       phone: "Téléphone",
       service: "Soin souhaité",
       servicePh: "Choisir un soin",
@@ -223,7 +223,7 @@ const fr: Dict = {
       service: "Choisissez un soin.",
       date: "Indiquez une date souhaitée.",
     },
-    submit: "Envoyer ma demande",
+    submit: "Envoyer sur WhatsApp",
     demo: {
       pre: "⚠️ Démo : le numéro WhatsApp n’est pas encore configuré (voir ",
       post: ").",
@@ -433,8 +433,8 @@ const en: Dict = {
       "Personalised advice for your treatment",
     ],
     fields: {
-      name: "Full name",
-      namePh: "Your name",
+      name: "Your name",
+      namePh: "First and last name",
       phone: "Phone",
       service: "Desired treatment",
       servicePh: "Choose a treatment",
@@ -450,7 +450,7 @@ const en: Dict = {
       service: "Choose a treatment.",
       date: "Choose a desired date.",
     },
-    submit: "Send my request",
+    submit: "Send on WhatsApp",
     demo: {
       pre: "⚠️ Demo: the WhatsApp number is not configured yet (see ",
       post: ").",
@@ -660,8 +660,8 @@ const it: Dict = {
       "Consigli personalizzati per il tuo trattamento",
     ],
     fields: {
-      name: "Nome completo",
-      namePh: "Il tuo nome",
+      name: "Il tuo nome",
+      namePh: "Nome e cognome",
       phone: "Telefono",
       service: "Trattamento desiderato",
       servicePh: "Scegli un trattamento",
@@ -677,7 +677,7 @@ const it: Dict = {
       service: "Scegli un trattamento.",
       date: "Indica una data.",
     },
-    submit: "Invia la richiesta",
+    submit: "Invia su WhatsApp",
     demo: {
       pre: "⚠️ Demo: il numero WhatsApp non è ancora configurato (vedi ",
       post: ").",
@@ -887,8 +887,8 @@ const es: Dict = {
       "Consejos personalizados para tu tratamiento",
     ],
     fields: {
-      name: "Nombre completo",
-      namePh: "Tu nombre",
+      name: "Tu nombre",
+      namePh: "Nombre y apellido",
       phone: "Teléfono",
       service: "Tratamiento deseado",
       servicePh: "Elige un tratamiento",
@@ -904,7 +904,7 @@ const es: Dict = {
       service: "Elige un tratamiento.",
       date: "Indica una fecha.",
     },
-    submit: "Enviar mi solicitud",
+    submit: "Enviar por WhatsApp",
     demo: {
       pre: "⚠️ Demo: el número de WhatsApp aún no está configurado (ver ",
       post: ").",
