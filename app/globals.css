@@ -154,12 +154,15 @@
   }
 
   /* --- Filets fins : séparent sans peser --- */
-  .rule-v {
+  .rule-v,
+  .rule-h {
     background: color-mix(in srgb, currentColor 30%, transparent);
   }
 
   /* --- Petit titre au-dessus des grands : capitales espacées --- */
   .eyebrow {
+    font-family: var(--font-jost), system-ui, sans-serif;
+    font-weight: 400;
     font-size: var(--step-small);
     letter-spacing: 0.22em;
     text-transform: uppercase;
@@ -304,6 +307,29 @@
     transform: scale(1.12);
     transition: transform 1600ms var(--ease-out);
     transition-delay: calc(var(--i, 0) * 75ms);
+  }
+  /* Une ligne de titre qui monte de derrière son propre bord (masque) */
+  .js [data-rv="line"] {
+    opacity: 1;
+    transform: none;
+    overflow: hidden;
+  }
+  .js [data-rv="line"] > span {
+    display: block;
+    transform: translate3d(0, 105%, 0);
+    transition: transform 1100ms var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 80ms);
+  }
+  .js [data-rv="line"].is-in > span {
+    transform: none;
+  }
+  /* Un filet qui se trace de gauche à droite */
+  .js [data-rv="draw"] {
+    opacity: 1;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 1200ms var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 80ms);
   }
   .js [data-rv].is-in {
     opacity: 1;

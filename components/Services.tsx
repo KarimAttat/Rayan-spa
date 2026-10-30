@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, type ReactNode } from "react";
+import Image from "next/image";
 import {
   forfaits,
   massages,
@@ -16,7 +17,9 @@ import { rv } from "./ui/Reveal";
 /**
  * La carte, composée comme celle d'une grande maison : sur fond clair, un
  * titre par groupe (massages, hammams, forfaits, beauté) précédé de son
- * chiffre romain, puis les soins en deux colonnes. Chaque nom est relié à
+ * chiffre romain. Les massages en deux colonnes ; les hammams et la beauté
+ * face à une photo qui prend la moitié de l'écran (à gauche, puis à droite) ;
+ * les forfaits au centre. Chaque nom est relié à
  * son prix par un filet pointillé ; les étapes d'un hammam ou d'un forfait
  * tiennent sur une ligne discrète. Toucher une durée ou « Réserver »
  * présélectionne le soin dans le formulaire.
@@ -34,18 +37,14 @@ export default function Services() {
 
   return (
     <section id="carte" className="relative bg-bg">
-      <div className="wrap mx-auto flex max-w-[60rem] flex-col items-center pb-16 pt-section text-center md:pb-24">
-        <p {...rv(0)} className="eyebrow text-muted">
-          {t.services.eyebrow}
-        </p>
-        <h2 {...rv(1)} className="mt-6 text-[clamp(3.5rem,2rem+7vw,8.5rem)] leading-[0.9]">
+      {/* En-tête court : le titre et les quatre groupes, puis tout de suite la carte */}
+      <div className="wrap pt-16 md:pt-20">
+        <div className="mx-auto flex max-w-[80rem] flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <h2 {...rv(0)} className="text-head leading-[0.95]">
           {x.menu.title}
         </h2>
-        <p {...rv(2)} className="mt-8 max-w-[44ch] text-lead text-muted">
-          {t.services.intro}
-        </p>
-        <nav {...rv(3)} aria-label={x.menu.title} className="mt-12">
-          <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 md:gap-x-12">
+        <nav {...rv(1)} aria-label={x.menu.title}>
+          <ul className="flex flex-wrap items-center gap-x-8 gap-y-3 md:gap-x-10">
             {groups.map((g) => (
               <li key={g.id}>
                 <a href={`#${g.id}`} className="eyebrow menu-jump">
@@ -55,6 +54,7 @@ export default function Services() {
             ))}
           </ul>
         </nav>
+        </div>
       </div>
 
       <Group id="carte-massages" n="I" title={t.services.categoryMassages} hint={x.menu.tapHint}>
@@ -90,7 +90,7 @@ export default function Services() {
           })}
       </Group>
 
-      <Group id="carte-hammams" n="II" title={t.services.categoryHammams}>
+      <Split id="carte-hammams" n="II" title={t.services.categoryHammams} img="/images/hammam-gommage.jpg" side="left">
         {hammams.map((h, i) => {
           const name = t.serviceData[h.id].name;
           return (
@@ -105,9 +105,9 @@ export default function Services() {
             />
           );
         })}
-      </Group>
+      </Split>
 
-      <Group id="carte-forfaits" n="III" title={t.services.categoryForfaits}>
+      <Group id="carte-forfaits" n="III" title={t.services.categoryForfaits} centered>
         {forfaits
           .filter((f) => !f.hidden)
           .map((f, i) => {
@@ -122,16 +122,20 @@ export default function Services() {
                 bookLabel={x.menu.bookItem}
                 onBook={() => selectService(copy.name)}
                 steps={f.stepIds}
+                centered
               />
             );
           })}
       </Group>
 
-      <Group
+      <Split
         id="carte-beaute"
         n="IV"
         title={t.services.categoryBeaute}
         hint={allBeauteOff ? t.services.unavailable : undefined}
+        img="/images/massage-pieds.jpg"
+        focus="60% 50%"
+        side="right"
       >
         {beaute.map((b, i) => (
           <li key={b.id} {...rv(i % 2, "row")} className="flex items-baseline gap-4">
@@ -150,9 +154,9 @@ export default function Services() {
             )}
           </li>
         ))}
-      </Group>
+      </Split>
 
-      <p className="wrap pb-section text-center text-small text-muted">
+      <p className="wrap py-12 text-center text-small text-muted md:pb-20">
         {t.services.priceNote.replace("{currency}", currency)}
       </p>
 
@@ -188,38 +192,94 @@ export default function Services() {
   );
 }
 
-/** Un groupe de la carte : chiffre romain, grand titre centré, soins en deux colonnes. */
+/** Un groupe de la carte : chiffre romain, grand titre centré, soins en deux colonnes (ou au centre). */
 function Group({
   id,
   n,
   title,
   hint,
+  centered = false,
   children,
 }: {
   id: string;
   n: string;
   title: string;
   hint?: string;
+  centered?: boolean;
   children: ReactNode;
 }) {
   return (
-    <div id={id} className="wrap scroll-mt-8 py-14 md:py-20">
+    <div id={id} className="wrap scroll-mt-8 py-16 md:py-24">
       <div className="mx-auto max-w-[80rem]">
-        <div className="flex flex-col items-center text-center">
-          <span {...rv(0)} className="display text-lead text-muted">
-            {n}
-          </span>
-          <h3 {...rv(1)} className="mt-3 text-head leading-[0.95]">
-            {title}
-          </h3>
-          {hint && (
-            <p {...rv(2)} className="mt-4 text-small text-muted">
-              {hint}
-            </p>
-          )}
-          <span {...rv(2)} aria-hidden="true" className="rule-v mt-8 block h-10 w-px" />
+        <GroupHead n={n} title={title} hint={hint} className="items-center text-center" />
+        <ul
+          className={
+            centered
+              ? "mx-auto mt-10 max-w-[40rem] space-y-14 text-center md:mt-14"
+              : "mt-10 grid gap-x-20 gap-y-10 md:mt-14 md:grid-cols-2 md:gap-y-12"
+          }
+        >
+          {children}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function GroupHead({ n, title, hint, className = "" }: { n: string; title: string; hint?: string; className?: string }) {
+  return (
+    <div className={["flex flex-col", className].join(" ")}>
+      <span {...rv(0)} className="display text-lead text-muted">
+        {n}
+      </span>
+      <h3 {...rv(1)} className="mt-2 text-head leading-[0.95]">
+        {title}
+      </h3>
+      {hint && (
+        <p {...rv(2)} className="mt-3 text-small text-muted">
+          {hint}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Un groupe face à une photo : la photo prend la moitié de l'écran, bord à
+ * bord, sur toute la hauteur ; la liste occupe l'autre moitié.
+ */
+function Split({
+  id,
+  n,
+  title,
+  hint,
+  img,
+  focus = "50% 50%",
+  side,
+  children,
+}: {
+  id: string;
+  n: string;
+  title: string;
+  hint?: string;
+  img: string;
+  focus?: string;
+  side: "left" | "right";
+  children: ReactNode;
+}) {
+  return (
+    <div id={id} className="grid scroll-mt-8 md:min-h-[100svh] md:grid-cols-2">
+      <div
+        {...rv(0, "mask")}
+        className={["relative h-[62svh] md:h-auto", side === "right" ? "md:order-2" : ""].join(" ")}
+      >
+        <div className="absolute inset-0">
+          <Image src={img} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" style={{ objectPosition: focus }} />
         </div>
-        <ul className="mt-12 grid gap-x-20 gap-y-12 md:mt-16 md:grid-cols-2 md:gap-y-16">{children}</ul>
+      </div>
+      <div className="flex flex-col justify-center px-margin py-16 md:px-[6vw] md:py-24">
+        <GroupHead n={n} title={title} hint={hint} />
+        <ul className="mt-10 space-y-10 md:mt-12">{children}</ul>
       </div>
     </div>
   );
@@ -243,6 +303,7 @@ function Formula({
   bookLabel,
   onBook,
   steps,
+  centered = false,
 }: {
   i: number;
   name: string;
@@ -251,17 +312,27 @@ function Formula({
   bookLabel: string;
   onBook: () => void;
   steps: readonly string[];
+  centered?: boolean;
 }) {
   const { t } = useI18n();
   return (
     <li {...rv(i % 2, "row")}>
-      <div className="flex items-baseline gap-4">
-        <h4 className="menu-name">{name}</h4>
-        <span aria-hidden="true" className="menu-leader" />
-        <Price value={price} />
-      </div>
+      {centered ? (
+        <>
+          <h4 className="menu-name">{name}</h4>
+          <p className="mt-2">
+            <Price value={price} />
+          </p>
+        </>
+      ) : (
+        <div className="flex items-baseline gap-4">
+          <h4 className="menu-name">{name}</h4>
+          <span aria-hidden="true" className="menu-leader" />
+          <Price value={price} />
+        </div>
+      )}
       {meta && <p className="mt-1 text-small text-muted">{meta}</p>}
-      <p className="mt-3 max-w-[52ch] text-body text-muted">
+      <p className={["mt-3 max-w-[52ch] text-body text-muted", centered ? "mx-auto" : ""].join(" ")}>
         {steps.map((id, k) => (
           <Fragment key={id}>
             {k > 0 && <span aria-hidden="true"> · </span>}

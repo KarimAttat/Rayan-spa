@@ -18,7 +18,7 @@ export type GalleryItem = {
 };
 
 export const gallery: GalleryItem[] = [
-  { id: "rooftop", src: "/images/rooftop1.jpg", w: 1200, h: 1600, focus: "50% 50%" },
-  { id: "hammam", src: "/images/hammam1.jpg", w: 1200, h: 1600, focus: "50% 40%" },
-  { id: "massage-duo", src: "/images/massage2.jpg", w: 1200, h: 1600, focus: "50% 55%" },
+  { id: "rooftop", src: "/images/rooftop1.jpg", w: 2200, h: 1643, focus: "50% 50%" },
+  { id: "hammam", src: "/images/hammam1.jpg", w: 2200, h: 1643, focus: "50% 40%" },
+  { id: "massage-duo", src: "/images/massage2.jpg", w: 2400, h: 1792, focus: "50% 55%" },
 ];

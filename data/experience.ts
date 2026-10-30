@@ -112,7 +112,7 @@ const fr: ExperienceCopy = {
   },
   invite: {
     title: "Le massage, au cœur de la médina",
-    text: "Relaxant, tonifiant ou dabachi, à partir de {price} {currency}. Réservez en une minute : nous confirmons l’heure sur WhatsApp.",
+    text: "Derrière une porte de la médina, le temps ralentit. Des mains expertes, l’huile d’argan tiédie, la vapeur du hammam : un rituel marocain, à partir de {price} {currency}.",
     book: "Réserver un massage",
     menu: "Voir la carte et les prix",
   },
@@ -194,7 +194,7 @@ const en: ExperienceCopy = {
   },
   invite: {
     title: "Massage in the heart of the medina",
-    text: "Relaxing, toning or dabachi, from {price} {currency}. Book in a minute: we confirm the time on WhatsApp.",
+    text: "Behind a door in the medina, time slows down. Expert hands, warm argan oil, the steam of the hammam: a Moroccan ritual, from {price} {currency}.",
     book: "Book a massage",
     menu: "See the menu and prices",
   },
@@ -276,7 +276,7 @@ const it: ExperienceCopy = {
   },
   invite: {
     title: "Il massaggio, nel cuore della medina",
-    text: "Rilassante, tonificante o dabachi, da {price} {currency}. Prenota in un minuto: confermiamo l’orario su WhatsApp.",
+    text: "Dietro una porta della medina, il tempo rallenta. Mani esperte, olio d’argan tiepido, il vapore dell’hammam: un rituale marocchino, a partire da {price} {currency}.",
     book: "Prenota un massaggio",
     menu: "Vedi il listino e i prezzi",
   },
@@ -358,7 +358,7 @@ const es: ExperienceCopy = {
   },
   invite: {
     title: "El masaje, en el corazón de la medina",
-    text: "Relajante, tonificante o dabachi, desde {price} {currency}. Reserva en un minuto: confirmamos la hora por WhatsApp.",
+    text: "Tras una puerta de la medina, el tiempo se detiene. Manos expertas, aceite de argán tibio, el vapor del hammam: un ritual marroquí, desde {price} {currency}.",
     book: "Reservar un masaje",
     menu: "Ver la carta y los precios",
   },

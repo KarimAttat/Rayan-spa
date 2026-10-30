@@ -10,9 +10,10 @@ import { goToBooking } from "@/lib/booking-bus";
 import { useStill } from "@/lib/use-still";
 
 /**
- * Le premier écran : le film du massage en plein écran (la photo en attente), « RAYAN SPA »
- * en très grand par-dessus. Au premier défilement, la photo s'avance
- * doucement et le nom s'efface pendant que la section suivante monte.
+ * Le premier écran : le film du massage en plein écran (la photo en attente),
+ * « RAYAN SPA » en très grand par-dessus. Au défilement, le nom, les textes
+ * et les boutons s'effacent doucement ; le film, lui, ne bouge pas, et la
+ * page suivante monte par-dessus.
  *
  * Avec prefers-reduced-motion : tout reste fixe.
  */
@@ -24,10 +25,10 @@ export default function Hero() {
   // La vidéo se pose sur la photo une fois prête : la photo reste l'image d'attente.
   const [playing, setPlaying] = useState(false);
 
+  // Le texte s'efface sur la première moitié de l'écran défilé.
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const photoScale = useTransform(p, [0, 1], [1, still ? 1 : 1.12]);
-  const y = useTransform(p, [0, 1], ["0svh", still ? "0svh" : "14svh"]);
-  const fade = useTransform(p, [0, 0.7], [1, still ? 1 : 0]);
+  const fade = useTransform(p, [0, 0.45], [1, still ? 1 : 0]);
+  const y = useTransform(p, [0, 0.45], ["0svh", still ? "0svh" : "-4svh"]);
 
   return (
     <section
@@ -38,7 +39,7 @@ export default function Hero() {
     >
       <h1 className="sr-only">Rayan SPA — {x.hero.h1Suffix}</h1>
 
-      <motion.div className="absolute inset-0" style={{ scale: photoScale }}>
+      <div className="absolute inset-0">
         <Image
           src={heroImage.src}
           alt=""
@@ -67,7 +68,7 @@ export default function Hero() {
             <source src={heroVideo.src} type="video/mp4" />
           </video>
         )}
-      </motion.div>
+      </div>
       {/* Voile neutre : la barre en haut, le nom et le bas de page restent lisibles */}
       <div
         aria-hidden="true"

@@ -22,7 +22,7 @@ const boska = localFont({
 /* Texte courant : un sans lisible, déjà celui du site d'origine. */
 const jost = Jost({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["300", "400", "500"],
   variable: "--font-jost",
   display: "swap",
 });

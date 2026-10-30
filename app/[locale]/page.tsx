@@ -15,16 +15,16 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import CtaInline from "@/components/CtaInline";
-import CtaBand from "@/components/CtaBand";
+import Doors from "@/components/Doors";
 import ConversionTracker from "@/components/ui/ConversionTracker";
 import RevealObserver from "@/components/ui/Reveal";
 
 /**
- * L'ordre de la page alterne images plein écran et pages claires : le film
- * et le nom, une respiration en texte (réserver ou lire la carte), la
- * carte, une photo plein écran puis deux demi-photos, le formulaire, puis
- * ce qui donne envie (la maison, le rituel, les lieux), relancé par des
- * appels à réserver, et l'adresse pour finir.
+ * L'ordre de la page suit la décision du visiteur : le film, puis tout de
+ * suite la carte et le formulaire (voir les prix, réserver, sans défiler),
+ * puis ce qui donne envie, en alternant grandes images et pages claires :
+ * l'invitation, deux demi-photos, la maison, une photo plein écran, le
+ * rituel, les lieux, et l'adresse pour finir.
  */
 export default function Home({ params }: { params: { locale: Locale } }) {
   return (
@@ -32,15 +32,15 @@ export default function Home({ params }: { params: { locale: Locale } }) {
       <Header />
       <main>
         <Hero />
-        <Invite />
         <Services />
-        <Moments />
         <Booking />
+        <Invite />
+        <Doors />
         <About />
+        <Moments />
         <CtaInline zone="after-about" />
         <Ritual />
         <Gallery />
-        <CtaBand />
         {siteConfig.showTestimonials && <Testimonials />}
         <Contact />
       </main>

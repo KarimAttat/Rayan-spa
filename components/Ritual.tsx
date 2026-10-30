@@ -17,12 +17,14 @@ import type { Dict } from "@/data/translations";
  * assombrissement). Les titres alternent gauche / droite.
  */
 const STAGES = [
-  { img: "/images/hammam2.jpg", focus: "45% 50%", side: "left" },
+  // Image générée (illustration) : la vapeur du hammam. Les vraies photos du spa sont dans « Les lieux ».
+  { img: "/images/hammam-vapeur.jpg", focus: "62% 45%", side: "left" },
   // Photo d'illustration (banque d'images) : l'huile d'argan du massage.
   { img: "/images/massage5.jpg", focus: "50% 40%", side: "right" },
   // Photo d'illustration (banque d'images), pas une salle du spa.
   { img: "/images/massage6.jpg", focus: "50% 55%", side: "left" },
-  { img: "/images/rooftop2.jpg", focus: "60% 55%", side: "right" },
+  // Image générée (illustration) : la pause thé.
+  { img: "/images/pause-the.jpg", focus: "60% 55%", side: "right" },
 ] as const;
 
 /** Le soin à réserver depuis chaque étape (valeur exacte d'une option du formulaire). */

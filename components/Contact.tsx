@@ -5,92 +5,78 @@ import { useI18n } from "@/lib/i18n";
 import { rv } from "./ui/Reveal";
 
 /**
- * L'adresse en grand : une rangée par ligne d'adresse, en bandes de deux
- * tons. La rue ouvre la carte, le numéro appelle, « Salam » écrit sur
- * WhatsApp. La carte Google se tient à droite des rangées (dessous sur mobile).
- * E-mail et réseaux sont dans le pied de page.
+ * Nous trouver : à gauche l'adresse, les horaires et le téléphone, dans le
+ * sans léger du texte (net et lisible) ; à droite la carte Google, en
+ * couleurs, sur la moitié de l'écran. La rue ouvre l'itinéraire, le numéro
+ * appelle, « Salam » écrit sur WhatsApp.
  */
 export default function Contact() {
   const { t, x } = useI18n();
   const { contact } = siteConfig;
   const tel = `+${contact.whatsapp}`;
 
-  const rows: { text: React.ReactNode; href?: string; label?: string; external?: boolean }[] = [
-    { text: contact.address.district },
-    { text: contact.address.street, href: contact.address.mapsLink, label: `${t.contact.route} : ${contact.address.street}`, external: true },
-    { text: contact.address.city },
-    {
-      text: (
-        <>
-          <span className="block md:inline">{x.contact.hoursLine[0]}</span>
-          <span className="hidden md:inline"> · </span>
-          <span className="block md:inline">{x.contact.hoursLine[1]}</span>
-        </>
-      ),
-    },
-    { text: contact.phoneDisplay, href: `tel:${tel}`, label: x.contact.phoneLabel },
-  ];
-
   return (
-    <section id="contact" className="bg-bg">
-      <h2 className="sr-only">{t.contact.title}</h2>
-      <div className="relative">
-        <ul>
-          {rows.map((row, i) => (
-            <li key={i} className={i % 2 === 0 ? "bg-bg" : "bg-surface"}>
-              <div {...rv(0, "row")} className="wrap flex min-h-[5.25rem] items-end pb-3 md:min-h-[9.5rem] md:pb-5">
-                {row.href ? (
-                  <a
-                    href={row.href}
-                    aria-label={row.label}
-                    {...(row.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                    className="link display text-head tabular-nums"
-                  >
-                    {row.text}
-                  </a>
-                ) : (
-                  <p className="display text-head">{row.text}</p>
-                )}
-              </div>
-            </li>
-          ))}
+    <section id="contact" className="grid bg-bg md:min-h-[100svh] md:grid-cols-2">
+      <div className="flex flex-col justify-center px-margin py-20 md:px-[6vw] md:py-24">
+        <h2 {...rv(0)} className="eyebrow text-muted">
+          {t.contact.title}
+        </h2>
 
-          {/* Salutation : le bouton rond ouvre WhatsApp */}
-          <li className="bg-accent text-accent-ink md:bg-bg md:text-ink">
-            <div {...rv(0, "row")} className="wrap flex min-h-[5.25rem] items-center justify-between gap-6 py-4 md:min-h-[9.5rem] md:justify-start">
-              <p className="display text-head">{x.contact.greeting}</p>
-              <a
-                href={`https://wa.me/${contact.whatsapp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={x.contact.greetingLabel}
-                className="hello flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-bg text-ink md:h-[0.9em] md:w-[0.9em] md:bg-accent md:text-[length:var(--step-head)] md:text-accent-ink"
-              >
-                <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6 md:h-[0.4em] md:w-[0.4em]" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="square" />
-                </svg>
-              </a>
-            </div>
-          </li>
-        </ul>
-
-        {/* La carte : à droite des rangées sur grand écran, en dessous sur mobile */}
-        <div
-          {...rv(1, "mask")}
-          className="relative h-[20rem] overflow-hidden rounded-[var(--radius-card)] md:absolute md:bottom-0 md:right-margin md:top-0 md:h-auto md:w-[36%]"
-        >
+        <address {...rv(1)} className="contact-big mt-8 not-italic">
+          <span className="block">{contact.address.district}</span>
           <a
             href={contact.address.mapsLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="absolute inset-0 flex items-end bg-night p-6 text-body text-night-ink"
+            aria-label={`${t.contact.route} : ${contact.address.street}`}
+            className="link block"
           >
-            <span className="link">{t.contact.route} · Google Maps</span>
+            {contact.address.street}
           </a>
+          <span className="block">{contact.address.city}</span>
+        </address>
+
+        <dl className="mt-12 grid gap-8 sm:grid-cols-2">
+          <div {...rv(2)}>
+            <dt className="eyebrow text-muted">{x.about.facts.hours}</dt>
+            <dd className="mt-3 text-lead font-light">
+              {x.contact.hoursLine[0]}
+              <br />
+              {x.contact.hoursLine[1]}
+            </dd>
+          </div>
+          <div {...rv(3)}>
+            <dt className="eyebrow text-muted">{x.contact.phoneLabel}</dt>
+            <dd className="mt-3 text-lead font-light">
+              <a href={`tel:${tel}`} className="link tabular-nums">
+                {contact.phoneDisplay}
+              </a>
+            </dd>
+          </div>
+        </dl>
+
+        <div {...rv(4)} className="mt-12 flex flex-wrap items-center gap-x-10 gap-y-6">
+          <a
+            href={`https://wa.me/${contact.whatsapp}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={x.contact.greetingLabel}
+            className="button"
+          >
+            {x.contact.greeting} · WhatsApp
+          </a>
+          <a href={contact.address.mapsLink} target="_blank" rel="noopener noreferrer" className="link text-body">
+            {t.contact.route} · Google Maps
+          </a>
+        </div>
+      </div>
+
+      <div {...rv(1, "mask")} className="relative h-[70svh] md:h-auto">
+        <div className="absolute inset-0 bg-surface">
           <iframe
             title={x.contact.map}
             src={contact.address.mapsEmbed}
-            className="map absolute inset-0 h-full w-full"
+            className="absolute inset-0 h-full w-full border-0"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           />
@@ -98,12 +84,15 @@ export default function Contact() {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        .hello { transition: transform var(--t-hover) var(--ease-out); }
-        @media (hover: hover) and (pointer: fine) { .hello:hover { transform: translateX(6px); } }
-        .hello:active { transform: scale(0.94); }
-        .map { filter: grayscale(1) contrast(0.95) brightness(0.92); }
+        /* L'adresse : le sans du texte, en léger, grand et aéré */
+        .contact-big {
+          font-family: var(--font-jost), system-ui, sans-serif;
+          font-weight: 300;
+          font-size: clamp(2rem, 1.3rem + 2.4vw, 3.5rem);
+          line-height: 1.15;
+          letter-spacing: -0.015em;
+        }
       ` }} />
     </section>
   );
 }
-

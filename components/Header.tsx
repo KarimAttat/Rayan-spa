@@ -85,7 +85,9 @@ export default function Header() {
       ].join(" ")}
     >
       <nav className="wrap flex h-16 items-center justify-between gap-6 md:h-[4.5rem]">
-        <a href="#top" className="display text-lead leading-none tracking-[-0.01em]">
+        <a href="#top" className="flex items-center gap-3 display text-lead leading-none tracking-[-0.01em]">
+          {/* L'emblème du logo (le lion sous l'arche), dans la couleur du texte de la barre */}
+          <span aria-hidden="true" className="logo-mark h-10 w-10 shrink-0 md:h-12 md:w-12" />
           Rayan Spa
         </a>
 
@@ -153,6 +155,17 @@ export default function Header() {
           </a>
         </div>
       </div>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        .logo-mark {
+          background: currentColor;
+          -webkit-mask: url(/images/logo-icon.png) center / contain no-repeat;
+          mask: url(/images/logo-icon.png) center / contain no-repeat;
+        }
+      `,
+        }}
+      />
     </header>
   );
 }

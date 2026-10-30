@@ -1,17 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import { siteConfig } from "@/data/site-config";
 import { useI18n } from "@/lib/i18n";
-import { rv } from "./ui/Reveal";
 
 /**
- * La fin de page : fond sable, une invitation, l'emblème du lion
- * sous l'arche, et le nom qui revient en entier, dans le rouge du logo,
- * coupé par le bord bas.
+ * Le pied de page, en une bande compacte : l'emblème et le nom, les liens
+ * (WhatsApp, réseaux, e-mail), puis une ligne discrète avec le copyright
+ * et l'adresse.
  */
 export default function Footer() {
-  const { t, x } = useI18n();
+  const { t } = useI18n();
   const { brand, contact, social } = siteConfig;
   const year = new Date().getFullYear();
 
@@ -23,19 +21,15 @@ export default function Footer() {
   ].filter(Boolean) as { label: string; href: string; ext: boolean }[];
 
   return (
-    <footer className="relative flex min-h-[100svh] flex-col overflow-hidden bg-surface text-ink">
-      <div className="wrap grid gap-12 pt-section md:grid-cols-12 md:gap-x-8">
-        <div className="md:col-span-7">
-          <p {...rv(0)} className="display max-w-[12ch] text-head">
-            {x.footer.invite}
-          </p>
-          <a {...rv(1)} href="#reservation" className="button mt-10">
-            {x.footer.cta}
-          </a>
-        </div>
-        <ul className="space-y-2 text-body md:col-span-3 md:col-start-10">
-          {links.map((l, i) => (
-            <li key={l.href} {...rv(i, "row")}>
+    <footer className="bg-surface text-ink">
+      <div className="wrap flex flex-col gap-8 py-10 md:flex-row md:items-center md:justify-between md:py-12">
+        <a href="#top" className="display flex items-center gap-3 text-lead leading-none">
+          <span aria-hidden="true" className="footer-mark h-10 w-10 shrink-0" />
+          {brand.name}
+        </a>
+        <ul className="flex flex-wrap gap-x-8 gap-y-3 text-body">
+          {links.map((l) => (
+            <li key={l.href}>
               <a
                 href={l.href}
                 className="link break-all"
@@ -47,31 +41,27 @@ export default function Footer() {
           ))}
         </ul>
       </div>
-
-      <div className="wrap mt-auto flex flex-col gap-10 pt-20">
-        <Image
-          src="/images/logo-icon.png"
-          alt=""
-          width={96}
-          height={96}
-          className="h-20 w-20 md:h-24 md:w-24"
-        />
-        <div className="flex flex-col gap-2 text-small sm:flex-row sm:justify-between">
-          <p>
-            © {year} {brand.name}. {t.footer.rights}
-          </p>
-          <p>
-            {contact.address.line1}, {contact.address.line2}
-          </p>
-        </div>
+      <div className="footer-base wrap flex flex-col gap-1 py-5 md:!pr-28 text-small text-muted sm:flex-row sm:justify-between">
+        <p>
+          © {year} {brand.name}. {t.footer.rights}
+        </p>
+        <p>
+          {contact.address.line1}, {contact.address.line2}
+        </p>
       </div>
 
-      <p
-        aria-hidden="true"
-        className="giant display -mb-[0.24em] select-none whitespace-nowrap pl-[0.02em] leading-[0.8] tracking-[-0.055em] text-accent"
-      >
-        RAYAN SPA
-      </p>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        .footer-base { border-top: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); } /* taste-skill-ignore: filet du pied de page */
+        .footer-mark {
+          background: currentColor;
+          -webkit-mask: url(/images/logo-icon.png) center / contain no-repeat;
+          mask: url(/images/logo-icon.png) center / contain no-repeat;
+        }
+      `,
+        }}
+      />
     </footer>
   );
 }
