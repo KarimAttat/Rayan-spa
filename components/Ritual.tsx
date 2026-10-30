@@ -21,7 +21,7 @@ const STAGES = [
   // Photo d'illustration (banque d'images) : l'huile d'argan du massage.
   { img: "/images/massage5.jpg", focus: "50% 40%", side: "right" },
   // Photo d'illustration (banque d'images), pas une salle du spa.
-  { img: "/images/massage3.jpg", focus: "50% 45%", side: "left" },
+  { img: "/images/massage6.jpg", focus: "50% 55%", side: "left" },
   { img: "/images/rooftop2.jpg", focus: "60% 55%", side: "right" },
 ] as const;
 
@@ -37,7 +37,7 @@ export default function Ritual() {
   const { x } = useI18n();
 
   return (
-    <section id="rituel" className="relative bg-night text-night-ink">
+    <section id="rituel" data-header="dark" className="relative bg-night text-night-ink">
       <div className="wrap grid gap-8 py-section md:grid-cols-12 md:items-end">
         <h2 {...rv(0)} className="text-[clamp(3.5rem,2rem+7vw,9rem)] leading-[0.9] md:col-span-7">
           {x.ritual.title}
@@ -112,7 +112,7 @@ function Stage({ stage, index, last }: { stage: RitualStage; index: number; last
           <button
             type="button"
             onClick={() => selectService(STAGE_SERVICE[index](t))}
-            className="button button--light"
+            className="button"
           >
             {x.cta.ritual}
           </button>

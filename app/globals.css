@@ -20,8 +20,8 @@
   --radius-inner: 1rem;
   --ink: #2b1b14; /* brun du nom, assombri pour la lecture */
   --muted: #5c4334; /* brun doux (7:1 sur le crème) */
-  --accent: #852620; /* rouge de l'arche */
-  --accent-strong: #6b1c17;
+  --accent: #7d5f40; /* bronze sombre : les rares accents (le rouge a quitté la page) */
+  --accent-strong: #634a31;
   --accent-ink: #f7eee7;
   --gold: #9a7449; /* bronze du lion */
   --gold-light: #d6b585; /* bronze lisible sur fond sombre */
@@ -122,7 +122,8 @@
 }
 
 @layer components {
-  /* --- Bouton : plein, une couleur, en pilule --- */
+  /* --- Bouton : un filet fin, sans fond, en petites capitales espacées.
+     Il prend la couleur du texte qui l'entoure (crème sur photo, brun sur clair). --- */
   .button {
     display: inline-flex;
     align-items: center;
@@ -130,38 +131,38 @@
     gap: 0.6rem;
     min-height: 3rem;
     padding: 0 1.75rem;
-    border-radius: 999px;
-    background: var(--accent);
-    color: var(--accent-ink);
-    font-size: var(--step-body);
-    font-weight: 500;
+    border: 1px solid currentColor;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font-size: var(--step-small);
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
     line-height: 1;
     transition:
       transform var(--t-press) var(--ease-out),
-      background-color var(--t-hover) ease,
-      color var(--t-hover) ease;
+      box-shadow var(--t-hover) ease;
   }
   .button:active {
-    transform: scale(0.97);
-  }
-  .button--ink {
-    background: var(--night);
-    color: var(--night-ink);
-  }
-  .button--light {
-    background: var(--bg);
-    color: var(--ink);
+    transform: scale(0.98);
   }
   @media (hover: hover) and (pointer: fine) {
     .button:hover {
-      background: var(--accent-strong);
+      box-shadow: inset 0 0 0 999px color-mix(in srgb, currentColor 9%, transparent);
     }
-    .button--ink:hover {
-      background: #000;
-    }
-    .button--light:hover {
-      background: #fff8f2;
-    }
+  }
+
+  /* --- Filets fins : séparent sans peser --- */
+  .rule-v {
+    background: color-mix(in srgb, currentColor 30%, transparent);
+  }
+
+  /* --- Petit titre au-dessus des grands : capitales espacées --- */
+  .eyebrow {
+    font-size: var(--step-small);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
   }
 
   /* --- Lien texte : soulignement qui se dessine --- */

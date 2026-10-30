@@ -17,6 +17,7 @@ export default function CtaInline({ zone, tone = "light" }: { zone: string; tone
   return (
     <section
       data-cta-zone={zone}
+      data-header={night ? "dark" : undefined}
       aria-label={x.cta.title}
       className={night ? "bg-night text-night-ink" : "bg-bg text-ink"}
     >
@@ -30,7 +31,7 @@ export default function CtaInline({ zone, tone = "light" }: { zone: string; tone
           </p>
         </div>
         <div {...rv(2)} className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8 md:col-span-5 md:col-start-8 md:justify-end">
-          <button type="button" onClick={goToBooking} className={night ? "button button--light" : "button"}>
+          <button type="button" onClick={goToBooking} className="button">
             {x.cta.choose}
           </button>
           <a href={`https://wa.me/${siteConfig.contact.whatsapp}`} className="link text-body">

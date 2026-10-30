@@ -58,19 +58,26 @@ export const siteConfig = {
   showTestimonials: false,
 
   /* --------- IMAGES --------- */
-  // Photo vue à travers les lettres du nom, en tête de page : le zellige du hammam.
+  // Photo plein écran du premier écran, sous le nom (image générée, illustration).
   heroImage: {
-    src: "/images/hammam1.jpg",
-    w: 1200,
-    h: 1600,
+    src: "/images/massage-dos.jpg",
+    w: 3200,
+    h: 1786,
+    // Les mains sont à droite : sur un écran étroit, on garde ce côté-là.
+    focus: "72% 50%",
+  },
+  // Film du premier écran (généré, illustration), posé sur la photo ci-dessus.
+  heroVideo: {
+    src: "/videos/hero.mp4",
   },
   // Image des données structurées / partage (photo dominante).
   shareImage: "/images/hero.jpg",
-  // Photo d'ambiance à côté de la carte des soins (image d'illustration).
+  // Photo plein écran juste avant la carte des soins (image générée, illustration).
   menuImage: {
-    src: "/images/massage6.jpg",
-    w: 2848,
-    h: 4272,
+    src: "/images/massage-nuque.jpg",
+    w: 3200,
+    h: 1786,
+    focus: "58% 50%",
   },
 } as const;
 

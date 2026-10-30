@@ -17,7 +17,7 @@ export default function CtaBand() {
         href={direct}
         data-cta="band"
         aria-label={x.band.label}
-        className="band arch relative mx-margin flex h-[52svh] flex-col justify-between overflow-hidden bg-accent text-accent-ink md:h-[68svh]"
+        className="band arch relative mx-margin flex h-[52svh] flex-col justify-between overflow-hidden bg-night text-night-ink md:h-[68svh]"
       >
         <span className="mt-[46%] flex items-start justify-between gap-6 px-5 sm:mt-[30%] md:mt-[11%] md:px-8">
           <span className="max-w-[24ch] text-body md:text-lead">{x.band.sentence}</span>
@@ -47,7 +47,7 @@ export default function CtaBand() {
           __html: `
         .band { transition: background-color 0ms, color 0ms; }
         .band-arrow { transition: transform var(--t-hover) var(--ease-out); }
-        .band:hover, .band:focus-visible { background: var(--accent-strong); }
+        .band:hover, .band:focus-visible { background: #1a0f0b; }
         .band:hover .band-arrow { transform: translate(4px, -4px); }
         .band:active { transform: scale(0.995); }
         .band:focus-visible { outline-offset: 6px; }

@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { siteConfig } from "@/data/site-config";
 import { useI18n } from "@/lib/i18n";
@@ -9,43 +10,76 @@ import { goToBooking } from "@/lib/booking-bus";
 import { useStill } from "@/lib/use-still";
 
 /**
- * Le nom comme fenêtre : « RAYAN SPA » en très grand, le zellige du hammam
- * vu à travers les lettres. Un seul écran : au premier défilement, le nom
- * grandit et s'efface pendant que la carte des soins monte — on arrive
- * tout de suite au menu.
+ * Le premier écran : le film du massage en plein écran (la photo en attente), « RAYAN SPA »
+ * en très grand par-dessus. Au premier défilement, la photo s'avance
+ * doucement et le nom s'efface pendant que la section suivante monte.
  *
- * Avec prefers-reduced-motion : le nom reste fixe.
+ * Avec prefers-reduced-motion : tout reste fixe.
  */
-
-/** Image optimisée par Next (WebP/AVIF), utilisable en image de fond CSS. */
-function optimized(src: string, w: number) {
-  return `/_next/image?url=${encodeURIComponent(src)}&w=${w}&q=75`;
-}
-
 export default function Hero() {
   const { x } = useI18n();
   const still = useStill();
   const ref = useRef<HTMLElement>(null);
-  const { heroImage } = siteConfig;
+  const { heroImage, heroVideo } = siteConfig;
+  // La vidéo se pose sur la photo une fois prête : la photo reste l'image d'attente.
+  const [playing, setPlaying] = useState(false);
 
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const scale = useTransform(p, [0, 1], [1, still ? 1 : 1.35]);
-  const y = useTransform(p, [0, 1], ["0svh", still ? "0svh" : "18svh"]);
+  const photoScale = useTransform(p, [0, 1], [1, still ? 1 : 1.12]);
+  const y = useTransform(p, [0, 1], ["0svh", still ? "0svh" : "14svh"]);
   const fade = useTransform(p, [0, 0.7], [1, still ? 1 : 0]);
-  const bgY = useTransform(p, [0, 1], ["50%", still ? "50%" : "20%"]);
-
-  const photo = optimized(heroImage.src, 1920);
 
   return (
-    <section ref={ref} id="top" className="relative h-[100svh] overflow-hidden bg-bg">
+    <section
+      ref={ref}
+      id="top"
+      data-header="dark"
+      className="relative h-[100svh] min-h-[34rem] overflow-hidden bg-night text-night-ink"
+    >
       <h1 className="sr-only">Rayan SPA — {x.hero.h1Suffix}</h1>
 
-      {/* Le nom, la photo dedans */}
+      <motion.div className="absolute inset-0" style={{ scale: photoScale }}>
+        <Image
+          src={heroImage.src}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+          style={{ objectPosition: heroImage.focus }}
+        />
+        {/* Le film du massage, en boucle, sans son. Mouvement réduit : la photo seule. */}
+        {heroVideo && !still && (
+          <video
+            aria-hidden="true"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            onPlaying={() => setPlaying(true)}
+            className={[
+              "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
+              playing ? "opacity-100" : "opacity-0",
+            ].join(" ")}
+            style={{ objectPosition: heroImage.focus }}
+          >
+            <source src={heroVideo.src} type="video/mp4" />
+          </video>
+        )}
+      </motion.div>
+      {/* Voile neutre : la barre en haut, le nom et le bas de page restent lisibles */}
+      <div
+        aria-hidden="true"
+        className={"absolute inset-0 bg-[linear-gradient(180deg,rgba(20,12,9,0.5)_0%,rgba(20,12,9,0.12)_28%,rgba(20,12,9,0.22)_55%,rgba(20,12,9,0.8)_100%)]" /* taste-skill-ignore: voile neutre sur photo */}
+      />
+
+      {/* Le nom */}
       <div className="hero-in absolute inset-x-0 top-[42%] -translate-y-1/2 md:top-[46%]">
         <motion.p
           aria-hidden="true"
           className="hero-name display text-center leading-[0.82] tracking-[-0.02em]"
-          style={{ scale, y, opacity: fade, backgroundImage: `url(${photo})`, backgroundPositionY: bgY }}
+          style={{ y, opacity: fade }}
         >
           <span className="block md:inline">RAYAN</span> <span className="block md:inline">SPA</span>
         </motion.p>
@@ -54,7 +88,7 @@ export default function Hero() {
       {/* Bord inférieur : état d'ouverture, phrase, actions */}
       <motion.div style={{ opacity: fade }} className="absolute inset-x-0 bottom-0">
         <div className="fade-late wrap grid gap-5 pb-8 md:pb-10 lg:grid-cols-12 lg:items-end">
-          <OpenStatus className="text-small text-muted lg:col-span-4" />
+          <OpenStatus className="text-small lg:col-span-4" />
           <p className="max-w-[34ch] text-body lg:col-span-4 lg:col-start-6">{x.hero.line}</p>
           <div
             data-cta-zone="hero"
@@ -76,12 +110,8 @@ export default function Hero() {
         .hero-name {
           font-size: clamp(5.5rem, 26vw, 14rem);
           font-weight: 500;
-          color: var(--ink);
-          background-size: cover;
-          background-position-x: center;
-          -webkit-background-clip: text; /* taste-skill-ignore: photo dans le nom, demandée */
-          background-clip: text; /* taste-skill-ignore: photo dans le nom, demandée */
-          -webkit-text-fill-color: transparent;
+          color: var(--night-ink);
+          text-shadow: 0 2px 40px rgba(20, 12, 9, 0.25);
           transform-origin: 50% 50%;
         }
         @media (min-width: 768px) {

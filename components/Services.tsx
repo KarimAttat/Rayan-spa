@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import {
   forfaits,
   massages,
@@ -12,20 +12,15 @@ import {
 import { useI18n } from "@/lib/i18n";
 import { selectService } from "@/lib/booking-bus";
 import { rv } from "./ui/Reveal";
-import { useStill } from "@/lib/use-still";
 
 /**
- * La carte, sur toute la largeur de l'écran, composée pour se lire d'un
- * coup d'œil : chaque groupe (massages, hammams, forfaits, beauté) occupe
- * sa propre bande de couleur avec un grand titre ; chaque soin a sa fiche,
- * son nom dans la police du texte (nette à toutes les tailles) et son prix
- * bien visible. Les durées d'un massage sont des pavés à toucher ; les
- * hammams et forfaits listent leurs étapes une par ligne, avec leur bouton
- * « Réserver ». Tout choix présélectionne le soin dans le formulaire.
+ * La carte, composée comme celle d'une grande maison : sur fond clair, un
+ * titre par groupe (massages, hammams, forfaits, beauté) précédé de son
+ * chiffre romain, puis les soins en deux colonnes. Chaque nom est relié à
+ * son prix par un filet pointillé ; les étapes d'un hammam ou d'un forfait
+ * tiennent sur une ligne discrète. Toucher une durée ou « Réserver »
+ * présélectionne le soin dans le formulaire.
  */
-
-type Tone = "bg" | "surface";
-
 export default function Services() {
   const { t, x } = useI18n();
 
@@ -39,56 +34,63 @@ export default function Services() {
 
   return (
     <section id="carte" className="relative bg-bg">
-      <div className="wrap pb-10 pt-section">
-        <div className="mx-auto grid max-w-[90rem] gap-8 md:grid-cols-12 md:items-end">
-          <h2 {...rv(0)} className="text-[clamp(3.5rem,2rem+7vw,9rem)] leading-[0.9] md:col-span-6">
-            {x.menu.title}
-          </h2>
-          <p {...rv(1)} className="max-w-[38ch] text-lead md:col-span-5 md:col-start-8 md:pb-3">
-            {t.services.intro}
-          </p>
-        </div>
+      <div className="wrap mx-auto flex max-w-[60rem] flex-col items-center pb-16 pt-section text-center md:pb-24">
+        <p {...rv(0)} className="eyebrow text-muted">
+          {t.services.eyebrow}
+        </p>
+        <h2 {...rv(1)} className="mt-6 text-[clamp(3.5rem,2rem+7vw,8.5rem)] leading-[0.9]">
+          {x.menu.title}
+        </h2>
+        <p {...rv(2)} className="mt-8 max-w-[44ch] text-lead text-muted">
+          {t.services.intro}
+        </p>
+        <nav {...rv(3)} aria-label={x.menu.title} className="mt-12">
+          <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 md:gap-x-12">
+            {groups.map((g) => (
+              <li key={g.id}>
+                <a href={`#${g.id}`} className="eyebrow menu-jump">
+                  {g.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
 
-      <MenuTabs groups={groups} label={x.menu.title} />
-
-      <Group id="carte-massages" title={t.services.categoryMassages} tone="surface" hint={x.menu.tapHint}>
+      <Group id="carte-massages" n="I" title={t.services.categoryMassages} hint={x.menu.tapHint}>
         {massages
           .filter((m) => !m.hidden)
           .map((m, i) => {
             const copy = t.serviceData[m.id];
             return (
-              <article key={m.id} {...rv(i, "card")} className="menu-card flex flex-col">
+              <li key={m.id} {...rv(i % 2, "row")}>
                 <h4 className="menu-name">{copy.name}</h4>
-                {copy.description && <p className="mt-3 text-body text-muted">{copy.description}</p>}
-                <ul className="mt-auto grid grid-cols-2 gap-3 pt-6">
+                {copy.description && <p className="mt-2 max-w-[44ch] text-body text-muted">{copy.description}</p>}
+                <ul className="mt-4">
                   {m.variants.map((v) => (
                     <li key={v.duration}>
                       <button
                         type="button"
                         onClick={() => selectService(`${copy.name} (${v.duration})`)}
                         aria-label={`${x.menu.bookItem} : ${copy.name}, ${v.duration}, ${v.price} ${currency}`}
-                        className="menu-pick flex w-full flex-col items-start px-4 py-3.5 text-left"
+                        className="menu-pick flex w-full items-baseline gap-4 py-2 text-left"
                       >
-                        <span className="flex w-full items-baseline justify-between gap-3">
-                          <span className="whitespace-nowrap text-body">{v.duration}</span>
-                          <span aria-hidden="true" className="menu-arrow text-body leading-none text-accent">
-                            →
-                          </span>
-                        </span>
-                        <span className="mt-1">
-                          <Price value={v.price} />
+                        <span className="whitespace-nowrap text-body">{v.duration}</span>
+                        <span aria-hidden="true" className="menu-leader" />
+                        <Price value={v.price} />
+                        <span aria-hidden="true" className="menu-arrow text-body">
+                          →
                         </span>
                       </button>
                     </li>
                   ))}
                 </ul>
-              </article>
+              </li>
             );
           })}
       </Group>
 
-      <Group id="carte-hammams" title={t.services.categoryHammams} tone="bg">
+      <Group id="carte-hammams" n="II" title={t.services.categoryHammams}>
         {hammams.map((h, i) => {
           const name = t.serviceData[h.id].name;
           return (
@@ -97,7 +99,6 @@ export default function Services() {
               i={i}
               name={name}
               price={h.price}
-              includes={x.menu.includes}
               bookLabel={x.menu.bookItem}
               onBook={() => selectService(name)}
               steps={h.stepIds}
@@ -106,7 +107,7 @@ export default function Services() {
         })}
       </Group>
 
-      <Group id="carte-forfaits" title={t.services.categoryForfaits} tone="surface">
+      <Group id="carte-forfaits" n="III" title={t.services.categoryForfaits}>
         {forfaits
           .filter((f) => !f.hidden)
           .map((f, i) => {
@@ -118,7 +119,6 @@ export default function Services() {
                 name={copy.name}
                 meta={copy.meta}
                 price={f.price}
-                includes={x.menu.includes}
                 bookLabel={x.menu.bookItem}
                 onBook={() => selectService(copy.name)}
                 steps={f.stepIds}
@@ -129,105 +129,97 @@ export default function Services() {
 
       <Group
         id="carte-beaute"
+        n="IV"
         title={t.services.categoryBeaute}
-        tone="bg"
-        columns={false}
         hint={allBeauteOff ? t.services.unavailable : undefined}
       >
-        <ul className="grid gap-x-10 gap-y-4 sm:grid-cols-2 xl:grid-cols-4">
-          {beaute.map((b, i) => (
-            <li key={b.id} {...rv(i, "row")} className="flex items-baseline justify-between gap-6 text-lead">
-              <span className={b.unavailable ? "text-muted" : undefined}>{t.serviceData[b.id].name}</span>
-              {!allBeauteOff && (
-                <span className="shrink-0 text-small text-muted">
-                  {b.unavailable ? t.services.unavailable : `${b.price} ${currency}`}
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-        <p {...rv(0)} className="text-small text-muted">
-          {t.services.priceNote.replace("{currency}", currency)}
-        </p>
+        {beaute.map((b, i) => (
+          <li key={b.id} {...rv(i % 2, "row")} className="flex items-baseline gap-4">
+            <span className={["menu-name", b.unavailable ? "text-muted" : ""].join(" ")}>
+              {t.serviceData[b.id].name}
+            </span>
+            {!allBeauteOff && (
+              <>
+                <span aria-hidden="true" className="menu-leader" />
+                {b.unavailable ? (
+                  <span className="shrink-0 text-small text-muted">{t.services.unavailable}</span>
+                ) : (
+                  <Price value={b.price} />
+                )}
+              </>
+            )}
+          </li>
+        ))}
       </Group>
 
+      <p className="wrap pb-section text-center text-small text-muted">
+        {t.services.priceNote.replace("{currency}", currency)}
+      </p>
+
       <style dangerouslySetInnerHTML={{ __html: `
-        /* Le nom de chaque soin : la police du texte, en gras moyen — nette à toutes les tailles */
+        /* Le nom de chaque soin : la serif du titre, à taille de lecture */
         .menu-name {
-          font-family: var(--font-jost), system-ui, sans-serif;
+          font-family: var(--font-boska), Georgia, serif;
           font-weight: 500;
-          font-size: clamp(1.35rem, 1.2rem + 0.6vw, 1.65rem);
-          line-height: 1.2;
+          font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
+          line-height: 1.1;
           letter-spacing: -0.01em;
         }
-        /* Chaque soin sur sa propre fiche, d'un ton franchement différent de sa bande */
-        .menu-card { padding: clamp(1.25rem, 1rem + 1.2vw, 2rem); border-radius: var(--radius-card); }
-        .menu-pick { border-radius: var(--radius-inner); }
-        [data-tone="surface"] .menu-card { background: var(--paper); }
-        [data-tone="bg"] .menu-card { background: var(--surface); }
-        [data-tone="surface"] .menu-pick { background: var(--surface); }
-        [data-tone="bg"] .menu-pick { background: var(--paper); }
-        .menu-pick { transition: background-color var(--t-hover) ease, color var(--t-hover) ease, transform 120ms var(--ease-out); }
-        .menu-arrow { display: inline-block; transition: transform var(--t-hover) var(--ease-out); }
-        @media (hover: hover) and (pointer: fine) {
-          [data-tone] .menu-pick:hover { background: var(--accent); color: var(--accent-ink); }
-          .menu-pick:hover .menu-arrow { color: var(--accent-ink); transform: translateX(4px); }
-          .menu-pick:hover .text-muted { color: var(--accent-ink); }
+        /* Le filet pointillé qui relie un nom (ou une durée) à son prix */
+        .menu-leader {
+          flex: 1 1 auto;
+          min-width: 1.5rem;
+          border-bottom: 1px dotted color-mix(in srgb, var(--ink) 35%, transparent); /* taste-skill-ignore: points de conduite */
+          transform: translateY(-0.3em);
         }
-        .menu-pick:active { transform: scale(0.97); }
-
-        /* Onglets : la copie rouge est découpée sur l'onglet actif ; la découpe
-           glisse d'un onglet à l'autre, couleurs comprises, sans fondu. */
-        .menu-tabs-on { transition: clip-path 300ms var(--ease-in-out); }
-        .menu-tab { transition: color var(--t-hover) ease; -webkit-tap-highlight-color: transparent; }
-        @media (hover: hover) and (pointer: fine) { .menu-tab:hover { color: var(--accent); } }
-        @media (prefers-reduced-motion: reduce) { .menu-tabs-on { transition: none; } }
+        .menu-jump { text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 0.5em; transition: text-decoration-color var(--t-hover) ease; }
+        .menu-arrow { display: inline-block; opacity: 0; transform: translateX(-6px); transition: opacity var(--t-hover) ease, transform var(--t-hover) var(--ease-out); }
+        .menu-pick { -webkit-tap-highlight-color: transparent; }
+        .menu-pick:focus-visible .menu-arrow { opacity: 1; transform: none; }
+        @media (hover: hover) and (pointer: fine) {
+          .menu-jump:hover { text-decoration-color: currentColor; }
+          .menu-pick:hover .menu-arrow { opacity: 1; transform: none; }
+          .menu-pick:hover .menu-leader { border-bottom-color: var(--ink); }
+          .menu-book:hover .menu-arrow { opacity: 1; transform: none; }
+        }
+        .menu-pick:active { opacity: 0.6; }
       ` }} />
     </section>
   );
 }
 
-/** Un groupe de la carte : sa propre bande de couleur, un grand titre. */
+/** Un groupe de la carte : chiffre romain, grand titre centré, soins en deux colonnes. */
 function Group({
   id,
+  n,
   title,
-  tone,
   hint,
-  columns = true,
   children,
 }: {
   id: string;
+  n: string;
   title: string;
-  tone: Tone;
   hint?: string;
-  /** Les soins en fiches : une colonne sur téléphone, deux puis trois sur grand écran. */
-  columns?: boolean;
   children: ReactNode;
 }) {
   return (
-    <div id={id} data-tone={tone} className={tone === "surface" ? "bg-surface" : "bg-bg"}>
-      <div className="wrap py-14 md:py-24">
-        <div className="mx-auto max-w-[90rem]">
-          <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-3">
-            <h3 {...rv(0)} className="display text-head leading-[0.95]">
-              {title}
-            </h3>
-            {hint && (
-              <p {...rv(1)} className="text-body text-muted md:pb-2">
-                {hint}
-              </p>
-            )}
-          </div>
-          <div
-            className={
-              columns
-                ? "mt-10 grid gap-4 md:mt-14 md:grid-cols-2 md:gap-5 xl:grid-cols-3"
-                : "mt-10 space-y-12 md:mt-14"
-            }
-          >
-            {children}
-          </div>
+    <div id={id} className="wrap scroll-mt-8 py-14 md:py-20">
+      <div className="mx-auto max-w-[80rem]">
+        <div className="flex flex-col items-center text-center">
+          <span {...rv(0)} className="display text-lead text-muted">
+            {n}
+          </span>
+          <h3 {...rv(1)} className="mt-3 text-head leading-[0.95]">
+            {title}
+          </h3>
+          {hint && (
+            <p {...rv(2)} className="mt-4 text-small text-muted">
+              {hint}
+            </p>
+          )}
+          <span {...rv(2)} aria-hidden="true" className="rule-v mt-8 block h-10 w-px" />
         </div>
+        <ul className="mt-12 grid gap-x-20 gap-y-12 md:mt-16 md:grid-cols-2 md:gap-y-16">{children}</ul>
       </div>
     </div>
   );
@@ -235,20 +227,19 @@ function Group({
 
 function Price({ value }: { value: number }) {
   return (
-    <span className="whitespace-nowrap text-lead font-medium tabular-nums">
+    <span className="shrink-0 whitespace-nowrap text-body tabular-nums">
       {value}
-      <span className="ml-1.5 text-small font-normal text-muted">{currency}</span>
+      <span className="ml-1.5 text-small text-muted">{currency}</span>
     </span>
   );
 }
 
-/** Hammam ou forfait : nom et prix, les étapes une par ligne, un bouton. */
+/** Hammam ou forfait : nom, filet, prix ; les étapes sur une ligne ; « Réserver ». */
 function Formula({
   i,
   name,
   meta,
   price,
-  includes,
   bookLabel,
   onBook,
   steps,
@@ -257,126 +248,43 @@ function Formula({
   name: string;
   meta?: string;
   price: number;
-  includes: string;
   bookLabel: string;
   onBook: () => void;
   steps: readonly string[];
 }) {
   const { t } = useI18n();
   return (
-    <article {...rv(i, "card")} className="menu-card flex flex-col">
-      <div className="flex items-baseline justify-between gap-6">
+    <li {...rv(i % 2, "row")}>
+      <div className="flex items-baseline gap-4">
         <h4 className="menu-name">{name}</h4>
+        <span aria-hidden="true" className="menu-leader" />
         <Price value={price} />
       </div>
-      {meta && <p className="mt-2 text-body text-muted">{meta}</p>}
-      <p className="mt-5 text-small text-muted">{includes}</p>
-      <ul className="mt-2 list-disc space-y-0.5 pl-5 text-body marker:text-accent">
-        {steps.map((id) => (
-          <li
-            key={id}
-            className={unavailableStepIds.has(id) ? "line-through" : undefined}
-            title={unavailableStepIds.has(id) ? t.services.unavailable : undefined}
-          >
-            {t.stepData[id]}
-          </li>
+      {meta && <p className="mt-1 text-small text-muted">{meta}</p>}
+      <p className="mt-3 max-w-[52ch] text-body text-muted">
+        {steps.map((id, k) => (
+          <Fragment key={id}>
+            {k > 0 && <span aria-hidden="true"> · </span>}
+            <span
+              className={unavailableStepIds.has(id) ? "line-through" : undefined}
+              title={unavailableStepIds.has(id) ? t.services.unavailable : undefined}
+            >
+              {t.stepData[id]}
+            </span>
+          </Fragment>
         ))}
-      </ul>
-      <div className="mt-auto pt-6">
-        <button
-          type="button"
-          onClick={onBook}
-          aria-label={`${bookLabel} : ${name}, ${price} ${currency}`}
-          className="button"
-        >
-          {bookLabel}
-        </button>
-      </div>
-    </article>
-  );
-}
-
-/**
- * Les quatre groupes de la carte, toujours sous la main : la barre reste
- * collée sous l'en-tête pendant toute la carte et allume le groupe qu'on
- * est en train de lire. Un toucher amène au début du groupe.
- */
-function MenuTabs({ groups, label }: { groups: { id: string; label: string }[]; label: string }) {
-  const [active, setActive] = useState(0);
-  const barRef = useRef<HTMLDivElement>(null);
-  const still = useStill();
-  const ids = groups.map((g) => g.id).join(" ");
-  const n = groups.length;
-
-  useEffect(() => {
-    const els = ids
-      .split(" ")
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => !!el);
-    const update = () => {
-      // Le groupe actif est le dernier dont le haut est passé sous la barre.
-      const line = (barRef.current?.getBoundingClientRect().bottom ?? 120) + 32;
-      let idx = 0;
-      els.forEach((el, i) => {
-        if (el.getBoundingClientRect().top <= line) idx = i;
-      });
-      setActive(idx);
-    };
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, [ids]);
-
-  const go = (i: number) => {
-    const el = document.getElementById(groups[i].id);
-    const bar = barRef.current;
-    if (!el || !bar) return;
-    // Le haut de la barre collée (= hauteur de l'en-tête) + sa propre hauteur.
-    const offset = parseFloat(getComputedStyle(bar).top) + bar.offsetHeight;
-    const top = el.getBoundingClientRect().top + window.scrollY - offset + 1;
-    setActive(i);
-    window.scrollTo({ top, behavior: still ? "auto" : "smooth" });
-  };
-
-  const inset = `inset(0 ${((n - 1 - active) * 100) / n}% 0 ${(active * 100) / n}% round 999px)`;
-
-  return (
-    <div ref={barRef} className="wrap sticky top-16 z-30 bg-bg pb-4 pt-2 md:top-[4.5rem]">
-      <nav aria-label={label} className="relative mx-auto max-w-[90rem]">
-        <ul className="grid rounded-full bg-surface" style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))` }}>
-          {groups.map((g, i) => (
-            <li key={g.id}>
-              <a
-                href={`#${g.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  go(i);
-                }}
-                aria-current={i === active ? "true" : undefined}
-                className="menu-tab flex h-12 items-center justify-center px-1 text-center text-small md:text-body"
-              >
-                {g.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-        {/* La même rangée, en rouge, visible seulement sur l'onglet actif */}
-        <ul
-          aria-hidden="true"
-          className="menu-tabs-on pointer-events-none absolute inset-0 grid rounded-full bg-accent text-accent-ink"
-          style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))`, clipPath: inset }}
-        >
-          {groups.map((g) => (
-            <li key={g.id} className="flex items-center justify-center px-1 text-center text-small font-medium md:text-body">
-              {g.label}
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </div>
+      </p>
+      <button
+        type="button"
+        onClick={onBook}
+        aria-label={`${bookLabel} : ${name}, ${price} ${currency}`}
+        className="menu-book eyebrow link mt-5 inline-flex items-center gap-3"
+      >
+        {bookLabel}
+        <span aria-hidden="true" className="menu-arrow">
+          →
+        </span>
+      </button>
+    </li>
   );
 }

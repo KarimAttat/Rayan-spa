@@ -71,7 +71,7 @@ export default function WhatsAppFloat() {
         tabIndex={pastHero ? undefined : -1}
         aria-hidden={pastHero ? undefined : true}
         className={[
-          "wa-float fixed bottom-6 right-6 z-40 hidden h-14 w-14 items-center justify-center rounded-full bg-accent text-accent-ink ring-2 ring-bg md:flex",
+          "wa-float fixed bottom-6 right-6 z-40 hidden h-14 w-14 items-center justify-center rounded-full bg-night text-night-ink ring-1 ring-bg md:flex",
           pastHero ? "is-shown" : "",
         ].join(" ")}
       >
@@ -88,7 +88,7 @@ export default function WhatsAppFloat() {
         .button--wa { background: #075e54; color: var(--accent-ink); }
         .button--wa:active { background: #054a42; }
         .cta-bar { box-shadow: 0 -1px 0 color-mix(in srgb, var(--ink) 12%, transparent); } /* taste-skill-ignore: barre flottante */
-        @media (hover: hover) and (pointer: fine) { .wa-float.is-shown:hover { transform: translateY(-3px); background: var(--accent-strong); } }
+        @media (hover: hover) and (pointer: fine) { .wa-float.is-shown:hover { transform: translateY(-3px); background: #000; } }
         .wa-float.is-shown:active { transform: scale(0.94); }
         /* La barre mobile ne masque jamais la fin de la page */
         @media (max-width: 767px) { body { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)); } }

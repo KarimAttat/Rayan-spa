@@ -14,16 +14,37 @@ const NAV = [
 
 export default function Header() {
   const { x, t } = useI18n();
-  const [solid, setSolid] = useState(false);
+  const [onDark, setOnDark] = useState(true);
+  const [hidden, setHidden] = useState(false);
   const [active, setActive] = useState("");
   const [open, setOpen] = useState(false);
 
-  // La barre devient un champ plein une fois le premier écran dépassé.
+  // La barre n'a pas de fond : son texte passe en clair quand elle survole
+  // une photo ou une section sombre (marquées data-header="dark"). Sur les
+  // sections claires, elle s'efface quand on descend (pour ne pas se poser
+  // sur le texte) et revient dès qu'on remonte.
   useEffect(() => {
-    const onScroll = () => setSolid(window.scrollY > window.innerHeight * 0.6);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = 32;
+      const dark = Array.from(document.querySelectorAll<HTMLElement>('[data-header="dark"]')).some((el) => {
+        const r = el.getBoundingClientRect();
+        return r.top <= y && r.bottom > y;
+      });
+      setOnDark(dark);
+      const now = window.scrollY;
+      if (Math.abs(now - lastY) > 4) {
+        setHidden(!dark && now > lastY);
+        lastY = now;
+      }
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   // Section en cours de lecture.
@@ -57,8 +78,10 @@ export default function Header() {
   return (
     <header
       className={[
-        "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
-        solid || open ? "bg-bg" : "bg-transparent",
+        "fixed inset-x-0 top-0 z-50 transition-[color,background-color,transform] duration-300",
+        hidden && !open ? "-translate-y-full" : "",
+        // Menu mobile ouvert : un champ plein ; sinon, aucun fond.
+        open ? "bg-bg text-ink" : onDark ? "text-night-ink" : "text-ink",
       ].join(" ")}
     >
       <nav className="wrap flex h-16 items-center justify-between gap-6 md:h-[4.5rem]">

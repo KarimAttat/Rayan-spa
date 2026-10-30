@@ -40,7 +40,7 @@ export default function LanguageSwitcher({
               }}
               className={[
                 "inline-flex min-h-[2.75rem] min-w-[1.75rem] items-center justify-center",
-                active ? "underline decoration-1 underline-offset-[0.3em]" : "text-muted hover:text-ink",
+                active ? "underline decoration-1 underline-offset-[0.3em]" : "opacity-60 transition-opacity hover:opacity-100",
               ].join(" ")}
             >
               {localeMeta[l].short}
