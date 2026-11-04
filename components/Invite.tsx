@@ -27,7 +27,7 @@ export default function Invite() {
           </p>
           <h2
             id="invite-title"
-            className="mt-8 text-[clamp(3rem,1.4rem+6vw,7.5rem)] leading-[0.92] tracking-[-0.03em]"
+            className="mt-8 text-[clamp(3rem,1.4rem+6vw,7.5rem)] leading-[1.05]"
           >
             {lines.map((line, i) => (
               <span key={line} {...rv(i + 1, "line")} className="block pb-[0.08em]">

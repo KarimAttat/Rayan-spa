@@ -1,29 +1,26 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import localFont from "next/font/local";
-import { Jost } from "next/font/google";
+import { Gilda_Display, Montserrat } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { siteConfig } from "@/data/site-config";
 import { locales, translations, type Locale } from "@/data/translations";
 import "../globals.css";
 
-/* --- Typographie : Boska (titres, Fontshare, licence libre, auto-hébergée) + Jost (texte) --- */
-const boska = localFont({
-  src: [
-    { path: "../fonts/Boska-Regular.woff2", weight: "400", style: "normal" },
-    { path: "../fonts/Boska-Medium.woff2", weight: "500", style: "normal" },
-  ],
-  variable: "--font-boska",
+/* --- Typographie : deux polices, un rôle chacune ---
+   Gilda Display, proche du « Rayan » du logo : le nom, les titres et les noms des soins.
+   Montserrat : tout le reste (texte, boutons, étiquettes). */
+const display = Gilda_Display({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-display",
   display: "swap",
-  fallback: ["Georgia", "serif"],
 });
 
-/* Texte courant : un sans lisible, déjà celui du site d'origine. */
-const jost = Jost({
+const main = Montserrat({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-jost",
+  weight: ["400", "500"],
+  variable: "--font-main",
   display: "swap",
 });
 
@@ -126,7 +123,7 @@ export default function LocaleLayout({
   return (
     <html
       lang={t.htmlLang}
-      className={`${boska.variable} ${jost.variable}`}
+      className={`${display.variable} ${main.variable}`}
       suppressHydrationWarning
     >
       <head>

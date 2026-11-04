@@ -1,5 +1,5 @@
 /* ============================================================
-   LES LIEUX — Rayan SPA
+   LES LIEUX — Rayan Spa
    ------------------------------------------------------------
    Uniquement des photos du spa lui-même (pas d'images
    d'illustration), une seule par lieu : c'est ce que le visiteur

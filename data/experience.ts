@@ -1,5 +1,5 @@
 /* ============================================================
-   TEXTES DE L'EXPÉRIENCE — Rayan SPA  (FR · EN · IT · ES)
+   TEXTES DE L'EXPÉRIENCE — Rayan Spa  (FR · EN · IT · ES)
    ------------------------------------------------------------
    Complète data/translations.ts pour la mise en page actuelle
    (rituel, lieux, bandeau de réservation, adresse en grand).
@@ -45,6 +45,11 @@ export type ExperienceCopy = {
     includes: string;
     /** Indication sous les durées : un toucher suffit pour réserver. */
     tapHint: string;
+    /** À côté du prix d'un forfait. */
+    perPerson: string;
+    forTwo: string;
+    /** Offert après chaque soin : dit une seule fois, sur la carte. */
+    teaNote: string;
   };
   /** La photo plein écran entre le nom et la carte : promesse + deux chemins. */
   invite: {
@@ -73,10 +78,10 @@ export type ExperienceCopy = {
 const fr: ExperienceCopy = {
   nav: { ritual: "Rituel", menu: "Carte", places: "Lieux", contact: "Contact" },
   hero: {
-    h1Suffix: "Hammam et massages à Marrakech",
+    h1Suffix: "Hammam et Massages à Marrakech",
     line: "Hammam et massages dans la médina de Marrakech, au 45 Derb Toudgha.",
     cta: "Réserver",
-    menuLink: "Voir la carte",
+    menuLink: "Voir la Carte",
   },
   status: {
     openUntil: "Ouvert aujourd’hui jusqu’à {time}",
@@ -87,37 +92,40 @@ const fr: ExperienceCopy = {
   about: {
     facts: { address: "Adresse", hours: "Horaires", booking: "Réservation" },
     bookingValue: "Par WhatsApp",
-    house: "La maison",
-    places: "Les lieux",
-    placeList: ["Le hammam", "Les salles de massage", "La salle duo", "Le salon", "Le rooftop"],
+    house: "La Maison",
+    places: "Les Lieux",
+    placeList: ["Le Hammam", "Les Salles de Massage", "La Salle Duo", "Le Salon", "Le Rooftop"],
   },
   ritual: {
-    title: "Le rituel",
+    title: "Le Rituel",
     intro:
       "Du hammam à la pause thé, nos forfaits suivent les gestes des hammams de la médina. Voici les étapes, dans l’ordre.",
     stages: [
       { name: "Vapeur", text: "La chaleur du hammam détend les muscles et prépare la peau. On s’installe, on respire, le temps ralentit." },
-      { name: "Huile d’argan", text: "L’huile d’argan, chauffée entre les mains, nourrit la peau et accompagne chaque geste du massage." },
+      { name: "Huile d’Argan", text: "L’huile d’argan, chauffée entre les mains, nourrit la peau et accompagne chaque geste du massage." },
       { name: "Massage", text: "Relaxant, tonifiant ou dabachi : le massage prolonge la détente du hammam." },
-      { name: "Thé", text: "Une pause thé, avec des pâtisseries marocaines dans certains forfaits, pour revenir doucement à la journée." },
+      { name: "Thé", text: "Après chaque soin, du thé et des pâtisseries marocaines, pour revenir doucement à la journée." },
     ],
   },
   menu: {
-    title: "La carte",
+    title: "La Carte",
     bookItem: "Réserver",
     perDuration: "selon la durée",
     jump: { massages: "Massages", hammams: "Hammams", forfaits: "Forfaits", beaute: "Beauté" },
     includes: "Comprend",
     tapHint: "Touchez une durée pour la réserver.",
+    perPerson: "par personne",
+    forTwo: "pour 2 personnes",
+    teaNote: "Thé et pâtisseries marocaines offerts après chaque soin.",
   },
   invite: {
-    title: "Le massage, au cœur de la médina",
+    title: "Le Massage, au Cœur de la Médina",
     text: "Derrière une porte de la médina, le temps ralentit. Des mains expertes, l’huile d’argan tiédie, la vapeur du hammam : un rituel marocain, à partir de {price} {currency}.",
-    book: "Réserver un massage",
-    menu: "Voir la carte et les prix",
+    book: "Réserver un Massage",
+    menu: "Voir la Carte et les Prix",
   },
   places: {
-    title: "Les lieux",
+    title: "Les Lieux",
     alts: [
       "Le rooftop, ses chapeaux de paille et la vue sur les toits de la médina",
       "Le hammam, habillé de zellige noir et blanc",
@@ -130,35 +138,35 @@ const fr: ExperienceCopy = {
     label: "Réserver sur WhatsApp",
   },
   booking: {
-    preview: "Votre message",
+    preview: "Votre Message",
     previewHint: "Il s’écrit pendant que vous remplissez le formulaire.",
     optional: "facultatif",
   },
   cta: {
-    title: "Réservez en une minute",
+    title: "Réservez en une Minute",
     text: "Choisissez un soin, envoyez le message : nous confirmons l’heure sur WhatsApp.",
-    choose: "Choisir un soin",
+    choose: "Choisir un Soin",
     whatsapp: "Écrire sur WhatsApp",
-    ritual: "Réserver ce soin",
+    ritual: "Réserver Ce Soin",
     book: "Réserver",
   },
   contact: {
     hoursLine: ["Lun – Sam", "10h – 20h"],
     greeting: "Salam",
     greetingLabel: "Nous écrire sur WhatsApp",
-    map: "Carte — Rayan SPA, Dar El Bacha, 45 Derb Toudgha, Marrakech",
-    phoneLabel: "Appeler Rayan SPA",
+    map: "Carte — Rayan Spa, Dar El Bacha, 45 Derb Toudgha, Marrakech",
+    phoneLabel: "Appeler Rayan Spa",
   },
-  footer: { invite: "Le hammam vous attend", cta: "Réserver" },
+  footer: { invite: "Le Hammam Vous Attend", cta: "Réserver" },
 };
 
 const en: ExperienceCopy = {
-  nav: { ritual: "Ritual", menu: "Menu", places: "The spa", contact: "Contact" },
+  nav: { ritual: "Ritual", menu: "Menu", places: "The Spa", contact: "Contact" },
   hero: {
-    h1Suffix: "Hammam and massages in Marrakech",
+    h1Suffix: "Hammam and Massages in Marrakech",
     line: "Hammam and massages in the Marrakech medina, at 45 Derb Toudgha.",
     cta: "Book",
-    menuLink: "See the menu",
+    menuLink: "See the Menu",
   },
   status: {
     openUntil: "Open today until {time}",
@@ -169,37 +177,40 @@ const en: ExperienceCopy = {
   about: {
     facts: { address: "Address", hours: "Hours", booking: "Booking" },
     bookingValue: "On WhatsApp",
-    house: "The house",
-    places: "The rooms",
-    placeList: ["The hammam", "The massage rooms", "The couples’ room", "The lounge", "The rooftop"],
+    house: "The House",
+    places: "The Rooms",
+    placeList: ["The Hammam", "The Massage Rooms", "The Couples’ Room", "The Lounge", "The Rooftop"],
   },
   ritual: {
-    title: "The ritual",
+    title: "The Ritual",
     intro:
       "From the hammam to the tea break, our packages follow the gestures of the medina’s hammams. Here are the steps, in order.",
     stages: [
       { name: "Steam", text: "The heat of the hammam loosens the muscles and prepares the skin. You settle in, you breathe, time slows down." },
-      { name: "Argan oil", text: "Argan oil, warmed between the hands, nourishes the skin and carries every movement of the massage." },
+      { name: "Argan Oil", text: "Argan oil, warmed between the hands, nourishes the skin and carries every movement of the massage." },
       { name: "Massage", text: "Relaxing, toning or dabachi: the massage carries on the calm of the hammam." },
-      { name: "Tea", text: "A tea break, with Moroccan pastries in some packages, to ease gently back into the day." },
+      { name: "Tea", text: "After every treatment, tea and Moroccan pastries, to ease gently back into the day." },
     ],
   },
   menu: {
-    title: "The menu",
+    title: "The Menu",
     bookItem: "Book",
     perDuration: "by duration",
     jump: { massages: "Massages", hammams: "Hammams", forfaits: "Packages", beaute: "Beauty" },
     includes: "Includes",
     tapHint: "Tap a duration to book it.",
+    perPerson: "per person",
+    forTwo: "for 2 people",
+    teaNote: "Tea and Moroccan pastries offered after every treatment.",
   },
   invite: {
-    title: "Massage in the heart of the medina",
+    title: "Massage in the Heart of the Medina",
     text: "Behind a door in the medina, time slows down. Expert hands, warm argan oil, the steam of the hammam: a Moroccan ritual, from {price} {currency}.",
-    book: "Book a massage",
-    menu: "See the menu and prices",
+    book: "Book a Massage",
+    menu: "See the Menu and Prices",
   },
   places: {
-    title: "The spa",
+    title: "The Spa",
     alts: [
       "The rooftop, its straw hats and the view over the medina roofs",
       "The hammam, clad in black and white zellige",
@@ -212,35 +223,35 @@ const en: ExperienceCopy = {
     label: "Book on WhatsApp",
   },
   booking: {
-    preview: "Your message",
+    preview: "Your Message",
     previewHint: "It writes itself as you fill in the form.",
     optional: "optional",
   },
   cta: {
-    title: "Book in one minute",
+    title: "Book in One Minute",
     text: "Pick a treatment, send the message: we confirm the time on WhatsApp.",
-    choose: "Choose a treatment",
-    whatsapp: "Message us on WhatsApp",
-    ritual: "Book this treatment",
+    choose: "Choose a Treatment",
+    whatsapp: "Message Us on WhatsApp",
+    ritual: "Book This Treatment",
     book: "Book",
   },
   contact: {
     hoursLine: ["Mon – Sat", "10:00 – 20:00"],
     greeting: "Salam",
     greetingLabel: "Message us on WhatsApp",
-    map: "Map — Rayan SPA, Dar El Bacha, 45 Derb Toudgha, Marrakech",
-    phoneLabel: "Call Rayan SPA",
+    map: "Map — Rayan Spa, Dar El Bacha, 45 Derb Toudgha, Marrakech",
+    phoneLabel: "Call Rayan Spa",
   },
-  footer: { invite: "The hammam is waiting", cta: "Book" },
+  footer: { invite: "The Hammam Is Waiting", cta: "Book" },
 };
 
 const it: ExperienceCopy = {
-  nav: { ritual: "Rituale", menu: "Listino", places: "Gli spazi", contact: "Contatti" },
+  nav: { ritual: "Rituale", menu: "Listino", places: "Gli Spazi", contact: "Contatti" },
   hero: {
-    h1Suffix: "Hammam e massaggi a Marrakech",
+    h1Suffix: "Hammam e Massaggi a Marrakech",
     line: "Hammam e massaggi nella medina di Marrakech, al 45 di Derb Toudgha.",
     cta: "Prenota",
-    menuLink: "Vedi il listino",
+    menuLink: "Vedi il Listino",
   },
   status: {
     openUntil: "Aperto oggi fino alle {time}",
@@ -251,37 +262,40 @@ const it: ExperienceCopy = {
   about: {
     facts: { address: "Indirizzo", hours: "Orari", booking: "Prenotazioni" },
     bookingValue: "Su WhatsApp",
-    house: "La casa",
-    places: "Gli spazi",
-    placeList: ["L’hammam", "Le sale massaggi", "La sala di coppia", "Il salotto", "Il rooftop"],
+    house: "La Casa",
+    places: "Gli Spazi",
+    placeList: ["L’Hammam", "Le Sale Massaggi", "La Sala di Coppia", "Il Salotto", "Il Rooftop"],
   },
   ritual: {
-    title: "Il rituale",
+    title: "Il Rituale",
     intro:
       "Dall’hammam alla pausa tè, i nostri pacchetti seguono i gesti degli hammam della medina. Ecco le tappe, in ordine.",
     stages: [
       { name: "Vapore", text: "Il calore dell’hammam scioglie i muscoli e prepara la pelle. Ci si sistema, si respira, il tempo rallenta." },
-      { name: "Olio di argan", text: "L’olio di argan, scaldato tra le mani, nutre la pelle e accompagna ogni gesto del massaggio." },
+      { name: "Olio di Argan", text: "L’olio di argan, scaldato tra le mani, nutre la pelle e accompagna ogni gesto del massaggio." },
       { name: "Massaggio", text: "Rilassante, tonificante o dabachi: il massaggio prolunga la calma dell’hammam." },
-      { name: "Tè", text: "Una pausa tè, con pasticceria marocchina in alcuni pacchetti, per tornare piano alla giornata." },
+      { name: "Tè", text: "Dopo ogni trattamento, tè e pasticcini marocchini, per tornare piano alla giornata." },
     ],
   },
   menu: {
-    title: "Il listino",
+    title: "Il Listino",
     bookItem: "Prenota",
     perDuration: "secondo la durata",
     jump: { massages: "Massaggi", hammams: "Hammam", forfaits: "Pacchetti", beaute: "Bellezza" },
     includes: "Comprende",
     tapHint: "Tocca una durata per prenotarla.",
+    perPerson: "a persona",
+    forTwo: "per 2 persone",
+    teaNote: "Tè e pasticcini marocchini offerti dopo ogni trattamento.",
   },
   invite: {
-    title: "Il massaggio, nel cuore della medina",
+    title: "Il Massaggio, nel Cuore della Medina",
     text: "Dietro una porta della medina, il tempo rallenta. Mani esperte, olio d’argan tiepido, il vapore dell’hammam: un rituale marocchino, a partire da {price} {currency}.",
-    book: "Prenota un massaggio",
-    menu: "Vedi il listino e i prezzi",
+    book: "Prenota un Massaggio",
+    menu: "Vedi il Listino e i Prezzi",
   },
   places: {
-    title: "Gli spazi",
+    title: "Gli Spazi",
     alts: [
       "Il rooftop, i cappelli di paglia e la vista sui tetti della medina",
       "L’hammam, rivestito di zellige bianco e nero",
@@ -294,35 +308,35 @@ const it: ExperienceCopy = {
     label: "Prenota su WhatsApp",
   },
   booking: {
-    preview: "Il tuo messaggio",
+    preview: "Il Tuo Messaggio",
     previewHint: "Si scrive mentre compili il modulo.",
     optional: "facoltativo",
   },
   cta: {
-    title: "Prenota in un minuto",
+    title: "Prenota in un Minuto",
     text: "Scegli un trattamento, invia il messaggio: confermiamo l’orario su WhatsApp.",
-    choose: "Scegli un trattamento",
+    choose: "Scegli un Trattamento",
     whatsapp: "Scrivici su WhatsApp",
-    ritual: "Prenota questo trattamento",
+    ritual: "Prenota Questo Trattamento",
     book: "Prenota",
   },
   contact: {
     hoursLine: ["Lun – Sab", "10 – 20"],
     greeting: "Salam",
     greetingLabel: "Scriveteci su WhatsApp",
-    map: "Mappa — Rayan SPA, Dar El Bacha, 45 Derb Toudgha, Marrakech",
-    phoneLabel: "Chiama Rayan SPA",
+    map: "Mappa — Rayan Spa, Dar El Bacha, 45 Derb Toudgha, Marrakech",
+    phoneLabel: "Chiama Rayan Spa",
   },
-  footer: { invite: "L’hammam vi aspetta", cta: "Prenota" },
+  footer: { invite: "L’Hammam Vi Aspetta", cta: "Prenota" },
 };
 
 const es: ExperienceCopy = {
-  nav: { ritual: "Ritual", menu: "Carta", places: "El espacio", contact: "Contacto" },
+  nav: { ritual: "Ritual", menu: "Carta", places: "El Espacio", contact: "Contacto" },
   hero: {
-    h1Suffix: "Hammam y masajes en Marrakech",
+    h1Suffix: "Hammam y Masajes en Marrakech",
     line: "Hammam y masajes en la medina de Marrakech, en el 45 de Derb Toudgha.",
     cta: "Reservar",
-    menuLink: "Ver la carta",
+    menuLink: "Ver la Carta",
   },
   status: {
     openUntil: "Abierto hoy hasta las {time}",
@@ -333,37 +347,40 @@ const es: ExperienceCopy = {
   about: {
     facts: { address: "Dirección", hours: "Horario", booking: "Reservas" },
     bookingValue: "Por WhatsApp",
-    house: "La casa",
-    places: "Los espacios",
-    placeList: ["El hammam", "Las salas de masaje", "La sala para dos", "El salón", "La azotea"],
+    house: "La Casa",
+    places: "Los Espacios",
+    placeList: ["El Hammam", "Las Salas de Masaje", "La Sala para Dos", "El Salón", "La Azotea"],
   },
   ritual: {
-    title: "El ritual",
+    title: "El Ritual",
     intro:
       "Del hammam a la pausa del té, nuestros paquetes siguen los gestos de los hammams de la medina. Estas son las etapas, en orden.",
     stages: [
       { name: "Vapor", text: "El calor del hammam relaja los músculos y prepara la piel. Te acomodas, respiras, el tiempo se detiene." },
-      { name: "Aceite de argán", text: "El aceite de argán, templado entre las manos, nutre la piel y acompaña cada gesto del masaje." },
+      { name: "Aceite de Argán", text: "El aceite de argán, templado entre las manos, nutre la piel y acompaña cada gesto del masaje." },
       { name: "Masaje", text: "Relajante, tonificante o dabachi: el masaje prolonga la calma del hammam." },
-      { name: "Té", text: "Una pausa con té, y pastelería marroquí en algunos paquetes, para volver despacio al día." },
+      { name: "Té", text: "Después de cada tratamiento, té y dulces marroquíes, para volver despacio al día." },
     ],
   },
   menu: {
-    title: "La carta",
+    title: "La Carta",
     bookItem: "Reservar",
     perDuration: "según la duración",
     jump: { massages: "Masajes", hammams: "Hammams", forfaits: "Paquetes", beaute: "Belleza" },
     includes: "Incluye",
     tapHint: "Toca una duración para reservarla.",
+    perPerson: "por persona",
+    forTwo: "para 2 personas",
+    teaNote: "Té y dulces marroquíes de cortesía después de cada tratamiento.",
   },
   invite: {
-    title: "El masaje, en el corazón de la medina",
+    title: "El Masaje, en el Corazón de la Medina",
     text: "Tras una puerta de la medina, el tiempo se detiene. Manos expertas, aceite de argán tibio, el vapor del hammam: un ritual marroquí, desde {price} {currency}.",
-    book: "Reservar un masaje",
-    menu: "Ver la carta y los precios",
+    book: "Reservar un Masaje",
+    menu: "Ver la Carta y los Precios",
   },
   places: {
-    title: "El espacio",
+    title: "El Espacio",
     alts: [
       "La azotea, sus sombreros de paja y la vista sobre los tejados de la medina",
       "El hammam, revestido de zellige blanco y negro",
@@ -376,26 +393,26 @@ const es: ExperienceCopy = {
     label: "Reservar por WhatsApp",
   },
   booking: {
-    preview: "Tu mensaje",
+    preview: "Tu Mensaje",
     previewHint: "Se escribe mientras rellenas el formulario.",
     optional: "opcional",
   },
   cta: {
-    title: "Reserva en un minuto",
+    title: "Reserva en un Minuto",
     text: "Elige un tratamiento, envía el mensaje: confirmamos la hora por WhatsApp.",
-    choose: "Elegir tratamiento",
+    choose: "Elegir Tratamiento",
     whatsapp: "Escríbenos por WhatsApp",
-    ritual: "Reservar este tratamiento",
+    ritual: "Reservar Este Tratamiento",
     book: "Reservar",
   },
   contact: {
     hoursLine: ["Lun – Sáb", "10 – 20 h"],
     greeting: "Salam",
     greetingLabel: "Escríbenos por WhatsApp",
-    map: "Mapa — Rayan SPA, Dar El Bacha, 45 Derb Toudgha, Marrakech",
-    phoneLabel: "Llamar a Rayan SPA",
+    map: "Mapa — Rayan Spa, Dar El Bacha, 45 Derb Toudgha, Marrakech",
+    phoneLabel: "Llamar a Rayan Spa",
   },
-  footer: { invite: "El hammam te espera", cta: "Reservar" },
+  footer: { invite: "El Hammam Te Espera", cta: "Reservar" },
 };
 
 export const experience: Record<Locale, ExperienceCopy> = { fr, en, it, es };

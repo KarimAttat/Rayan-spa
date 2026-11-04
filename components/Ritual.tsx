@@ -41,7 +41,7 @@ export default function Ritual() {
   return (
     <section id="rituel" data-header="dark" className="relative bg-night text-night-ink">
       <div className="wrap grid gap-8 py-section md:grid-cols-12 md:items-end">
-        <h2 {...rv(0)} className="text-[clamp(3.5rem,2rem+7vw,9rem)] leading-[0.9] md:col-span-7">
+        <h2 {...rv(0)} className="text-[clamp(3.5rem,2rem+7vw,9rem)] leading-[1.05] md:col-span-7">
           {x.ritual.title}
         </h2>
         <p {...rv(1)} className="max-w-[40ch] text-lead md:col-span-4 md:col-start-9">
@@ -107,7 +107,7 @@ function Stage({ stage, index, last }: { stage: RitualStage; index: number; last
           ].join(" ")}
           style={{ x: textX, opacity: textO }}
         >
-          <h3 className="text-[clamp(3.25rem,1.5rem+8vw,10rem)] leading-[0.88] tracking-[-0.035em]">
+          <h3 className="text-[clamp(3.25rem,1.5rem+8vw,10rem)] leading-[1.05]">
             {stage.name}
           </h3>
           <p className="max-w-[34ch] text-lead">{stage.text}</p>

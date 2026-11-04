@@ -23,7 +23,7 @@ export default function Footer() {
   return (
     <footer className="bg-surface text-ink">
       <div className="wrap flex flex-col gap-8 py-10 md:flex-row md:items-center md:justify-between md:py-12">
-        <a href="#top" className="display flex items-center gap-3 text-lead leading-none">
+        <a href="#top" className="display flex items-center gap-3 text-[clamp(1.5rem,1.3rem+0.5vw,1.8rem)] leading-none">
           <span aria-hidden="true" className="footer-mark h-10 w-10 shrink-0" />
           {brand.name}
         </a>

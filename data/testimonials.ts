@@ -1,5 +1,5 @@
 /* ============================================================
-   AVIS CLIENTS — Rayan SPA
+   AVIS CLIENTS — Rayan Spa
    👉 Recensioni PLACEHOLDER. Sostituisci con avis reali.
    ============================================================ */
 
@@ -20,7 +20,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      "Le massage à l’huile d’argan était divin. J’ai quitté Rayan SPA en lévitation. À ne manquer sous aucun prétexte à Marrakech.",
+      "Le massage à l’huile d’argan était divin. J’ai quitté Rayan Spa en lévitation. À ne manquer sous aucun prétexte à Marrakech.",
     author: "Sophia R.",
     origin: "Genève, Suisse",
     rating: 5,

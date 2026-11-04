@@ -39,7 +39,7 @@ export default function Contact() {
         <dl className="mt-12 grid gap-8 sm:grid-cols-2">
           <div {...rv(2)}>
             <dt className="eyebrow text-muted">{x.about.facts.hours}</dt>
-            <dd className="mt-3 text-lead font-light">
+            <dd className="mt-3 text-lead">
               {x.contact.hoursLine[0]}
               <br />
               {x.contact.hoursLine[1]}
@@ -47,7 +47,7 @@ export default function Contact() {
           </div>
           <div {...rv(3)}>
             <dt className="eyebrow text-muted">{x.contact.phoneLabel}</dt>
-            <dd className="mt-3 text-lead font-light">
+            <dd className="mt-3 text-lead">
               <a href={`tel:${tel}`} className="link tabular-nums">
                 {contact.phoneDisplay}
               </a>
@@ -84,13 +84,13 @@ export default function Contact() {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        /* L'adresse : le sans du texte, en léger, grand et aéré */
+        /* L'adresse : la police du site, grande et aérée */
         .contact-big {
-          font-family: var(--font-jost), system-ui, sans-serif;
-          font-weight: 300;
-          font-size: clamp(2rem, 1.3rem + 2.4vw, 3.5rem);
+          font-family: var(--font-main), system-ui, sans-serif;
+          font-weight: 400;
+          font-size: clamp(1.7rem, 1.2rem + 1.8vw, 2.75rem);
           line-height: 1.15;
-          letter-spacing: -0.015em;
+          letter-spacing: -0.01em;
         }
       ` }} />
     </section>

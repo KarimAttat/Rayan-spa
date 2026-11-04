@@ -11,7 +11,8 @@ import { useStill } from "@/lib/use-still";
 
 /**
  * Le premier écran : le film du massage en plein écran (la photo en attente),
- * « RAYAN SPA » en très grand par-dessus. L'écran reste en place pendant
+ * « Rayan Spa » en bas à gauche, pour laisser le massage à découvert, au-dessus
+ * de la phrase et des boutons. L'écran reste en place pendant
  * qu'on défile : le nom, la phrase et les boutons s'effacent lentement,
  * le voile s'éclaircit, jusqu'à ne laisser que le film. Alors seulement
  * la page passe à la suite.
@@ -43,7 +44,7 @@ export default function Hero() {
       data-header="dark"
       className={["relative bg-night text-night-ink", still ? "h-[100svh]" : "h-[200svh]"].join(" ")}
     >
-      <h1 className="sr-only">Rayan SPA — {x.hero.h1Suffix}</h1>
+      <h1 className="sr-only">Rayan Spa — {x.hero.h1Suffix}</h1>
       <div className="sticky top-0 h-[100svh] min-h-[34rem] overflow-hidden">
 
       <div className="absolute inset-0">
@@ -83,22 +84,16 @@ export default function Hero() {
         className={"absolute inset-0 bg-[linear-gradient(180deg,rgba(20,12,9,0.5)_0%,rgba(20,12,9,0.12)_28%,rgba(20,12,9,0.22)_55%,rgba(20,12,9,0.8)_100%)]" /* taste-skill-ignore: voile neutre sur photo */}
       />
 
-      {/* Le nom */}
-      <div className="hero-in absolute inset-x-0 top-[42%] -translate-y-1/2 md:top-[46%]">
-        <motion.p
-          aria-hidden="true"
-          className="hero-name display text-center leading-[0.82] tracking-[-0.02em]"
-          style={{ y, opacity: fade }}
-        >
-          <span className="block md:inline">RAYAN</span> <span className="block md:inline">SPA</span>
-        </motion.p>
-      </div>
-
-      {/* Bord inférieur : état d'ouverture, phrase, actions */}
+      {/* Bord inférieur : le nom, puis état d'ouverture, phrase, actions */}
       <motion.div
         style={{ opacity: fade }}
         className={["absolute inset-x-0 bottom-0", gone ? "pointer-events-none" : ""].join(" ")}
       >
+        <div className="hero-in wrap pb-5 md:pb-7">
+          <motion.p aria-hidden="true" className="hero-name display leading-[0.95]" style={{ y }}>
+            Rayan Spa
+          </motion.p>
+        </div>
         <div className="fade-late wrap grid gap-5 pb-8 md:pb-10 lg:grid-cols-12 lg:items-end">
           <OpenStatus className="text-small lg:col-span-4" />
           <p className="max-w-[34ch] text-body lg:col-span-4 lg:col-start-6">{x.hero.line}</p>
@@ -121,14 +116,13 @@ export default function Hero() {
         dangerouslySetInnerHTML={{
           __html: `
         .hero-name {
-          font-size: clamp(5.5rem, 26vw, 14rem);
-          font-weight: 500;
+          font-size: clamp(3.25rem, 15vw, 6.5rem);
+          font-weight: 400;
           color: var(--night-ink);
           text-shadow: 0 2px 40px rgba(20, 12, 9, 0.25);
-          transform-origin: 50% 50%;
         }
         @media (min-width: 768px) {
-          .hero-name { font-size: 15.5vw; }
+          .hero-name { font-size: 6vw; }
         }
         /* Le nom apparaît en douceur au chargement */
         @media (prefers-reduced-motion: no-preference) {

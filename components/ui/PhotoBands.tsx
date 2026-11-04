@@ -75,7 +75,7 @@ export function Pair({ a, b }: { a: Shot; b: Shot }) {
                   className={"absolute inset-0 bg-[linear-gradient(180deg,rgba(20,12,9,0)_40%,rgba(20,12,9,0.62)_100%)]" /* taste-skill-ignore: voile neutre sur photo */}
                 />
                 <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 p-margin pb-8 md:pb-12">
-                  <span className="display text-[clamp(2rem,1.2rem+3vw,4.25rem)] leading-[0.95] tracking-[-0.02em]">
+                  <span className="display text-[clamp(2rem,1.2rem+3vw,4.25rem)] leading-[1.05]">
                     {s.label}
                   </span>
                   <span aria-hidden="true" className="pair-arrow text-[clamp(1.75rem,1.2rem+2vw,3rem)] leading-none">

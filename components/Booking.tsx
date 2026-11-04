@@ -42,23 +42,32 @@ export default function Booking() {
   const [errors, setErrors] = useState<Errors>({});
   const [sentLink, setSentLink] = useState<string | null>(null);
   const placeholder = isPlaceholderNumber(siteConfig.contact.whatsapp);
-  const direct = `https://wa.me/${siteConfig.contact.whatsapp}`;
+
+  // Un forfait pour deux (prix pour 2) règle le nombre de personnes sur 2.
+  const peopleFor = (service: string, people: string) =>
+    forfaits.some((f) => f.forTwo && t.serviceData[f.id].name === service) ? "2" : people;
 
   // Un clic sur un soin de la carte le présélectionne ici.
   useEffect(
     () =>
       onSelectService((value) => {
         setSentLink(null);
-        setForm((f) => ({ ...f, service: value }));
+        setForm((f) => ({ ...f, service: value, people: peopleFor(value, f.people) }));
         setErrors((e) => ({ ...e, service: undefined }));
       }),
-    []
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [t]
   );
 
   const update =
     (field: keyof BookingPayload) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-      setForm((f) => ({ ...f, [field]: e.target.value }));
+      const value = e.target.value;
+      setForm((f) => ({
+        ...f,
+        [field]: value,
+        ...(field === "service" ? { people: peopleFor(value, f.people) } : {}),
+      }));
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     };
 
@@ -104,20 +113,17 @@ export default function Booking() {
         className="booking-card mx-auto grid max-w-[80rem] gap-12 p-6 sm:p-10 md:grid-cols-12 md:gap-x-10 md:p-14 lg:p-16"
       >
         <div className="md:col-span-7">
-          <p {...rv(0)} className="eyebrow text-muted">
-            {x.about.facts.booking}
-          </p>
-          <h2 {...rv(1)} className="mt-4 text-head">
+          <h2 {...rv(0)} className="text-head">
             {t.booking.title}
           </h2>
-          <p {...rv(2)} className="mt-5 max-w-[46ch] text-body text-muted">
+          <p {...rv(1)} className="mt-5 max-w-[46ch] text-body text-muted">
             {t.booking.intro}
           </p>
 
           {sentLink ? (
             <Confirmation link={sentLink} placeholder={placeholder} onReset={() => { setSentLink(null); setForm(empty); }} />
           ) : (
-            <form {...rv(3)} onSubmit={onSubmit} noValidate className="mt-10 grid gap-x-5 gap-y-6 sm:grid-cols-2">
+            <form {...rv(2)} onSubmit={onSubmit} noValidate className="mt-10 grid gap-x-5 gap-y-6 sm:grid-cols-2">
               <Field label={t.booking.fields.service} error={errors.service} htmlFor="service" wide>
                 <select id="service" value={form.service} onChange={update("service")} className="field" aria-invalid={!!errors.service}>
                   <option value="">{t.booking.fields.servicePh}</option>
@@ -142,7 +148,11 @@ export default function Booking() {
                   <optgroup label={t.services.categoryForfaits}>
                     {forfaits.filter((f) => !f.hidden).map((f) => {
                       const name = t.serviceData[f.id].name;
-                      return <option key={f.id} value={name}>{name} · {f.price} {currency}</option>;
+                      return (
+                        <option key={f.id} value={name}>
+                          {name} · {f.price} {currency} {f.forTwo ? x.menu.forTwo : x.menu.perPerson}
+                        </option>
+                      );
                     })}
                   </optgroup>
                   {beaute.some((b) => !b.unavailable) && (
@@ -191,15 +201,10 @@ export default function Booking() {
               </Field>
 
               <div className="sm:col-span-2">
-                <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
-                  <button type="submit" className="button booking-send w-full sm:w-auto">
-                    <WhatsAppIcon width={20} height={20} aria-hidden="true" />
-                    {t.booking.submit}
-                  </button>
-                  <a href={direct} data-cta="booking-direct" className="link text-body">
-                    {x.cta.whatsapp}
-                  </a>
-                </div>
+                <button type="submit" className="button booking-send w-full sm:w-auto">
+                  <WhatsAppIcon width={20} height={20} aria-hidden="true" />
+                  {t.booking.submit}
+                </button>
                 {placeholder && (
                   <p className="mt-3 text-small text-muted">
                     {t.booking.demo.pre}data/site-config.ts{t.booking.demo.post}
@@ -211,7 +216,7 @@ export default function Booking() {
         </div>
 
         {/* Le message en direct — le « reçu » de la demande */}
-        <aside {...rv(4)} aria-live="polite" className="md:col-span-5">
+        <aside {...rv(3)} aria-live="polite" className="md:col-span-5">
           <div className="md:sticky md:top-28">
             <p className="eyebrow text-muted">{x.booking.preview}</p>
             <div className="booking-preview mt-4 p-6 md:p-8">

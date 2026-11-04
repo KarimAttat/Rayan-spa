@@ -1,5 +1,5 @@
 /* ============================================================
-   CONFIGURAZIONE SITO — Rayan SPA
+   CONFIGURAZIONE SITO — Rayan Spa
    ------------------------------------------------------------
    👉 MODIFICA QUI tutti i dati di contatto, gli orari e il
       NUMERO WHATSAPP. Nessun dato sensibile va cercato altrove.
@@ -10,7 +10,7 @@ export const siteConfig = {
   url: "https://rayanspa.com",
 
   brand: {
-    name: "Rayan SPA",
+    name: "Rayan Spa",
     // ℹ️ Slogan, titre et textes de l'hero sont traduits (FR/EN/IT/ES)
     //    dans data/translations.ts → hero.*
   },

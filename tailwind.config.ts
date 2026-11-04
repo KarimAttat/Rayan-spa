@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 /**
- * DESIGN TOKENS — Rayan SPA
+ * DESIGN TOKENS — Rayan Spa
  * Les valeurs vivent dans app/globals.css (:root) ; Tailwind ne fait
  * que les exposer sous forme de classes. Pour changer l'identité,
  * modifiez les variables CSS, pas ce fichier.
@@ -32,8 +32,7 @@ const config: Config = {
         "tint-5": "var(--tint-5)",
       },
       fontFamily: {
-        serif: ["var(--font-boska)", "Georgia", "serif"],
-        sans: ["var(--font-jost)", "system-ui", "sans-serif"],
+        sans: ["var(--font-main)", "system-ui", "sans-serif"],
       },
       fontSize: {
         small: ["var(--step-small)", { lineHeight: "1.45" }],

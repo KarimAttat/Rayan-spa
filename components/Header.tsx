@@ -85,7 +85,7 @@ export default function Header() {
       ].join(" ")}
     >
       <nav className="wrap flex h-16 items-center justify-between gap-6 md:h-[4.5rem]">
-        <a href="#top" className="flex items-center gap-3 display text-lead leading-none tracking-[-0.01em]">
+        <a href="#top" className="flex items-center gap-3 display text-[clamp(1.5rem,1.3rem+0.5vw,1.8rem)] leading-none">
           {/* L'emblème du logo (le lion sous l'arche), dans la couleur du texte de la barre */}
           <span aria-hidden="true" className="logo-mark h-10 w-10 shrink-0 md:h-12 md:w-12" />
           Rayan Spa

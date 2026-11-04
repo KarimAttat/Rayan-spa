@@ -16,7 +16,7 @@ export default function About() {
       <div className="wrap py-section">
         <WordsReveal
           text={`${t.about.p1} ${t.about.p2}`}
-          className="display text-[clamp(1.9rem,1.1rem+2.6vw,4rem)] leading-[1.12] tracking-[-0.015em]"
+          className="display text-[clamp(1.9rem,1.1rem+2.6vw,4rem)] leading-[1.15]"
         />
       </div>
     </section>

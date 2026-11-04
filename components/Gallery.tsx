@@ -16,7 +16,7 @@ export default function Gallery() {
   return (
     <section id="lieux" aria-labelledby="lieux-title" className="bg-bg">
       <div className="wrap flex flex-col gap-4 py-20 md:flex-row md:items-end md:justify-between md:py-28">
-        <h2 id="lieux-title" {...rv(0)} className="text-[clamp(3rem,1.6rem+5vw,7rem)] leading-[0.92]">
+        <h2 id="lieux-title" {...rv(0)} className="text-[clamp(3rem,1.6rem+5vw,7rem)] leading-[1.05]">
           {x.places.title}
         </h2>
         <p {...rv(1)} className="text-lead text-muted">

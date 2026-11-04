@@ -1,5 +1,5 @@
 /* ============================================================
-   SOINS & MASSAGES — Rayan SPA
+   SOINS & MASSAGES — Rayan Spa
    ------------------------------------------------------------
    Listino reale (photos "listino1"/"listino2"), riorganizzato
    in 4 categorie : Forfaits (packs), Massages, Hammams,
@@ -75,25 +75,30 @@ export const hammams: Hammam[] = [
       "gommageCafe",
       "masqueCheveux",
       "hydratation15",
-      "pauseThe",
     ],
   },
 ];
 
-/** Forfait signature (soin composé) — mis en avant visuellement. */
+/**
+ * Forfait signature (soin composé) — mis en avant visuellement.
+ * Le thé et les pâtisseries, offerts après chaque soin, ne figurent pas dans les
+ * étapes : ils sont annoncés une seule fois sur la carte (experience.menu.teaNote).
+ */
 export type Forfait = {
   id: string;
   price: number;
   stepIds: string[];
   featured?: boolean;
   hidden?: boolean;
+  /** Le prix affiché vaut pour deux personnes (sinon : par personne). */
+  forTwo?: boolean;
 };
 
 export const forfaits: Forfait[] = [
   {
     id: "pack-relaxant",
     price: 550,
-    stepIds: ["massageRelaxant40", "soinVisage1h", "pauseThe"],
+    stepIds: ["massageRelaxant40", "soinVisage1h"],
     // Masqué tant que le soin visage n'est pas disponible (pas de machine).
     hidden: true,
   },
@@ -105,7 +110,6 @@ export const forfaits: Forfait[] = [
       "gommage",
       "shampooingBio",
       "savonnage",
-      "pauseThe",
       "massageRelaxant20",
     ],
   },
@@ -120,13 +124,15 @@ export const forfaits: Forfait[] = [
       "shampooingBio",
       "gommageGhassoul",
       "gommageCafe",
-      "massageRelaxant40",
-      "pauseThe",
+      "masqueCheveux",
+      "massageChoix40",
     ],
   },
   {
     id: "pack-amoureux",
-    price: 1100,
+    // Prix pour deux personnes (600 MAD par personne).
+    price: 1200,
+    forTwo: true,
     featured: true,
     stepIds: [
       "hammam30",
@@ -136,7 +142,6 @@ export const forfaits: Forfait[] = [
       "shampooing",
       "masqueCheveux",
       "massageChoix40",
-      "pauseThePatisserie",
     ],
   },
   {
@@ -151,7 +156,6 @@ export const forfaits: Forfait[] = [
       "gommageGhassoul",
       "gommageCafe",
       "savonnage",
-      "pauseThe",
       "soinVisage45",
       "massageBaume40",
       "manucure",
