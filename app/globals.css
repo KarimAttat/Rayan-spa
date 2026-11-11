@@ -236,6 +236,20 @@
     background: var(--bg);
     color: var(--ink);
   }
+  /* Safari iOS donne aux champs date/heure une largeur propre qui ignore
+     width: 100% et les fait déborder de la fiche : on retire l'apparence
+     native pour qu'ils tiennent dans leur colonne. */
+  input[type="date"].field,
+  input[type="time"].field {
+    appearance: none;
+    -webkit-appearance: none;
+    display: block;
+    max-width: 100%;
+  }
+  .field::-webkit-date-and-time-value {
+    text-align: left;
+    margin: 0;
+  }
   .field::-webkit-calendar-picker-indicator {
     opacity: 0.7;
     cursor: pointer;
