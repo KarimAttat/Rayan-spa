@@ -11,6 +11,7 @@ import {
   type BookingPayload,
 } from "@/lib/whatsapp";
 import { onSelectService } from "@/lib/booking-bus";
+import { discounted, promoCopy, usePromo } from "@/data/promo";
 import { track } from "@vercel/analytics";
 import { rv } from "./ui/Reveal";
 import { WhatsAppIcon } from "./icons";
@@ -37,7 +38,12 @@ type Errors = Partial<Record<keyof BookingPayload, string>>;
  * qui transmet déjà le numéro.
  */
 export default function Booking() {
-  const { t, x } = useI18n();
+  const { t, x, locale } = useI18n();
+  const on = usePromo();
+  // Prix affiché dans la liste : remisé pendant l'offre.
+  const pr = (p: number) => (on ? discounted(p) : p);
+  // Le message précise l'offre, pour que le spa applique la remise.
+  const offer = on ? promoCopy[locale].whatsapp : undefined;
   const [form, setForm] = useState<BookingPayload>(empty);
   const [errors, setErrors] = useState<Errors>({});
   const [sentLink, setSentLink] = useState<string | null>(null);
@@ -84,7 +90,7 @@ export default function Booking() {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validate()) return;
-    const link = buildWhatsAppLink(form, { whatsapp: t.whatsapp, intl: t.intl });
+    const link = buildWhatsAppLink(form, { whatsapp: t.whatsapp, intl: t.intl }, offer);
     setSentLink(link);
     track("booking_submit", { service: form.service });
     // Même onglet : les navigateurs intégrés (Instagram, TikTok, Facebook)
@@ -97,9 +103,10 @@ export default function Booking() {
     () =>
       buildWhatsAppMessage(
         { ...form, service: form.service || "…" },
-        { whatsapp: t.whatsapp, intl: t.intl }
+        { whatsapp: t.whatsapp, intl: t.intl },
+        offer
       ),
-    [form, t.whatsapp, t.intl]
+    [form, t.whatsapp, t.intl, offer]
   );
   const started = !!(form.service || form.date || form.name);
 
@@ -133,7 +140,7 @@ export default function Booking() {
                         const name = t.serviceData[m.id].name;
                         return (
                           <option key={`${m.id}-${v.duration}`} value={`${name} (${v.duration})`}>
-                            {name} · {v.duration} · {v.price} {currency}
+                            {name} · {v.duration} · {pr(v.price)} {currency}
                           </option>
                         );
                       })
@@ -142,7 +149,7 @@ export default function Booking() {
                   <optgroup label={t.services.categoryHammams}>
                     {hammams.map((h) => {
                       const name = t.serviceData[h.id].name;
-                      return <option key={h.id} value={name}>{name} · {h.price} {currency}</option>;
+                      return <option key={h.id} value={name}>{name} · {pr(h.price)} {currency}</option>;
                     })}
                   </optgroup>
                   <optgroup label={t.services.categoryForfaits}>
@@ -150,7 +157,7 @@ export default function Booking() {
                       const name = t.serviceData[f.id].name;
                       return (
                         <option key={f.id} value={name}>
-                          {name} · {f.price} {currency} {f.forTwo ? x.menu.forTwo : x.menu.perPerson}
+                          {name} · {pr(f.price)} {currency} {f.forTwo ? x.menu.forTwo : x.menu.perPerson}
                         </option>
                       );
                     })}
@@ -159,7 +166,7 @@ export default function Booking() {
                     <optgroup label={t.services.categoryBeaute}>
                       {beaute.filter((b) => !b.unavailable).map((b) => {
                         const name = t.serviceData[b.id].name;
-                        return <option key={b.id} value={name}>{name} · {b.price} {currency}</option>;
+                        return <option key={b.id} value={name}>{name} · {pr(b.price)} {currency}</option>;
                       })}
                     </optgroup>
                   )}

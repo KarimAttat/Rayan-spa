@@ -30,7 +30,8 @@ export function isPlaceholderNumber(num: string): boolean {
 /** Costruisce il testo del messaggio nella lingua attiva, ben formattato. */
 export function buildWhatsAppMessage(
   data: BookingPayload,
-  loc: MessageLocale
+  loc: MessageLocale,
+  offer?: string
 ): string {
   const w = loc.whatsapp;
   const lines = [
@@ -45,6 +46,7 @@ export function buildWhatsAppMessage(
     `• ${w.date} : ${formatDate(data.date, loc.intl, w.toConvene)}`,
     `• ${w.time} : ${data.time || w.toConvene}`,
     `• ${w.people} : ${data.people}`,
+    ...(offer ? [`• ${offer}`] : []),
   ];
 
   if (data.notes.trim()) {
@@ -59,10 +61,11 @@ export function buildWhatsAppMessage(
 /** Restituisce il link wa.me completo con testo codificato. */
 export function buildWhatsAppLink(
   data: BookingPayload,
-  loc: MessageLocale
+  loc: MessageLocale,
+  offer?: string
 ): string {
   const number = siteConfig.contact.whatsapp.replace(/\D/g, "");
-  const text = encodeURIComponent(buildWhatsAppMessage(data, loc));
+  const text = encodeURIComponent(buildWhatsAppMessage(data, loc, offer));
   return `https://wa.me/${number}?text=${text}`;
 }
 

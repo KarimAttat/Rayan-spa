@@ -12,6 +12,7 @@ import {
 } from "@/data/services";
 import { useI18n } from "@/lib/i18n";
 import { selectService } from "@/lib/booking-bus";
+import { discounted, promoCopy, usePromo } from "@/data/promo";
 import { rv } from "./ui/Reveal";
 
 /**
@@ -23,7 +24,8 @@ import { rv } from "./ui/Reveal";
  * Toucher une durée ou « Réserver » présélectionne le soin dans le formulaire.
  */
 export default function Services() {
-  const { t, x } = useI18n();
+  const { t, x, locale } = useI18n();
+  const on = usePromo();
 
   const groups = [
     { id: "carte-massages", label: x.menu.jump.massages },
@@ -56,6 +58,19 @@ export default function Services() {
         </div>
       </div>
 
+      {/* L'offre du moment, juste sous le titre de la carte */}
+      {on && (
+        <div className="wrap pt-10 md:pt-12">
+          <p
+            {...rv(2)}
+            className="promo-band mx-auto flex max-w-[80rem] flex-col items-start gap-1 px-6 py-5 sm:flex-row sm:items-baseline sm:gap-5 md:px-8"
+          >
+            <span className="eyebrow promo-label">{promoCopy[locale].label}</span>
+            <span className="text-body">{promoCopy[locale].line}</span>
+          </p>
+        </div>
+      )}
+
       <Group id="carte-massages" title={t.services.categoryMassages} hint={x.menu.tapHint}>
         {shownMassages.map((m, i) => {
             const copy = t.serviceData[m.id];
@@ -71,7 +86,7 @@ export default function Services() {
                       <button
                         type="button"
                         onClick={() => selectService(`${copy.name} (${v.duration})`)}
-                        aria-label={`${x.menu.bookItem} : ${copy.name}, ${v.duration}, ${v.price} ${currency}`}
+                        aria-label={`${x.menu.bookItem} : ${copy.name}, ${v.duration}, ${on ? discounted(v.price) : v.price} ${currency}`}
                         className="menu-pick flex w-full items-baseline gap-4 py-2 text-left"
                       >
                         <span className="whitespace-nowrap text-body">{v.duration}</span>
@@ -120,7 +135,7 @@ export default function Services() {
                 price={f.price}
                 priceNote={
                   f.forTwo
-                    ? `${x.menu.forTwo} (${f.price / 2} ${currency} ${x.menu.perPerson})`
+                    ? `${x.menu.forTwo} (${(on ? discounted(f.price) : f.price) / 2} ${currency} ${x.menu.perPerson})`
                     : x.menu.perPerson
                 }
                 bookLabel={x.menu.bookItem}
@@ -169,6 +184,10 @@ export default function Services() {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
+        /* Offre du moment : un bandeau sombre, le mot en bronze clair */
+        .promo-band { background: var(--night); color: var(--night-ink); }
+        .promo-label { color: var(--gold-light); }
+        .promo-price { color: var(--accent); font-weight: 500; }
         /* Le nom de chaque soin : la police des titres, à taille de lecture */
         .menu-name {
           font-family: var(--font-display), Georgia, serif;
@@ -286,11 +305,23 @@ function Split({
   );
 }
 
+/** Prix de la carte ; pendant l'offre, l'ancien prix barré puis le nouveau. */
 function Price({ value }: { value: number }) {
+  const on = usePromo();
+  const { locale } = useI18n();
+  if (!on)
+    return (
+      <span className="shrink-0 whitespace-nowrap text-body tabular-nums">
+        {value}
+        <span className="ml-1.5 text-small text-muted">{currency}</span>
+      </span>
+    );
   return (
     <span className="shrink-0 whitespace-nowrap text-body tabular-nums">
-      {value}
+      <s className="mr-2 text-small text-muted" aria-hidden="true">{value}</s>
+      <span className="promo-price">{discounted(value)}</span>
       <span className="ml-1.5 text-small text-muted">{currency}</span>
+      <span className="sr-only"> ({promoCopy[locale].insteadOf} {value} {currency})</span>
     </span>
   );
 }
@@ -317,6 +348,7 @@ function Formula({
   steps: readonly string[];
   centered?: boolean;
 }) {
+  const on = usePromo();
   return (
     <li {...rv(i % 2, "row")}>
       {centered ? (
@@ -358,7 +390,7 @@ function Formula({
       <button
         type="button"
         onClick={onBook}
-        aria-label={`${bookLabel} : ${name}, ${price} ${currency}${priceNote ? `, ${priceNote}` : ""}`}
+        aria-label={`${bookLabel} : ${name}, ${on ? discounted(price) : price} ${currency}${priceNote ? `, ${priceNote}` : ""}`}
         className="menu-book eyebrow link mt-5 inline-flex items-center gap-3"
       >
         {bookLabel}

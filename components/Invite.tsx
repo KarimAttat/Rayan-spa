@@ -2,6 +2,7 @@
 
 import { massages, currency } from "@/data/services";
 import { useI18n } from "@/lib/i18n";
+import { discounted, usePromo } from "@/data/promo";
 import { rv } from "./ui/Reveal";
 
 /**
@@ -12,6 +13,7 @@ import { rv } from "./ui/Reveal";
  */
 export default function Invite() {
   const { x } = useI18n();
+  const on = usePromo();
 
   // Le prix d'entrée vient de la carte : il suit tout changement de tarif.
   const from = Math.min(...massages.filter((m) => !m.hidden).flatMap((m) => m.variants.map((v) => v.price)));
@@ -39,7 +41,7 @@ export default function Invite() {
         <div className="flex flex-col justify-end md:col-span-4 md:col-start-9">
           <span {...rv(3, "draw")} aria-hidden="true" className="rule-h block h-px w-full" />
           <p {...rv(4)} className="mt-8 max-w-[34ch] text-lead leading-[1.45]">
-            {x.invite.text.replace("{price}", String(from)).replace("{currency}", currency)}
+            {x.invite.text.replace("{price}", String(on ? discounted(from) : from)).replace("{currency}", currency)}
           </p>
         </div>
       </div>
