@@ -43,6 +43,10 @@ type PromoCopy = {
   /** Bandeau sur la carte. */
   label: string;
   line: string;
+  /** Version courte, pour la barre en haut sur téléphone. */
+  short: string;
+  /** Lien de la barre vers la carte. */
+  cta: string;
   /** Ligne ajoutée au message WhatsApp. */
   whatsapp: string;
   /** Lecture d'écran : « au lieu de ». */
@@ -53,24 +57,32 @@ export const promoCopy: Record<Locale, PromoCopy> = {
   fr: {
     label: "Black Friday",
     line: `−${promo.percent} % sur toute la carte, jusqu'au 30 novembre`,
+    short: `−${promo.percent} % sur toute la carte`,
+    cta: "Voir les prix",
     whatsapp: `Offre : Black Friday −${promo.percent} %`,
     insteadOf: "au lieu de",
   },
   en: {
     label: "Black Friday",
     line: `${promo.percent}% off the whole menu, until 30 November`,
+    short: `${promo.percent}% off the whole menu`,
+    cta: "See prices",
     whatsapp: `Offer: Black Friday −${promo.percent}%`,
     insteadOf: "instead of",
   },
   it: {
     label: "Black Friday",
     line: `−${promo.percent}% su tutta la carta, fino al 30 novembre`,
+    short: `−${promo.percent}% su tutta la carta`,
+    cta: "Vedi i prezzi",
     whatsapp: `Offerta: Black Friday −${promo.percent}%`,
     insteadOf: "invece di",
   },
   es: {
     label: "Black Friday",
     line: `−${promo.percent} % en toda la carta, hasta el 30 de noviembre`,
+    short: `−${promo.percent} % en toda la carta`,
+    cta: "Ver precios",
     whatsapp: `Oferta: Black Friday −${promo.percent} %`,
     insteadOf: "en lugar de",
   },

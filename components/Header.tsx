@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
+import { promoCopy, usePromo } from "@/data/promo";
 
 /** Sections ancrées : href + clé de traduction (data/experience.ts → nav). */
 const NAV = [
@@ -13,7 +14,9 @@ const NAV = [
 ] as const;
 
 export default function Header() {
-  const { x, t } = useI18n();
+  const { x, t, locale } = useI18n();
+  const promoOn = usePromo();
+  const pc = promoCopy[locale];
   const [onDark, setOnDark] = useState(true);
   const [hidden, setHidden] = useState(false);
   const [active, setActive] = useState("");
@@ -84,6 +87,19 @@ export default function Header() {
         open ? "bg-bg text-ink" : onDark ? "text-night-ink" : "text-ink",
       ].join(" ")}
     >
+      {/* L'offre du moment : une barre sombre au-dessus du menu, qui mène à la carte */}
+      {promoOn && (
+        <a
+          href="#carte"
+          onClick={() => setOpen(false)}
+          className="promo-bar flex h-9 items-center justify-center gap-3 px-4 text-small"
+        >
+          <span className="eyebrow promo-bar-label">{pc.label}</span>
+          <span className="hidden sm:inline">{pc.line}</span>
+          <span className="sm:hidden">{pc.short}</span>
+          <span aria-hidden="true" className="hidden underline underline-offset-4 md:inline">{pc.cta} →</span>
+        </a>
+      )}
       <nav className="wrap flex h-16 items-center justify-between gap-6 md:h-[4.5rem]">
         <a href="#top" className="flex items-center gap-3 display text-[clamp(1.5rem,1.3rem+0.5vw,1.8rem)] leading-none">
           {/* L'emblème du logo (le lion sous l'arche), dans la couleur du texte de la barre */}
@@ -133,7 +149,7 @@ export default function Header() {
       <div
         id="menu-mobile"
         hidden={!open}
-        className="h-[calc(100svh-4rem)] overflow-y-auto bg-bg md:hidden"
+        className={[promoOn ? "h-[calc(100svh-6.25rem)]" : "h-[calc(100svh-4rem)]", "overflow-y-auto bg-bg md:hidden"].join(" ")}
       >
         <ul className="wrap flex flex-col gap-2 pt-6">
           {NAV.map((item) => (
@@ -158,6 +174,9 @@ export default function Header() {
       <style
         dangerouslySetInnerHTML={{
           __html: `
+        .promo-bar { background: var(--night); color: var(--night-ink); }
+        .promo-bar-label { color: var(--gold-light); }
+        html:has(.promo-bar) { scroll-padding-top: 6.75rem; }
         .logo-mark {
           background: currentColor;
           -webkit-mask: url(/images/logo-icon.png) center / contain no-repeat;
